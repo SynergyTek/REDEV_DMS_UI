@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "storybook": "cd ./storybook && npm run dev",
+    "storybook": "cd components && npm run dev",
+    "storybook-build": "cd components && npm run build",
     "dms": "cd ./dms && npm run dev"
   },
   "author": "",
