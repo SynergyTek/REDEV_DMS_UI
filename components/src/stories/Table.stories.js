@@ -1,44 +1,23 @@
 import { fn } from '@storybook/test';
 import { Button } from '../components/Button';
+import {Select} from "../components/Select";
+import Table from "../components/Table";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
-  title: 'Core/Button',
-  component: Button,
+  title: 'Data/Table',
+  component: Table,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
   },
 
-
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { onClick: fn() },
 };
 
 // More on writing src with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary = {
+export const Data = {
   args: {
     primary: true,
-    text: 'Button',
-  },
-};
-
-export const Secondary = {
-  args: {
-    text: 'Button',
-  },
-};
-
-export const Large = {
-  args: {
-    size: 'large',
-    text: 'Button',
-  },
-};
-
-export const Small = {
-  args: {
-    size: 'small',
     text: 'Button',
   },
 };

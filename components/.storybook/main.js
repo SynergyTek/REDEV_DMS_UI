@@ -24,6 +24,7 @@ module.exports = {
     builder: "webpack5",
   },
   framework: "@storybook/react-webpack5",
+  
   webpackFinal: async (config) => {
     // SASS + Tailwind CSS
     config.module.rules.push({

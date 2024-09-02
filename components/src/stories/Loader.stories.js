@@ -1,11 +1,11 @@
 
 import { Button } from '../components/Button';
-import {Select} from "../components/Select";
+import Loader from "../components/Loader";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
-  title: 'Data/Select',
-  component: Select,
+  title: 'Core/Loader',
+  component: Loader,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
@@ -14,7 +14,7 @@ export default {
 };
 
 // More on writing src with args: https://storybook.js.org/docs/writing-stories/args
-export const Data = {
+export const Indeterminate = {
   args: {
     primary: true,
     text: 'Button',

@@ -1,6 +1,6 @@
 import { fn } from '@storybook/test';
 import { Button } from '../components/Button';
-import {InputField} from "../components/form";
+import {InputField} from "../components/Form";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
@@ -20,29 +20,30 @@ export default {
 };
 
 // More on writing src with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary = {
+export const Input = {
   args: {
     primary: true,
     label:"Input"
   },
 };
 
-export const Secondary = {
+export const TextArea = {
   args: {
-    label:"Input"
+    label:"Text Area",
+    type:"textarea"
   },
 };
 
-export const Large = {
+export const Number = {
   args: {
-    size: 'large',
-    label:"Input"
+    label:"Number",
+    type:"number"
   },
 };
 
-export const Small = {
+export const Email = {
   args: {
-    size: 'small',
-    text: 'Button',
+    label:"Email",
+    type:"email"
   },
 };
