@@ -1,3 +1,4 @@
+import { Title, Subtitle, Description, Primary, Controls, Stories } from '@storybook/blocks';
 const path = require("path");
 
 module.exports = {
@@ -24,7 +25,9 @@ module.exports = {
     builder: "webpack5",
   },
   framework: "@storybook/react-webpack5",
-  
+  docs:{
+    toc:true,
+  },
   webpackFinal: async (config) => {
     // SASS + Tailwind CSS
     config.module.rules.push({
