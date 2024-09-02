@@ -1,0 +1,16 @@
+{
+  "name": "redev_dms_ui",
+  "version": "1.0.0",
+  "description": "React JS UI Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "cd ./storybook && npm run dev",
+    "dms": "cd ./dms && npm run dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    
+  }
+}
