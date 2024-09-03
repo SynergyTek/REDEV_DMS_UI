@@ -7,7 +7,7 @@ const Navbar = () => {
     return (
         <div className="fixed w-full z-20 bg-white">
             <div className={"md:ml-72 px-7 h-20 flex items-center justify-between"}>
-                <h1 className={'text-2xl font-bold text-gray-900 sm:text-2xl sm:tracking-tight'}>Document Management System</h1>
+                <h1 className={'text-2xl font-bold text-gray-900 opacity-90 sm:text-2xl sm:tracking-tight'}>Document Management System</h1>
                 <div className={'flex items-center gap-4'}>
                     <div className="relative none hidden md:block w-80 mr-5">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
