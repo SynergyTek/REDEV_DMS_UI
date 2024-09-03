@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import InputField from "~/components/Form"
-import Head from "next/head";
+// import InputField from "~/components/Form"
+// import Head from "next/head";
 
 // Dynamically import the Chart component to avoid SSR issues with ApexCharts
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -25,13 +25,13 @@ export default function Home() {
 
   return (
       <div className="app">
-          <InputField
-              id="id1"
-              label="Input"
-              onClick={() => {}}
-              primary
-              required
-          />
+          {/*<InputField*/}
+          {/*    id="id1"*/}
+          {/*    label="Input"*/}
+          {/*    onClick={() => {}}*/}
+          {/*    primary*/}
+          {/*    required*/}
+          {/*/>*/}
           {/*<Chart options={options} series={series} type="bar" width="500" />*/}
       </div>
   );
