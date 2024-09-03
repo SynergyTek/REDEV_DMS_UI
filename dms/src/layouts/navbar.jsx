@@ -9,7 +9,7 @@ const Navbar = () => {
             <div className={"ml-72 px-7 h-20 flex items-center justify-between"}>
                 <h1 className={'text-2xl font-bold text-gray-900 sm:text-2xl sm:tracking-tight'}>XtraSynergy</h1>
                 <div className={'flex items-center gap-4'}>
-                    <div className="relative w-80">
+                    <div className="relative w-80 mr-5">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <svg className="w-4 h-4 text-gray-500" aria-hidden="true"
                                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -29,8 +29,8 @@ const Navbar = () => {
                         <span className="sr-only">Open user menu</span>
                         <Image src="/images/user.jpeg" alt="Description of image" width={50} height={30}/>
                     </button>
-                    <p className={'font-semibold text-gray-700'}>Administrator</p>
-                    <Link href='/' className={'text-gray-500 ml-10'}><FontAwesomeIcon icon={faBell}/></Link>
+                    <p className={'font-semibold text-gray-700'}>Arnav Kumar</p>
+                    <Link href='/' className={'text-gray-500 ml-7'}><FontAwesomeIcon icon={faBell}/></Link>
                     <Link href='/' className={'text-gray-500 ml-3'}><FontAwesomeIcon icon={faEllipsisVertical}/></Link>
                 </div>
             </div>
