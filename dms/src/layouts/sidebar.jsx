@@ -19,13 +19,13 @@ const Sidebar = () => {
 
     return (
         <aside
-            className="fixed left-0 z-30 w-72 p-2 h-screen transition-transform -translate-x-full border-opacity-50 border-gray-200 bg-gray-50 bg-opacity-95 sm:translate-x-0">
-            <div className={"h-20 p-2 flex items-center gap-2"}>
-                <Image src="/images/dms.png" alt="Description of image" width={50} height={50}/>
-                <p className="text-l font-bold text-gray-900 sm:text-l sm:tracking-tight">Document Management System</p>
+            className="fixed left-0 z-30 w-72 px-2 pb-2 pt-1 h-screen transition-transform -translate-x-full border-opacity-50 border-gray-200 bg-gray-50 bg-opacity-95 sm:translate-x-0">
+            <div className={"h-20 px-2 pb-2 flex items-center gap-3"}>
+                <Image src="/images/dms.png" alt="Description of image" width={40} height={40}/>
+                <h1 className={'text-2xl font-bold text-gray-950 sm:text-2xl sm:tracking-tight'}>Synergy</h1>
             </div>
             <div className="p-2 mb-4 text-gray-500 overflow-y-auto">
-                <ul className="space-y-1">
+            <ul className="space-y-1">
                     <li>
                         <Link
                             href="/"
