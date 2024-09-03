@@ -4,6 +4,7 @@
 
 html,
 body {
+  min-height: 100vh;
   font-family: Inter,
   -apple-system,
   BlinkMacSystemFont,
@@ -16,9 +17,13 @@ body {
   Droid Sans,
   Helvetica Neue,
   sans-serif;
-  @apply p-0 m-0
+  @apply p-0 m-0 bg-white dark:bg-black;
+  @apply transition-colors duration-500 ease-out;
 }
 
+input {
+  @apply focus:outline-none
+}
 a {
   @apply text-inherit decoration-0
 }
