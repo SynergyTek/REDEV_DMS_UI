@@ -29,7 +29,7 @@ const Navbar = () => {
                         <span className="sr-only">Open user menu</span>
                         <Image src="/images/user.jpeg" alt="Description of image" width={50} height={30}/>
                     </button>
-                    <p className={'font-bold text-gray-700'}>Administrator</p>
+                    <p className={'font-semibold text-gray-700'}>Administrator</p>
                     <Link href='/' className={'text-gray-500 ml-10'}><FontAwesomeIcon icon={faBell}/></Link>
                     <Link href='/' className={'text-gray-500 ml-3'}><FontAwesomeIcon icon={faEllipsisVertical}/></Link>
                 </div>
