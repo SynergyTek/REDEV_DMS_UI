@@ -32,7 +32,7 @@ export default function Home() {
           {/*    primary*/}
           {/*    required*/}
           {/*/>*/}
-          {/*<Chart options={options} series={series} type="bar" width="500" />*/}
+          <Chart options={options} series={series} type="bar" width="500" />
       </div>
   );
 }

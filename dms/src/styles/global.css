@@ -17,7 +17,8 @@ body {
   Droid Sans,
   Helvetica Neue,
   sans-serif;
-  @apply p-0 m-0 bg-white dark:bg-black
+  @apply p-0 m-0 bg-white dark:bg-black;
+  @apply transition-colors duration-500 ease-out;
 }
 
 input {
