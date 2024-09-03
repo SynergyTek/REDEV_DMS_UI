@@ -32,8 +32,8 @@ const Sidebar = () => {
                                 href="/"
                                 className={`flex items-center gap-4 rounded-lg px-4 py-2 ${
                                     currentRoute === "/"
-                                        ? "bg-gray-100 text-black dark:bg-gray-700 dark:text-white dark:bg-opacity-65"
-                                        : "hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:bg-opacity-65 dark:hover:text-white"
+                                        ? "bg-gray-200 bg-opacity-60 text-black dark:bg-gray-700 dark:text-white dark:bg-opacity-35"
+                                        : "hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"
                                 }
                                 `}
                             >
@@ -47,8 +47,8 @@ const Sidebar = () => {
                                 href="/"
                                 className={`flex items-center gap-4 rounded-lg px-4 py-2 ${
                                     currentRoute === "/file"
-                                        ? "bg-gray-100 text-black dark:bg-gray-700 dark:text-white dark:bg-opacity-65"
-                                        : "hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"
+                                        ? "bg-gray-200 bg-opacity-60 text-black dark:bg-gray-700 dark:text-white dark:bg-opacity-35"
+                                        : "hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700  dark:hover:bg-opacity-35 dark:hover:text-white"
                                 }
                                 `}
                             >
@@ -60,7 +60,7 @@ const Sidebar = () => {
                         <li>
                             <details className="group [&_summary::-webkit-details-marker]:hidden">
                                 <summary
-                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white">
+                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white">
                                     <div className="flex items-center gap-4">
                                         <FontAwesomeIcon icon={faBook} className={"w-4"}/>
                                         <span className="text-sm font-medium"> Document Management </span>
@@ -75,7 +75,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> Document Custom Template </span>
                                         </Link>
@@ -83,7 +83,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User </span>
                                         </Link>
@@ -91,7 +91,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Role </span>
                                         </Link>
@@ -99,7 +99,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Group </span>
                                         </Link>
@@ -110,7 +110,7 @@ const Sidebar = () => {
                         <li>
                             <details className="group [&_summary::-webkit-details-marker]:hidden">
                                 <summary
-                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white">
+                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white">
                                     <div className="flex items-center gap-4">
                                         <FontAwesomeIcon icon={faUserTie} className={"w-4"}/>
                                         <span className="text-sm font-medium"> Admin </span>
@@ -125,7 +125,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> Document Custom Template </span>
                                         </Link>
@@ -133,7 +133,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User </span>
                                         </Link>
@@ -141,7 +141,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Role </span>
                                         </Link>
@@ -149,7 +149,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Group </span>
                                         </Link>
@@ -160,7 +160,7 @@ const Sidebar = () => {
                         <li>
                             <details className="group [&_summary::-webkit-details-marker]:hidden">
                                 <summary
-                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white">
+                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white">
                                     <div className="flex items-center gap-4">
                                         <FontAwesomeIcon icon={faListCheck} className={"w-4"}/>
                                         <span className="text-sm font-medium"> Work List </span>
@@ -175,7 +175,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> Document Custom Template </span>
                                         </Link>
@@ -183,7 +183,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User </span>
                                         </Link>
@@ -191,7 +191,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Role </span>
                                         </Link>
@@ -199,7 +199,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Group </span>
                                         </Link>
@@ -210,7 +210,7 @@ const Sidebar = () => {
                         <li>
                             <details className="group [&_summary::-webkit-details-marker]:hidden">
                                 <summary
-                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white">
+                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white">
                                     <div className="flex items-center gap-4">
                                         <FontAwesomeIcon icon={faFileAlt} className={"w-4"}/>
                                         <span className="text-sm font-medium"> Report </span>
@@ -225,7 +225,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> Document Custom Template </span>
                                         </Link>
@@ -233,7 +233,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User </span>
                                         </Link>
@@ -241,7 +241,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Role </span>
                                         </Link>
@@ -249,7 +249,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Group </span>
                                         </Link>
@@ -260,7 +260,7 @@ const Sidebar = () => {
                         <li>
                             <details className="group [&_summary::-webkit-details-marker]:hidden">
                                 <summary
-                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white">
+                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white">
                                     <div className="flex items-center gap-4">
                                         <FontAwesomeIcon icon={faUpload} className={"w-4"}/>
                                         <span className="text-sm font-medium"> Upload </span>
@@ -275,7 +275,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> Document Custom Template </span>
                                         </Link>
@@ -283,7 +283,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User </span>
                                         </Link>
@@ -291,7 +291,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Role </span>
                                         </Link>
@@ -299,7 +299,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Group </span>
                                         </Link>
@@ -311,7 +311,7 @@ const Sidebar = () => {
                         <li>
                             <details className="group [&_summary::-webkit-details-marker]:hidden">
                                 <summary
-                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white">
+                                    className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white">
                                     <div className="flex items-center gap-4">
                                         <FontAwesomeIcon icon={faWindowRestore} className={"w-4"}/>
                                         <span className="text-sm font-medium"> Masters </span>
@@ -326,7 +326,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> Document Custom Template </span>
                                         </Link>
@@ -334,7 +334,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User </span>
                                         </Link>
@@ -342,7 +342,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Role </span>
                                         </Link>
@@ -350,7 +350,7 @@ const Sidebar = () => {
                                     <li>
                                         <Link
                                             href="/"
-                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                            className={"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                                         >
                                             <span className="text-sm font-medium"> User Group </span>
                                         </Link>
@@ -365,7 +365,7 @@ const Sidebar = () => {
                         <li>
                             <Link
                                 href="/"
-                                className={"flex items-center gap-4 rounded-lg px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-black dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                className={"flex items-center gap-4 rounded-lg px-4 py-2 text-gray-700 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                             >
                                 <FontAwesomeIcon icon={faQuestionCircle} className={"w-4"}/>
                                 <span className="text-sm font-medium"> Support </span>
@@ -374,7 +374,7 @@ const Sidebar = () => {
                         <li>
                             <Link
                                 href="/"
-                                className={"flex items-center gap-4 rounded-lg px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-black dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:bg-opacity-65 dark:hover:text-white"}
+                                className={"flex items-center gap-4 rounded-lg px-4 py-2 text-gray-700 hover:bg-gray-200 bg-opacity-60 hover:text-black dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:bg-opacity-35 dark:hover:text-white"}
                             >
                                 <FontAwesomeIcon icon={faGears} className={"w-4"}/>
                                 <span className="text-sm font-medium"> Settings </span>
