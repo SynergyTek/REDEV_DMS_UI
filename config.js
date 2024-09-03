@@ -6,8 +6,8 @@ const primary = colors.indigo,
 	success = colors.green;
 
 module.exports = {
-	app:{
-	name:"DMS"	
+	app: {
+		name: "DMS"
 	},
 	safelist: [
 		{
