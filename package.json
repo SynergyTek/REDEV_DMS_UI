@@ -1,17 +1,28 @@
 {
   "name": "redev_dms_ui",
   "version": "1.0.0",
-  "description": "React JS UI Project",
+  "description": "Redevelopment of DMS UI",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "storybook": "cd components && npm run dev",
-    "storybook-build": "cd components && npm run build",
+    "components": "cd ./components && npm run dev",
     "dms": "cd ./dms && npm run dev"
   },
-  "author": "",
+  "author": "Synergy",
   "license": "ISC",
   "devDependencies": {
-    
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sass": "^1.77.8",
+    "sass-loader": "^16.0.1",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^3.4.10",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "axios": "^1.7.7",
+    "react-flatpickr": "^3.10.13",
+    "@babel/preset-react": "^7.16.7",
+    "autoprefixer": "^10.4.20",
+    "css-loader": "^7.1.2",
+    "postcss": "^8.4.41"
   }
 }

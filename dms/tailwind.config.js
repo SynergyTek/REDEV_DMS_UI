@@ -14,5 +14,8 @@ module.exports = {
       },
     },
   },
+  presets: [
+    require("../config")
+  ],
   plugins: [],
 };

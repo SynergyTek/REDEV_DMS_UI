@@ -1,5 +1,5 @@
-import "../src/scss/main.scss";
-import {themes} from "@storybook/theming";
+import "../public/styles/main.scss";
+import {dark,light} from "./theme";
 import {addons} from "@storybook/preview-api";
 import {DocsContainer, Title} from "@storybook/blocks";
 import React from "react";
@@ -18,8 +18,8 @@ export default {
 const channel = addons.getChannel();
 export const parameters = {
 	darkMode: {
-		dark: {...themes.dark},
-		light: {...themes.normal},
+		dark: dark,
+		light: light,
 		stylePreview: true,
 	},
 	docs: {
@@ -33,11 +33,8 @@ export const parameters = {
 				orderedList: false,
 			},
 		},
-		container: ({context, children}) => {
-			return (<DocsContainer context={context}>
-				{children}
-			</DocsContainer>)
-			
-		},
+		components:{
+			code:<div></div>
+		}
 	},
 }
