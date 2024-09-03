@@ -6,10 +6,10 @@ import {faBell, faEllipsisVertical, faMagnifyingGlass} from "@fortawesome/free-s
 const Navbar = () => {
     return (
         <div className="fixed w-full z-20 bg-white">
-            <div className={"ml-72 px-7 h-20 flex items-center justify-between"}>
+            <div className={"md:ml-72 px-7 h-20 flex items-center justify-between"}>
                 <h1 className={'text-2xl font-bold text-gray-900 sm:text-2xl sm:tracking-tight'}>XtraSynergy</h1>
                 <div className={'flex items-center gap-4'}>
-                    <div className="relative w-80 mr-5">
+                    <div className="relative none hidden md:block w-80 mr-5">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <svg className="w-4 h-4 text-gray-500" aria-hidden="true"
                                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -19,7 +19,7 @@ const Navbar = () => {
                             {/*<FontAwesomeIcon className="w-4 h-4 text-gray-500" icon={faMagnifyingGlass}/>*/}
                         </div>
                         <input type="search" id="default-search"
-                               className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg h-10 focus:ring-blue-500 focus:border-blue-500"
+                               className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg h-10"
                                placeholder="Search" required/>
                     </div>
                     <button type="button"
@@ -30,11 +30,11 @@ const Navbar = () => {
                         <Image src="/images/user.jpeg" alt="Description of image" width={50} height={30}/>
                     </button>
                     <p className={'font-semibold text-gray-700'}>Arnav Kumar</p>
-                    <Link href='/' className={'text-gray-500 ml-7'}><FontAwesomeIcon icon={faBell}/></Link>
-                    <Link href='/' className={'text-gray-500 ml-3'}><FontAwesomeIcon icon={faEllipsisVertical}/></Link>
+                    <Link href='/' className={'text-gray-500 ml-7 hidden md:block'}><FontAwesomeIcon icon={faBell}/></Link>
+                    <Link href='/' className={'text-gray-500 ml-3 hidden md:block'}><FontAwesomeIcon icon={faEllipsisVertical}/></Link>
                 </div>
             </div>
-            <div className={'ml-72'}>
+            <div className={'md:ml-72'}>
                 <div className={'border-b-2 border-gray-200 border-opacity-60 mx-7'}></div>
             </div>
         </div>
