@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
       <div className="app">
-          <Chart options={options} series={series} type="bar" width="500" />
+          {/*<Chart options={options} series={series} type="bar" width="500" />*/}
       </div>
   );
 }
