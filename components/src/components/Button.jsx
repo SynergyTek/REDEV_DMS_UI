@@ -10,13 +10,13 @@ export const Button = ({ primary, size, ...props }) => {
   const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
   const modeMap = {
     primary:
-        "bg-indigo-800 dark:bg-indigo-800 hover:bg-indigo-600 hover:text-primary-100 text-primary-100 dark:text-primary-100 dark:hover:bg-indigo-700",
+        "bg-primary-800 dark:bg-primary-800 hover:bg-primary-600 hover:text-primary-100 text-primary-100 dark:text-primary-100 dark:hover:bg-primary-700",
     secondary:
-        "bg-gray-500 dark:bg-gray-800 hover:bg-indigo-600 hover:text-primary-50 text-primary-100 dark:text-primary-100 dark:hover:bg-indigo-700",
+        "bg-secondary-500 dark:bg-secondary-800 hover:bg-primary-600 hover:text-primary-50 text-primary-100 dark:text-primary-100 dark:hover:bg-primary-700",
   };
   return (
       <button
-          className={`${props.className} ${size==="small"?"px-2.5 py-1.5":" px-3.5 py-2.5 "} ${primary? modeMap.primary:modeMap.secondary} flex rounded items-center text-sm font-semibold gap-2 transition-all ${props.type === "dropdown" ? "bg-indigo-600 bg-opacity-50 group-hover:bg-opacity-65 text-primary-100 justify-between" : null}`}
+          className={`${props.className} ${size==="small"?"px-2.5 py-1.5":" px-3.5 py-2.5 "} ${primary? modeMap.primary:modeMap.secondary} flex rounded items-center text-sm font-semibold gap-2 transition-all ${props.type === "dropdown" ? "bg-primary-600 bg-opacity-50 group-hover:bg-opacity-65 text-primary-100 justify-between" : null}`}
           id={props.id}
           onClick={props.onClick}
           type={props.type}

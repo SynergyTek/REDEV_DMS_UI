@@ -23,21 +23,26 @@ export default {
 export const Input = {
   args: {
     primary: true,
-    label:"Input"
+    label:"Input",
+    id:"id1",
+    required:true
   },
 };
 
 export const TextArea = {
   args: {
     label:"Text Area",
-    type:"textarea"
+    type:"textarea",
+    id:"id2",
+    pattern:"[A-Za-z]{"
   },
 };
 
 export const Number = {
   args: {
     label:"Number",
-    type:"number"
+    type:"number",
+    id:"id3"
   },
 };
 

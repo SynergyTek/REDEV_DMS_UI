@@ -29,7 +29,7 @@ export function InputField({
 		}
 	};
 	return (
-		<div className={"flex gap-4 w-full"}>
+		<div id={"input"} className={"flex gap-4 w-full"}>
 			<div className={`flex flex-col w-full gap-2 ${error ? "mb-4" : ""}`}>
 				<div
 					className={
@@ -58,6 +58,7 @@ export function InputField({
 							required={required}
 							ref={inputRef}
 							placeholder={placeholder}
+							pattern={props.pattern}
 							onChange={() => {
 								props.onChange ? props.onChange(inputRef.current.value) : null;
 								validateInput();
