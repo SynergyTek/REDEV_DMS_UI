@@ -25,6 +25,8 @@
     "tailwindcss": "^3.4.10"
   },
   "dependencies": {
-    "@awesome.me/kit-9b926a9ec0": "^1.0.7"
+    "@awesome.me/kit-9b926a9ec0": "^1.0.7",
+    "apexcharts": "^3.53.0",
+    "react-apexcharts": "^1.4.1"
   }
 }
