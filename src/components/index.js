@@ -11,7 +11,8 @@ import Text from './core/Text';
 
 // Data Modules
 import FileExplorer from "./data/FileExplorer";
-
+import Pagination from "./data/Pagination";
+import Toolbar from "./data/Toolbar";
 // Form Modules
 import CheckBox from './form/CheckBox';
 import InputField from './form/InputField';
@@ -25,20 +26,22 @@ import Alert from './info/Alert';
 import DateTime from './picker/DateTime';
 
 export {
-	Button,
-	Table,
-	InputField,
-	CheckBox,
-	RadioGroup,
-	Select,
 	Alert,
-	Notification,
-	Loader,
-	DateTime,
 	Breadcrumb,
+	Button,
+	CheckBox,
 	Columns,
 	ContextMenu,
 	DataGrid,
+	DateTime,
 	FileExplorer,
-	Text
+	InputField,
+	Loader,
+	Notification,
+	Pagination,
+	RadioGroup,
+	Select,
+	Table,
+	Text,
+	Toolbar
 }
