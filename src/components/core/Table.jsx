@@ -1,23 +1,27 @@
 import {ContextMenu} from "./ContextMenu";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-	faAngleDoubleLeft,
-	faAngleDoubleRight,
-	faChevronLeft,
-	faChevronRight,
-	faClose,
-	faPencil,
+	faAngleDoubleLeft, faAngleDoubleRight, faChevronLeft, faChevronRight, faClose, faPencil,
 } from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {CheckBox, InputField, Button, Select, Loader} from "~";
-export default function Table({
-	                              data, columns, pageLimit = 10, actions = [{
-		label: "Add here", icon: faPencil, onClick: () => {
-			console.log("Button pressed");
+
+function Table({
+	               data = {
+		               source: "https://jsonplaceholder.org/users"
+	               }, columns = [{
+		header: "First Name", field: "firstname"
+	}, {
+		header: "Last Name", field: "lastname"
+	}], pageLimit = 10, actions = [{
+		label: "Edit", icon: faPencil, onClick: () => {
+			console.log("Element edit");
 		},
-	},], ...props
-                              }) {
+	},
+	
+	], ...props
+               }) {
 	const [allData, setAllData] = useState([]);
 	const [fetchedData, setFetchedData] = useState(data);
 	const [fetchedColumns, setFetchedColumns] = useState(columns);
@@ -208,193 +212,181 @@ export default function Table({
 		showContextMenu();
 	};
 	return (<div
-			id={"table-wrapper"}
-			className={"rounded-md overflow-clip flex flex-col border-2 dark:border-primary-950"}
-		>
-			<ContextMenu innerRef={contextMenu}
-			             options={actions}></ContextMenu>
-			<div className="overflow-x-auto shadow-md ">
-				
-				{/*<div*/}
-				{/*	className={"p-4 bg-primary-300 shadow-md border-l-4 text-primary-100 dark:bg-primary-950 dark:text-primary-300"}*/}
-				{/*>*/}
-				{/*	{selection ? (*/}
-				{/*		*/}
-				{/*		<Button*/}
-				{/*			icon={faClose}*/}
-				{/*			onClick={() => {*/}
-				{/*				setSelection(false);*/}
-				{/*			}}*/}
-				{/*		></Button>) : null}*/}
-				{/*	{columns.length > 0 ? < >*/}
-				{/*		<InputField*/}
-				{/*			type="text"*/}
-				{/*			placeholder="Search Here"*/}
-				{/*			required={false}*/}
-				{/*			id="Search-filter"*/}
-				{/*			onChange={onChange}*/}
-				{/*		/>*/}
-				{/*		<Select*/}
-				{/*			options={colFilter}*/}
-				{/*			onSelect={onSelect}*/}
-				{/*		/>*/}
-				{/*	</> : null}*/}
-				{/*</div>*/}
-			</div>
-			<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-				<thead className="text-xs text-primary-900 uppercase bg-primary-200 dark:bg-primary-950 dark:bg-opacity-50 dark:text-primary-50">
-				<tr>
-					{selection ? (<td className={"p-4"}>
-							<CheckBox />
-						</td>) : null}
-					{fetchedColumns ? fetchedColumns.map((column, index) => {
-						return (<th scope="col"
-						            className="px-6 py-5"
-						            key={index}>
-								{column.header}
-							</th>);
-					}) : null}
-				</tr>
-				</thead>
-				<tbody>
-				{loading ? (<tr>
-						<td
-							className="p-6 text-center select-none cursor-pointer"
-							colSpan={columns.length}
-						>
-							<div className={"w-full flex items-center justify-center"}>
-								<Loader></Loader>
-							</div>
-						</td>
-					</tr>) : pageData ? (pageData.map((row, index) => {
-						return (<tr
-								className={`${index === pageData.length - 1 ? null : "border-b"} h-10 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all ease-linear cursor-pointer`}
-								onClick={selectRow}
-								onContextMenu={handleContextMenu}
-								id={row[props.rowId]}
-								data-name={row[props.rowName]}
-							>
-								{selection ? (<td className={"p-4 "}>
-										<CheckBox />
-									</td>) : null}
-								{fetchedColumns ? fetchedColumns.map((column, index) => {
-									return (<td className=" px-6 py-4"
-									            key={index}>
-											{row[column.field]}
-										</td>);
-								}) : null}
-							</tr>);
-					})) : (<tr>
-						<td
-							className="p-6 text-center select-none cursor-pointer"
-							colSpan={columns.length}
-							onClick={refresh}
-						>
-							<p className={"text-lg font-bold"}>No data found</p>
-						</td>
-					</tr>)}
-				</tbody>
-			</table>
+		id={"table-wrapper"}
+		className={"rounded-md overflow-clip flex flex-col border-2 dark:border-primary-950"}
+	>
+		<ContextMenu innerRef={contextMenu}
+		             options={actions}></ContextMenu>
+		<div className="overflow-x-auto shadow-md ">
 			
-			{fetchedData ? (<nav
-					className={"w-full flex items-center justify-between p-4 dark:bg-primary-950 dark:bg-opacity-50 text-primary-50"}
+			{/*<div*/}
+			{/*	className={"p-4 bg-primary-300 shadow-md border-l-4 text-primary-100 dark:bg-primary-950 dark:text-primary-300"}*/}
+			{/*>*/}
+			{/*	{selection ? (*/}
+			{/*		*/}
+			{/*		<Button*/}
+			{/*			icon={faClose}*/}
+			{/*			onClick={() => {*/}
+			{/*				setSelection(false);*/}
+			{/*			}}*/}
+			{/*		></Button>) : null}*/}
+			{/*	{columns.length > 0 ? < >*/}
+			{/*		<InputField*/}
+			{/*			type="text"*/}
+			{/*			placeholder="Search Here"*/}
+			{/*			required={false}*/}
+			{/*			id="Search-filter"*/}
+			{/*			onChange={onChange}*/}
+			{/*		/>*/}
+			{/*		<Select*/}
+			{/*			options={colFilter}*/}
+			{/*			onSelect={onSelect}*/}
+			{/*		/>*/}
+			{/*	</> : null}*/}
+			{/*</div>*/}
+		</div>
+		<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+			<thead className="text-xs text-primary-900 uppercase bg-primary-200 dark:bg-primary-950 dark:bg-opacity-50 dark:text-primary-50">
+			<tr>
+				{selection ? (<td className={"p-4"}>
+					<CheckBox />
+				</td>) : null}
+				{fetchedColumns ? fetchedColumns.map((column, index) => {
+					return (<th scope="col"
+					            className="px-6 py-5"
+					            key={index}>
+						{column.header}
+					</th>);
+				}) : null}
+			</tr>
+			</thead>
+			<tbody>
+			{loading ? (<tr>
+				<td
+					className="p-6 text-center select-none cursor-pointer"
+					colSpan={columns.length}
 				>
-					<p className={"text-sm"}>
-						Showing{" "}
-						<span className={"font-bold"}>
+					<div className={"w-full flex items-center justify-center"}>
+						<Loader></Loader>
+					</div>
+				</td>
+			</tr>) : pageData ? (pageData.map((row, index) => {
+				return (<tr
+					className={`${index === pageData.length - 1 ? null : "border-b"} h-10 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all ease-linear cursor-pointer`}
+					onClick={selectRow}
+					onContextMenu={handleContextMenu}
+					id={row[props.rowId]}
+					data-name={row[props.rowName]}
+				>
+					{selection ? (<td className={"p-4 "}>
+						<CheckBox />
+					</td>) : null}
+					{fetchedColumns ? fetchedColumns.map((column, index) => {
+						return (<td className=" px-6 py-4"
+						            key={index}>
+							{row[column.field]}
+						</td>);
+					}) : null}
+				</tr>);
+			})) : (<tr>
+				<td
+					className="p-6 text-center select-none cursor-pointer"
+					colSpan={columns.length}
+					onClick={refresh}
+				>
+					<p className={"text-lg font-bold"}>No data found</p>
+				</td>
+			</tr>)}
+			</tbody>
+		</table>
+		
+		{fetchedData ? (<nav
+			className={"w-full flex items-center justify-between p-4 dark:bg-primary-950 dark:bg-opacity-50 text-primary-50"}
+		>
+			<p className={"text-sm"}>
+				Showing{" "}
+				<span className={"font-bold"}>
               {pageLimit * (currentPage - 1)}
-							{" - "}
-							{pageLimit + pageLimit * (currentPage - 1)}
+					{" - "}
+					{pageLimit + pageLimit * (currentPage - 1)}
             </span>{" "}
-						out of <span className={"font-bold"}>{fetchedData.length}</span>
-					</p>
-					<ul className="flex items-center -space-x-px h-8 text-xs">
-						<li
-							role={"button"}
-							className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white rounded-s-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-							onClick={() => {
-								setCurrentPage(1);
-							}}
-						>
-							<span className="sr-only">First</span>
-							<FontAwesomeIcon
-								className={"size-2.5"}
-								icon={faAngleDoubleLeft}
-							></FontAwesomeIcon>
-						</li>
-						<li
-							role={"button"}
-							className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-							onClick={() => {
-								setCurrentPage(Math.max(1, currentPage - 1));
-							}}
-						>
-							<span className="sr-only">Previous</span>
-							<FontAwesomeIcon
-								icon={faChevronLeft}
-								className={"size-2.5"}
-							></FontAwesomeIcon>
-						</li>
-						
-						{Array.from({
-							length: Math.ceil(fetchedData.length / pageLimit),
-						}).map((page, index) => {
-							return (<li
-									role={"button"}
-									aria-current="page"
-									id={`page-${index + 1}`}
-									className={`${[currentPage - 1, currentPage, currentPage + 1].includes(index + 1) ? "flex" : "hidden"} items-center justify-center px-3 h-8 text-gray-500 leading-tight border 
+				out of <span className={"font-bold"}>{fetchedData.length}</span>
+			</p>
+			<ul className="flex items-center -space-x-px h-8 text-xs">
+				<li
+					role={"button"}
+					className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white rounded-s-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+					onClick={() => {
+						setCurrentPage(1);
+					}}
+				>
+					<span className="sr-only">First</span>
+					<FontAwesomeIcon
+						className={"size-2.5"}
+						icon={faAngleDoubleLeft}
+					></FontAwesomeIcon>
+				</li>
+				<li
+					role={"button"}
+					className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+					onClick={() => {
+						setCurrentPage(Math.max(1, currentPage - 1));
+					}}
+				>
+					<span className="sr-only">Previous</span>
+					<FontAwesomeIcon
+						icon={faChevronLeft}
+						className={"size-2.5"}
+					></FontAwesomeIcon>
+				</li>
+				
+				{Array.from({
+					length: Math.ceil(fetchedData.length / pageLimit),
+				}).map((page, index) => {
+					return (<li
+						role={"button"}
+						aria-current="page"
+						id={`page-${index + 1}`}
+						className={`${[currentPage - 1, currentPage, currentPage + 1].includes(index + 1) ? "flex" : "hidden"} items-center justify-center px-3 h-8 text-gray-500 leading-tight border 
                   border-blue-300 bg-blue-50 hover:bg-blue-100 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700
                   ${currentPage === index + 1 && "bg-indigo-400 text-white hover:bg-indigo-400 dark:bg-blue-100 dark:text-blue-700 dark:hover:bg-blue-100"}`}
-									onClick={() => {
-										setCurrentPage(index + 1);
-									}}
-								>
-									{index + 1}
-								</li>);
-						})}
-						
-						<li
-							role={"button"}
-							className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-							onClick={() => {
-								setCurrentPage(Math.min(Math.ceil(fetchedData.length / pageLimit), currentPage + 1,),);
-							}}
-						>
-							<span className="sr-only">Next</span>
-							<FontAwesomeIcon
-								className={"size-2.5"}
-								icon={faChevronRight}
-							></FontAwesomeIcon>
-						</li>
-						<li
-							role={"button"}
-							className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-							onClick={() => {
-								setCurrentPage(Math.ceil(fetchedData.length / pageLimit));
-							}}
-						>
-							<span className="sr-only">Last</span>
-							<FontAwesomeIcon
-								className={"size-2.5"}
-								icon={faAngleDoubleRight}
-							></FontAwesomeIcon>
-						</li>
-					</ul>
-				</nav>) : null}
-		</div>)
+						onClick={() => {
+							setCurrentPage(index + 1);
+						}}
+					>
+						{index + 1}
+					</li>);
+				})}
+				
+				<li
+					role={"button"}
+					className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+					onClick={() => {
+						setCurrentPage(Math.min(Math.ceil(fetchedData.length / pageLimit), currentPage + 1,),);
+					}}
+				>
+					<span className="sr-only">Next</span>
+					<FontAwesomeIcon
+						className={"size-2.5"}
+						icon={faChevronRight}
+					></FontAwesomeIcon>
+				</li>
+				<li
+					role={"button"}
+					className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+					onClick={() => {
+						setCurrentPage(Math.ceil(fetchedData.length / pageLimit));
+					}}
+				>
+					<span className="sr-only">Last</span>
+					<FontAwesomeIcon
+						className={"size-2.5"}
+						icon={faAngleDoubleRight}
+					></FontAwesomeIcon>
+				</li>
+			</ul>
+		</nav>) : null}
+	</div>)
 }
-Table.defaultProps = {
-	data: {
-		source: "https://jsonplaceholder.org/users"
-	}, columns: [{
-		header: "First Name", field: "firstname"
-	}, {
-		header: "Last Name", field: "lastname"
-	}], pageLimit: 5, actions: [{
-		label: "Add here", icon: faPencil, onClick: () => {
-			console.log("Button pressed");
-		},
-	},],
-	
-}
+
+export default Table;

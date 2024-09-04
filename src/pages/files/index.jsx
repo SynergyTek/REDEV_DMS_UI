@@ -1,5 +1,5 @@
 import {InputField, Button, Table} from "~";
-import {faFileSearch, faFilter, faFilterList} from "@awesome.me/kit-9b926a9ec0/icons/classic/light";
+import {faFileSearch, faFilterList} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 
 
 export default () => {

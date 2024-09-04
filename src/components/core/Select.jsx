@@ -9,9 +9,20 @@ function Select({
 	                load,
 	                parameter,
 	                search = true,
-	                options,
 	                onChange,
 	                onSelect,
+	                options = {
+		                data: [
+			                {name: "Option 1", value: 1},
+			                {name: "Option 2", value: 2},
+			                {name: "Option 3", value: 3},
+			                {name: "Option 4", value: 4},
+			                {name: "Option 5", value: 5},
+		                ],
+		                display: "name",
+		                value: "value",
+	                },
+	                primary = false,
                 }) {
 	const [data, setData] = React.useState(null);
 	const [selected, setSelected] = React.useState("Select");
@@ -159,21 +170,4 @@ Select.propTypes = {
 	onClick: PropTypes.func,
 };
 
-Select.defaultProps = {
-	backgroundColor: null,
-	primary: false,
-	size: 'medium',
-	onClick: undefined,
-	options: {
-		data: [
-			{name: "Option 1", value: 1},
-			{name: "Option 2", value: 2},
-			{name: "Option 3", value: 3},
-			{name: "Option 4", value: 4},
-			{name: "Option 5", value: 5},
-		],
-		display: "name",
-		value: "value",
-	}
-};
 export default Select

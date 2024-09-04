@@ -1,4 +1,4 @@
-import Loader from "~";
+import {Loader} from "~";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
