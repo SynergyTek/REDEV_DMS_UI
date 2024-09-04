@@ -1,21 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
+import PropTypes from 'prop-types';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faChevronDown} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 
 /**
  * Primary UI component for user interaction
  */
-export const Button = ({
-	primary = false,
-	size = "medium",
-	onClick = undefined,
-	text = "Button",
-	...props
-}) => {
-	const mode = primary
-		? "storybook-button--primary"
-		: "storybook-button--secondary";
+function Button({
+	                primary,
+	                size,
+	                ...props
+                }) {
+	const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+	
 	const modeMap = {
 		primary:
 			"bg-primary-800 dark:bg-primary-800 hover:bg-primary-600 hover:text-primary-100 text-primary-100 dark:text-primary-100 dark:hover:bg-primary-700",
@@ -26,13 +22,13 @@ export const Button = ({
 		<button
 			className={`${props.className} ${size === "small" ? "px-2.5 py-1.5" : " px-3.5 py-2.5 "} ${primary ? modeMap.primary : modeMap.secondary} flex rounded items-center text-sm font-semibold gap-2 transition-all ${props.type === "dropdown" ? "bg-primary-600 bg-opacity-50 group-hover:bg-opacity-65 text-primary-100 justify-between" : null}`}
 			id={props.id}
-			onClick={onClick}
+			onClick={props.onClick}
 			type={props.type}
 		>
 			{props.type === "dropdown" ? (
 				<>
-					{text ? <span>{text}</span> : "Select"}
-
+					{props.text ? <span>{props.text}</span> : "Select"}
+					
 					<FontAwesomeIcon
 						icon={faChevronDown}
 						className={"w-4 aspect-square"}
@@ -46,14 +42,13 @@ export const Button = ({
 							className={"size-4"}
 						></FontAwesomeIcon>
 					) : null}
-					{text ? (
-						<span className={size === "small" ? "text-xs" : ""}>{text}</span>
-					) : null}
+					{props.text ? <span className={size === "small" ? "text-xs" : ""}>{props.text}</span> : null}
 				</>
 			)}
 		</button>
 	);
-};
+}
+
 
 Button.propTypes = {
 	/**
@@ -63,13 +58,15 @@ Button.propTypes = {
 	/**
 	 * How large should the button be?
 	 */
-	size: PropTypes.oneOf(["small", "medium", "large"]),
+	size: PropTypes.oneOf(['small', 'medium', 'large']),
 	/**
 	 * Button contents
 	 */
-	text: PropTypes.string.isRequired,
+	text: PropTypes.string,
 	/**
 	 * Optional click handler
 	 */
 	onClick: PropTypes.func,
-};
+}
+
+export default Button

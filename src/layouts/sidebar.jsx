@@ -17,7 +17,7 @@ import Image from "next/image"
 import {far} from "@awesome.me/kit-9b926a9ec0/icons";
 
 const Sidebar = () => {
-	var router = useRouter();
+	const router = useRouter();
 	const currentRoute = router.pathname;
 	
 	return (

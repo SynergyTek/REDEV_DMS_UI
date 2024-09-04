@@ -1,15 +1,15 @@
 import {useRef, useState} from "react";
-import {Button} from "./Button";
+import {Button} from "..";
 
-export function InputField({
-	                           id,
-	                           label,
-	                           type,
-	                           placeholder = "",
-	                           required = false,
-	                           button,
-	                           ...props
-                           }) {
+function InputField({
+	                    id,
+	                    label,
+	                    type,
+	                    placeholder = "",
+	                    required = false,
+	                    button,
+	                    ...props
+                    }) {
 	const [error, setError] = useState(null);
 	const inputRef = useRef();
 	const inputClass = ` w-full invalid:text-red-500 group-hover:text-primary-800 dark:group-hover:text-primary-200 text-primary-600 dark:text-secondary-300 focus:text-primary-800 dark:focus:text-primary-200 peer rounded border-none bg-inherit p-3 ${placeholder === "" ? "placeholder-transparent" : "placeholder-primary-300 placeholder-opacity-60 placeholder-text-sm"} focus:border-transparent focus:outline-none focus:ring-0 transition-all duration-300`;
@@ -29,7 +29,8 @@ export function InputField({
 		}
 	};
 	return (
-		<div id={"input"} className={"flex gap-4 w-full"}>
+		<div id={"input"}
+		     className={"flex gap-4 w-full"}>
 			<div className={`flex flex-col w-full gap-2 ${error ? "mb-4" : ""}`}>
 				<div
 					className={
@@ -86,52 +87,4 @@ export function InputField({
 	);
 }
 
-export function CheckBox(props) {
-	return (
-		<label htmlFor={props.id}
-		       class="flex cursor-pointer items-start gap-4">
-			<div class="flex items-center">
-				&#8203;
-				<input
-					type="checkbox"
-					class="size-4 rounded border-gray-300"
-					id={props.id}
-				/>
-			</div>
-			{props.label ? (
-				<div>
-					<strong class="font-medium text-gray-900"> John Clapton </strong>
-				</div>
-			) : null}
-		</label>
-	);
-}
-
-export function RadioGroup({label, options, name, required}) {
-	return (
-		<div className="mb-4">
-			<label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-				{label}
-				{required && <span className="text-red-500"> *</span>}
-			</label>
-			<div className="mt-2">
-				{options.map((option) => (
-					<div key={option.value}
-					     className="flex items-center mb-2">
-						<input
-							type="radio"
-							id={`${name}-${option.value}`}
-							name={name}
-							value={option.value}
-							className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-						/>
-						<label htmlFor={`${name}-${option.value}`}
-						       className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
-							{option.label}
-						</label>
-					</div>
-				))}
-			</div>
-		</div>
-	);
-};
+export default InputField

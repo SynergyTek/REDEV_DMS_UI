@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import Loader from "../src/components/Loader";
+import Loader from "../src/components/core/Loader";
 import {Story} from "@storybook/blocks"
 
 export default ({context}) => {
