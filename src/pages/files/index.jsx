@@ -2,7 +2,7 @@ import {InputField, Button, Table} from "~";
 import {faFileSearch, faFilterList} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 
 
-export default () => {
+export default function Index() {
 	return <div className={"flex flex-col justify-center items-center  gap-4 p-4"}>
 		<div className={"flex w-1/2 gap-4"}>
 			<InputField placeholder={"Search for any file ..."} />

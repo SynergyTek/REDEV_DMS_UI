@@ -3,7 +3,7 @@
     "paths": {
       "@/*": ["/src/*"],
       "~": ["/src/components"],
-      "icons/*": ["/node_modules/@awesome.me/kit-9b926a9ec0/icons/*"]
+      "~/*": ["/src/components/*"]
     }
   }
 }
