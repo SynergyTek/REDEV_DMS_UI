@@ -33,23 +33,23 @@ const Dashboard = () => {
             bgColor: "bg-red-500",
         },
     ])
-    const [Counts, SetCounts] = useState({})
+    // const [Counts, SetCounts] = useState({})
 
     useEffect(() => {
-        axios.get("/dms/query/DashboardCountDms?userId=").then((res) => {
+        axios.get("/dmsapi/dms/query/DashboardCountDms?userId=").then((res) => {
             console.log(res, " Table res");
             const tempCards = [...Cards]
             tempCards[0].number = res.data.totalDocument;
             tempCards[1].number = res.data.documentCountToday;
             tempCards[2].number = res.data.documentCountWeekly;
             tempCards[3].number = res.data.documentCountMonthly;
-            SetCounts(res);
+            // SetCounts(res);
             setCards(tempCards);
 
         }).catch((e) => {
             // setFetchedData(null);
 
-            console.log(e, " error Table");
+            console.log(e, " error Admin dashboard");
         });
     }, [])
 
@@ -99,7 +99,7 @@ const Dashboard = () => {
                     },
                 ]}
 
-                data={{ source: "/dms/query/ReadUserDocumentCountDMS?userId=" }}
+                data={{ source: "/dmsapi/dms/query/ReadUserDocumentCountDMS?userId=" }}
 
                 primary
                 text="Button"
