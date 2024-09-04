@@ -1,6 +1,6 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-export function ContextMenu({ innerRef, options }) {
+function ContextMenu({ innerRef, options }) {
 	return (
 		<div
 			id="contextMenu"
@@ -42,3 +42,5 @@ export function ContextMenu({ innerRef, options }) {
 		</div>
 	);
 }
+
+export default ContextMenu
