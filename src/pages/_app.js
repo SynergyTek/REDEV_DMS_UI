@@ -1,5 +1,5 @@
 import RootLayout from '/src/layouts/layout';
-import '/src/styles/global.css';
+import '/public/styles/global.scss';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
 

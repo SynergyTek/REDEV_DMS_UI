@@ -23,7 +23,7 @@ const Sidebar = () => {
 	return (
 		<aside
 			className="fixed left-0 z-30 w-72 p-2 h-screen transition-transform -translate-x-full sm:translate-x-0">
-			<div className={'border-opacity-50 border-secondary-200 rounded-lg h-full bg-secondary-50 dark:bg-secondary-700 dark:bg-opacity-35 dark:text-white bg-opacity-95'}>
+			<div className={'border-opacity-50 border-secondary-200 rounded-lg h-full bg-secondary-50 dark:bg-secondary-900 dark:text-primary-900 '}>
 				<div className={"h-20 px-2 pb-2 flex items-center gap-3"}>
 					<Image src="/images/dms.png"
 					       alt="Description of image"

@@ -6,7 +6,7 @@ import ThemeToggle from '/src/components/theme';
 
 const Navbar = () => {
     return (
-        <div className="fixed w-full z-20 bg-white dark:bg-black dark:text-gray-200 transition-colors duration-500 ease-out">
+        <div className="fixed w-full z-20 bg-primary-100 dark:bg-secondary-950 dark:text-gray-200 transition-colors duration-500 ease-out">
             <div className={"md:ml-72 px-7 h-20 flex items-center justify-between"}>
                 <h1 className={'text-2xl font-semibold text-gray-900 dark:text-white opacity-90 sm:text-2xl sm:tracking-tight'}>Document Management System</h1>
                 <div className={'flex items-center gap-4'}>

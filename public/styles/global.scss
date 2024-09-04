@@ -17,7 +17,7 @@ body {
   Droid Sans,
   Helvetica Neue,
   sans-serif;
-  @apply p-0 m-0 bg-white dark:bg-black;
+  @apply p-0 m-0 bg-primary-50 dark:bg-secondary-950;
   @apply transition-colors duration-500 ease-out;
 }
 
@@ -41,4 +41,12 @@ h1,h2,h3,h4,h5,h6{
 }
 p{
   @apply text-cyan-900 text-opacity-85
+}
+
+svg {
+  background: transparent !important;
+}
+
+.dark .apexcharts-legend-text {
+  color: #fff !important;
 }

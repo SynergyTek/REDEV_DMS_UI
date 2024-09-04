@@ -1,4 +1,4 @@
-import "../public/styles/main.scss";
+import "../public/styles/storybook.scss";
 import {dark, light} from "./theme";
 import {addons} from "@storybook/preview-api";
 import {ensure} from "@storybook/theming"
