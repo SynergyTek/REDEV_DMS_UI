@@ -1,4 +1,4 @@
-import {InputField, Button, Table} from "~";
+import {Button, InputField, Table} from "~";
 import {faFileSearch, faFilterList} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 
 
