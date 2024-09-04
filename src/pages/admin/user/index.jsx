@@ -1,5 +1,5 @@
 
-import { Table, Button} from "../../../components/core/";
+import { Table, Button} from "../../../components/";
 
 const User = () => {
     return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Head from "next/head";
-import { Table, Button} from "../../../components/core/";
+import { Table, Button} from "../../../components/";
 
 
 export default () => {

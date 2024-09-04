@@ -3,7 +3,7 @@ import Head from "next/head";
 import axios from "axios";
 import { FaFileAlt, FaCalendarDay, FaCalendarWeek, FaCalendarAlt } from 'react-icons/fa';
 
-import { Table} from "../../../components/core/";
+import { Table} from "../../../components/";
 
 const Dashboard = () => {
 
@@ -36,7 +36,7 @@ const Dashboard = () => {
     const [Counts, SetCounts] = useState({})
 
     useEffect(() => {
-        axios.get("https://localhost:44325/dms/query/DashboardCountDms?userId=").then((res) => {
+        axios.get("/dms/query/DashboardCountDms?userId=").then((res) => {
             console.log(res, " Table res");
             const tempCards = [...Cards]
             tempCards[0].number = res.data.totalDocument;
@@ -47,7 +47,7 @@ const Dashboard = () => {
             setCards(tempCards);
 
         }).catch((e) => {
-            setFetchedData(null);
+            // setFetchedData(null);
 
             console.log(e, " error Table");
         });
@@ -99,7 +99,7 @@ const Dashboard = () => {
                     },
                 ]}
 
-                data={{ source: "https://localhost:44325/dms/query/ReadUserDocumentCountDMS?userId=" }}
+                data={{ source: "/dms/query/ReadUserDocumentCountDMS?userId=" }}
 
                 primary
                 text="Button"
