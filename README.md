@@ -31,6 +31,7 @@ This is a Next.js project with Storybook integration and various addons.
 1. Clone the repository:
    ```sh
    git clone <repository-url>
+   cd REDEV_DMS_UI
    ```
 2. Create a file named `.env.local` in the root directory of the project and add the following environment variables:
    ```sh
