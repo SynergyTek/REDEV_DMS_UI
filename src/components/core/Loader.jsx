@@ -1,4 +1,4 @@
-export default function Loader(){
+function Loader(){
 	return (
 		
 		
@@ -19,3 +19,5 @@ export default function Loader(){
 	
 	)
 }
+
+export default Loader

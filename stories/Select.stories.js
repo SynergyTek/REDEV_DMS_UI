@@ -1,5 +1,5 @@
-import {Button} from '/src/components/Button';
-import {Select} from "/src/components/Select";
+import {Button} from '/src/components/core/Button';
+import {Select} from "/src/components/core/Select";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {

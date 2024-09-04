@@ -1,5 +1,5 @@
-import {Button} from '/src/components/Button';
-import Table from "/src/components/Table";
+import {Button} from '/src/components/core/Button';
+import Table from "/src/components/core/Table";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {

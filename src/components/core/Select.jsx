@@ -1,20 +1,18 @@
-import {InputField} from "./Form";
-import {Button} from "./Button";
+import {InputField, Button, Loader} from "~";
 import React from "react";
-import Loader from "./Loader";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-export function Select({
-	                       name,
-	                       id,
-	                       load,
-	                       parameter,
-	                       search = true,
-	                       options,
-	                       onChange,
-	                       onSelect,
-                       }) {
+function Select({
+	                name,
+	                id,
+	                load,
+	                parameter,
+	                search = true,
+	                options,
+	                onChange,
+	                onSelect,
+                }) {
 	const [data, setData] = React.useState(null);
 	const [selected, setSelected] = React.useState("Select");
 	const [loading, isLoading] = React.useState(true);
@@ -178,3 +176,4 @@ Select.defaultProps = {
 		value: "value",
 	}
 };
+export default Select

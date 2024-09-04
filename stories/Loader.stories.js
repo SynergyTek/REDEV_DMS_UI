@@ -1,5 +1,4 @@
-import {Button} from '/src/components/Button';
-import Loader from "/src/components/Loader";
+import Loader from "~";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {

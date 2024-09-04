@@ -9,12 +9,8 @@ import {
 	faPencil,
 } from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 import {useEffect, useRef, useState} from "react";
-import Loader from "./Loader";
 import axios from "axios";
-import {CheckBox, InputField} from "./Form";
-import {Button} from "./Button";
-import {Select} from "./Select";
-
+import {CheckBox, InputField, Button, Select, Loader} from "~";
 export default function Table({
 	                              data, columns, pageLimit = 10, actions = [{
 		label: "Add here", icon: faPencil, onClick: () => {
@@ -219,31 +215,31 @@ export default function Table({
 			             options={actions}></ContextMenu>
 			<div className="overflow-x-auto shadow-md ">
 				
-				<div
-					className={"p-4 bg-primary-300 shadow-md border-l-4 text-primary-100 dark:bg-primary-950 dark:text-primary-300"}
-				>
-					{selection ? (
-						
-						<Button
-							icon={faClose}
-							onClick={() => {
-								setSelection(false);
-							}}
-						></Button>) : null}
-					{columns.length > 0 ? < >
-						<InputField
-							type="text"
-							placeholder="Search Here"
-							required={false}
-							id="Search-filter"
-							onChange={onChange}
-						/>
-						<Select
-							options={colFilter}
-							onSelect={onSelect}
-						/>
-					</> : null}
-				</div>
+				{/*<div*/}
+				{/*	className={"p-4 bg-primary-300 shadow-md border-l-4 text-primary-100 dark:bg-primary-950 dark:text-primary-300"}*/}
+				{/*>*/}
+				{/*	{selection ? (*/}
+				{/*		*/}
+				{/*		<Button*/}
+				{/*			icon={faClose}*/}
+				{/*			onClick={() => {*/}
+				{/*				setSelection(false);*/}
+				{/*			}}*/}
+				{/*		></Button>) : null}*/}
+				{/*	{columns.length > 0 ? < >*/}
+				{/*		<InputField*/}
+				{/*			type="text"*/}
+				{/*			placeholder="Search Here"*/}
+				{/*			required={false}*/}
+				{/*			id="Search-filter"*/}
+				{/*			onChange={onChange}*/}
+				{/*		/>*/}
+				{/*		<Select*/}
+				{/*			options={colFilter}*/}
+				{/*			onSelect={onSelect}*/}
+				{/*		/>*/}
+				{/*	</> : null}*/}
+				{/*</div>*/}
 			</div>
 			<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 				<thead className="text-xs text-primary-900 uppercase bg-primary-200 dark:bg-primary-950 dark:bg-opacity-50 dark:text-primary-50">
