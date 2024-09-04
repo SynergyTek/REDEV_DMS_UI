@@ -1,4 +1,4 @@
-import { Button } from "~/Button";
+import {Button} from "~/Button";
 import Table from "~/Table";
 
 export default function index() {

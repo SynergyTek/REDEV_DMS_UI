@@ -1,11 +1,14 @@
-import {ContextMenu} from "./ContextMenu";
+import {CheckBox, ContextMenu, Loader} from "~";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-	faAngleDoubleLeft, faAngleDoubleRight, faChevronLeft, faChevronRight, faClose, faPencil,
+	faAngleDoubleLeft,
+	faAngleDoubleRight,
+	faChevronLeft,
+	faChevronRight,
+	faPencil,
 } from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import {CheckBox, InputField, Button, Select, Loader} from "~";
 
 function Table({
 	               data = {
@@ -159,7 +162,6 @@ function Table({
 					newFilteredData.push(allItem)
 				}
 			} else {
-				
 				const tempData = []
 				colFilter.data.forEach(item => {
 					if (allItem[item.value].toLowerCase().includes(inputText.toString().toLowerCase())) {

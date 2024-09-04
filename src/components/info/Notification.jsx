@@ -1,5 +1,6 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckCircle, faExclamationTriangle, faInfoCircle} from "@awesome.me/kit-9b926a9ec0/icons/classic/light";
+
 export const iconTypeMap = {
 	success: faCheckCircle,
 	danger: faExclamationTriangle,
