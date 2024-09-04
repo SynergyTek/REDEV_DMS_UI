@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import Head from "next/head";
 import axios from "axios";
 import { FaFileAlt, FaCalendarDay, FaCalendarWeek, FaCalendarAlt } from 'react-icons/fa';
-import { Button } from '../../../components/Button';
-import Table from '../../../components/Table';
+
+import { Table} from "../../../components/core/";
 
 const Dashboard = () => {
 
