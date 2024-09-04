@@ -1,6 +1,5 @@
-
-import { Button } from '/src/components/core/Button';
-import Table  from '/src/components/core/Table';
+import {Button} from '/src/components/core/Button';
+import Table from '/src/components/core/Table';
 
 const Workspace = () => {
     return (

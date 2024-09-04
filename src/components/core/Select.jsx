@@ -1,15 +1,12 @@
-import {InputField, Button, Loader} from "~";
+import {Button, InputField, Loader} from "~";
 import React from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
 function Select({
-	                name,
-	                id,
 	                load,
 	                parameter,
 	                search = true,
-	                onChange,
 	                onSelect,
 	                options = {
 		                data: [

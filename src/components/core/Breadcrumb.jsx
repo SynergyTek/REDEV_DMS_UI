@@ -1,9 +1,12 @@
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronRight, faHome,} from "@fortawesome/free-solid-svg-icons";
+import {faChevronRight, faHome} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 import {useEffect, useMemo, useState} from "react";
-import {toTitle} from "../utility";
+
+function toTitle(str){
+    return str.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+}
 
 const _defaultGetTextGenerator = (param, query) => null;
 const _defaultGetDefaultTextGenerator = (path) => toTitle(path);
