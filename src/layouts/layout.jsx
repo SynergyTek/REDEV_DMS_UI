@@ -7,7 +7,7 @@ export default function RootLayout({ children }) {
         <>
             <Head>
                 <title>Document Management System</title>
-                <link rel={'icon'} href={'/favicon.ico'} />
+                <link rel={'icon'} href={'@../public/favicon.ico'} />
             </Head>
             <Sidebar />
             <Navbar />
