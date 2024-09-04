@@ -1,38 +1,28 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-// import InputField from "~/components/Form"
-// import Head from "next/head";
 
-// Dynamically import the Chart component to avoid SSR issues with ApexCharts
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-export default function Home() {
+export default function PieChartComponent() {
   const [options, setOptions] = useState({
-    chart: {
-      id: "basic-bar",
-    },
-    xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
-    },
+    labels: [
+      "General Document",
+      "Engineering Subcontract",
+      "Flowline Project Document",
+      "Vendor Documents",
+    ],
+    colors: ["#ffb1b7", "#775da6", "#70b6c1", "#d1c297"],
   });
-
-  const [series, setSeries] = useState([
-    {
-      name: "series-1",
-      data: [30, 40, 45, 50, 49, 60, 70, 91, 99],
-    },
-  ]);
+  const [series, setSeries] = useState([44, 55, 43, 13]);
 
   return (
-      <div className="app">
-          {/*<InputField*/}
-          {/*    id="id1"*/}
-          {/*    label="Input"*/}
-          {/*    onClick={() => {}}*/}
-          {/*    primary*/}
-          {/*    required*/}
-          {/*/>*/}
-          <Chart options={options} series={series} type="bar" width="500" />
+      <div className="p-4">
+        <div className="bg-gray-50 dark:bg-gray-700 dark:bg-opacity-35 dark:text-white w-6/12 rounded-xl p-4">
+          <p className="text-lg font-semibold text-gray-900 dark:text-white opacity-90 sm:tracking-tight">
+            Document Types
+          </p>
+          <Chart options={options} series={series} type="donut" />
+        </div>
       </div>
   );
 }
