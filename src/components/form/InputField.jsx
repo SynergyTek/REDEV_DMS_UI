@@ -1,5 +1,5 @@
 import {useRef, useState} from "react";
-import {Button} from "..";
+import {Button} from "~";
 
 function InputField({
 	                    id,
