@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMoonStars, faSunBright} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 
-export default function ThemeToggle() {
+export default function ThemeToggle({setGlobalTheme}) {
     const [theme, setTheme] = useState(null);
 
     useEffect(() => {
@@ -28,6 +28,7 @@ export default function ThemeToggle() {
             document.documentElement.classList.remove('dark');
             localStorage.setItem('theme', 'light');
         }
+        setGlobalTheme(theme);
     }, [theme]);
 
     const toggleTheme = () => {

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronRight, faHome,} from "@fortawesome/free-solid-svg-icons";
+import {faChevronRight, faHome} from "@fortawesome/free-solid-svg-icons";
 import {useEffect, useMemo, useState} from "react";
 import {toTitle} from "../utility";
 

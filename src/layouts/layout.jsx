@@ -1,8 +1,10 @@
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 import Head from "next/head";
+import React, {useState} from "react";
 
 export default function RootLayout({ children }) {
+    const [theme, setTheme] = useState(null);
     return (
         <>
             <Head>
@@ -10,9 +12,9 @@ export default function RootLayout({ children }) {
                 <link rel={'icon'} href={'@../public/favicon.ico'} />
             </Head>
             <Sidebar />
-            <Navbar />
+            <Navbar setTheme={setTheme} />
             <div className={"ml-72 pt-24 px-7"}>
-                {children}
+                {React.createElement(children.type, {theme})}
             </div>
         </>
     );
