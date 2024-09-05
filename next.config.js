@@ -9,7 +9,7 @@ module.exports = {
 		return [
 			{
 				source: '/dmsapi/:path*',
-				destination: 'https://localhost:44325/:path*',
+				destination: 'https://demodms.aitalkx.com/webapi/:path*',
 			}
 		];
 	},

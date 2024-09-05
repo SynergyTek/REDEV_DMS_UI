@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBell} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 import ThemeToggle from '/src/components/theme';
 
-const Navbar = () => {
+const Navbar = ({setTheme}) => {
     return (
         <div className="fixed w-full z-20 bg-white dark:bg-secondary-950 dark:text-gray-200 transition-colors duration-500 ease-out">
             <div className={"md:ml-72 px-7 h-20 flex items-center justify-between"}>
@@ -32,7 +32,7 @@ const Navbar = () => {
                     </button>
                     <p className={'font-semibold text-gray-700 dark:text-gray-200'}>Arnav Kumar</p>
                     <Link href='/public' className={'text-gray-700 dark:text-gray-300 ml-7 hidden md:block'}><FontAwesomeIcon icon={faBell}/></Link>
-                    <ThemeToggle />
+                    <ThemeToggle setGlobalTheme={setTheme} />
                 </div>
             </div>
             <div className={'md:ml-72'}>

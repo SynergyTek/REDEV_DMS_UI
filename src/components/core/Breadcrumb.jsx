@@ -27,7 +27,7 @@ function Crumb({
                }) {
 	// All crumbs will be rendered as links that can be visited
 	const [text, setText] = useState(defaultText);
-	
+
 	useEffect(() => {
 		// If `textGenerator` is nonexistent, then don't do anything
 		if (!Boolean(textGenerator)) {
@@ -40,7 +40,7 @@ function Crumb({
 	}, [textGenerator]);
 	const handleClick = (e) => {
 		if (typeof onClick === "function") {
-			
+
 			onClick({text, icon, href})
 		}
 	}
@@ -72,8 +72,8 @@ function Crumb({
 				{icon ? <FontAwesomeIcon icon={icon}
 				                         size={"sm"} /> : <Text text={text} />}
 			</span>
-			
-			
+
+
 			{last ? null : (
 				<FontAwesomeIcon icon={faChevronRight}
 				                 className={"xs"} />
@@ -87,16 +87,16 @@ function Breadcrumb({path = [], onClick}) {
 	const breadcrumbs = useMemo(() => {
 		const asPathNestedRoutes = generatePathParts(router.asPath);
 		const pathnameNestedRoutes = generatePathParts(router.pathname);
-		
+
 		// Iterate over the list of nested route parts and build
 		// a "crumb" object for each one.
-		
-		
+
+
 		// const crumblist = asPathNestedRoutes.map((subpath, idx) => {
 		// 	// We can get the partial nested route for the crumb
 		// 	// by joining together the path parts up to this point.
 		// 	const href = "/" + asPathNestedRoutes.slice(0, idx + 1).join("/");
-		//	
+		//
 		// 	const param = pathnameNestedRoutes[idx].replace("[", "").replace("]", "");
 		// 	// The title will just be the route string for now
 		// 	const text = subpath;
@@ -107,7 +107,7 @@ function Breadcrumb({path = [], onClick}) {
 		// 		text: getDefaultTextGenerator(subpath, href),
 		// 	};
 		// });
-		
+
 		// Add in a default "Home" crumb for the top-level
 		const crumbList = []
 		if (path.length === 0) {
@@ -121,7 +121,7 @@ function Breadcrumb({path = [], onClick}) {
 			})
 		})
 		return crumbList;
-		
+
 	}, [
 		// router.asPath,
 		// router.pathname,
@@ -130,7 +130,7 @@ function Breadcrumb({path = [], onClick}) {
 		// getDefaultTextGenerator,
 		path
 	]);
-	
+
 	return (
 		<nav className="flex p-4"
 		     aria-label="Breadcrumb">
