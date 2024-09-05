@@ -31,16 +31,31 @@ export const Secondary = {
 	},
 };
 
+export const Tiny = {
+	args: {
+		primary: true,
+		size: 'xs',
+		text: 'Button',
+	},
+};export const Small = {
+	args: {
+		primary: true,
+		size: 'sm',
+		text: 'Button',
+	},
+};
 export const Large = {
 	args: {
-		size: 'large',
+		primary: true,
+		size: 'md',
+		text: 'Button',
+	},
+};
+export const Huge = {
+	args: {
+		primary: true,
+		size: 'lg',
 		text: 'Button',
 	},
 };
 
-export const Small = {
-	args: {
-		size: 'small',
-		text: 'Button',
-	},
-};

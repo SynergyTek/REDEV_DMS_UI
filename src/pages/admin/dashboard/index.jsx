@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import Head from "next/head";
 import axios from "axios";
-import { FaFileAlt, FaCalendarDay, FaCalendarWeek, FaCalendarAlt } from 'react-icons/fa';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faFileAlt, faCalendarDay, faCalendarWeek, faCalendarAlt } from '@awesome.me/kit-9b926a9ec0/icons/classic/regular';
 
 import { Table} from "../../../components/";
 
@@ -9,25 +10,25 @@ const Dashboard = () => {
 
     const [Cards, setCards] = useState([
         {
-            icon: <FaFileAlt  />,
+            icon: faFileAlt,
             number: "",
             title: "Total Documents",
             bgColor: "bg-blue-500",
         },
         {
-            icon: <FaCalendarDay  />,
+            icon: faCalendarDay,
             number: "",
             title: "Created Today",
             bgColor: "bg-green-500",
         },
         {
-            icon: <FaCalendarWeek  />,
+            icon: faCalendarWeek,
             number: "",
             title: "Created Weekly",
             bgColor: "bg-yellow-500",
         },
         {
-            icon: <FaCalendarAlt  />,
+            icon: faCalendarAlt,
             number: "",
             title: "Created Monthly",
             bgColor: "bg-red-500",
@@ -74,7 +75,7 @@ const Dashboard = () => {
                     <div key={index} className="w-full md:w-1/2 lg:w-1/4 p-4">
                         <div className={`flex items-center p-6 rounded-lg shadow-md ${card.bgColor}`}>
                             <div className="p-3 mr-4 rounded-full bg-white">
-                                {card.icon}
+                                <FontAwesomeIcon icon={card.icon} size={"1x"}/>
                             </div>
                             <div>
                                 <p className="text-2xl font-bold text-white">{card.number}</p>
