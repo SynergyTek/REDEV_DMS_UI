@@ -8,7 +8,7 @@ import Loader from './core/Loader';
 import Select from './core/Select';
 import Table from './core/Table';
 import Text from './core/Text';
-
+import Separator from "./core/Separator";
 // Data Modules
 import FileExplorer from "./data/FileExplorer";
 import Pagination from "./data/Pagination";
@@ -17,7 +17,7 @@ import Toolbar from "./data/Toolbar";
 import CheckBox from './form/CheckBox';
 import InputField from './form/InputField';
 import RadioGroup from './form/RadioGroup';
-
+import Slider from './form/Slider'; 
 // Info Modules
 import Notification from './info/Notification';
 import Alert from './info/Alert';
@@ -43,5 +43,7 @@ export {
 	Select,
 	Table,
 	Text,
-	Toolbar
+	Toolbar,
+	Separator,
+	Slider
 }

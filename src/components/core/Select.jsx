@@ -1,46 +1,51 @@
-import { Button, InputField, Loader } from "~";
-import React from "react";
+import {Button, InputField, Loader} from "~";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import {faClose, faFilter} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 
 function Select({
-	load,
-	parameter,
-	search = true,
-	onSelect,
-	options = {
-		data: [
-			{ name: "Option 1", value: 1 },
-			{ name: "Option 2", value: 2 },
-			{ name: "Option 3", value: 3 },
-			{ name: "Option 4", value: 4 },
-			{ name: "Option 5", value: 5 },
-		],
-		display: "name",
-		value: "value",
-	},
-	primary = false,
-}) {
-	const [data, setData] = React.useState(null);
-	const [selected, setSelected] = React.useState("Select");
-	const [loading, isLoading] = React.useState(true);
-	const [isOpen, setIsOpen] = React.useState(false);
-	const selectRef = React.useRef();
-	React.useEffect(() => {
+	                load,
+	                parameter,
+	                onSelect,
+	                source = null,
+	                id = "id",
+	                value = "value",
+	                primary = false,
+                }) {
+	const [data, setData] = useState(null);
+	const [selected, setSelected] = useState(null);
+	const [selectedValue, setSelectedValue] = useState(null);
+	const [loading, isLoading] = useState(true);
+	const [isOpen, setIsOpen] = useState(false);
+	const selectRef = useRef();
+	useEffect(() => {
 		window.addEventListener("click", (event) => {
-			if (selectRef.current && !selectRef.current.contains(event.target)) {
-				setIsOpen(false);
+			const func = (event) => {
+				if (selectRef.current && !selectRef.current.contains(event.target)) {
+					setIsOpen(false);
+				}
+			}
+			window.addEventListener("click", func);
+			return () => {
+				window.removeEventListener("click", func);
 			}
 		});
-		window.addEventListener("blur", (event) => {
-			setIsOpen(false);
-		});
 	}, []);
-	React.useEffect(() => {
+	useEffect(() => {
+		const func = (event) => {
+			setIsOpen(false);
+		}
+		window.addEventListener("blur", func);
+		return () => {
+			window.removeEventListener("blur", func);
+		}
+	}, []);
+	useEffect(() => {
 		switch (load) {
 			case "LOV":
 				axios
-					.get(`/forms/GetLOVIdNameList?lovType=${parameter}`)
+					.get(`/dmsapi/cms/query/GetLOVIdNameList?lovType=${parameter}`)
 					.then((res) => {
 						console.log(res);
 						options.data = res.data;
@@ -48,40 +53,36 @@ function Select({
 				break;
 			case "Enum":
 				axios
-					.get(`/forms/GetEnumIdNameList?enumType=${parameter}`)
+					.get(`/dmsapi/cms/query/GetEnumIdNameList?enumType=${parameter}`)
 					.then((res) => {
 						console.log(res);
 						options.data = res.data;
 					});
 				break;
-		}
-		if (Array.isArray(options.data)) {
-			setData(options.data);
-			isLoading(false);
-		} else if (typeof options.source === "string") {
-			fetch(options.source)
-				.then((res) => res.json())
-				.then((res) => {
-					setData(
-						res.sort((a, b) => {
-							return a[options["display"]] > b[options["display"]];
-						})
-					);
-					isLoading(false);
-				})
-				.catch((e) => {
-					console.log(e);
-					isLoading(false);
+			case "Table":
+				axios.get(`/dmsapi/cms/query/TableData?tableName=cms.${parameter}`).then((res) => {
+					console.log(res);
+					options.data = res.data;
 				});
+				break;
 		}
-	}, [options]);
-	React.useEffect(() => {
-		onSelect && onSelect(selected);
+		if (!source) return
+		if (Array.isArray(source)) {
+			console.log(source)
+			setData(source);
+			isLoading(false);
+		}
+	}, [source]);
+	useEffect(() => {
+		if (!data) return
+		let v = data.find((d) => d[id] == selected);
+		if (!v) return
+		setSelectedValue(v[value]);
 	}, [selected]);
 	const filterData = async (value) => {
 		isLoading(true);
-		let filteredData = data.filter((d) => {
-			return Object.values(d).includes(value);
+		let filteredData = source.filter((d) => {
+			return Object.values(d).join().toLowerCase().includes(value.toLowerCase());
 		});
 		setData(filteredData);
 		isLoading(false);
@@ -91,21 +92,24 @@ function Select({
 			className={`relative group min-w-36 ${isOpen ? "active" : null}`}
 			ref={selectRef}
 		>
-			<Button
-				type={"dropdown"}
-				text={selected.display}
-				className={"w-full"}
-				onClick={() => setIsOpen(!isOpen)}
-			/>
+			<div className={"w-54"}>
+				<InputField placeholder={"Search"}
+				            onChange={filterData}
+				            className={`w-full  ${!isOpen && "hidden"}`}
+				></InputField>
+				<Button
+					type={"dropdown"}
+					text={selected ? selectedValue : "Select"}
+					className={`w-full  ${isOpen && "hidden"}`}
+					onClick={() => setIsOpen(true)}
+				/>
+			</div>
 			<div
-				className={`${isOpen ? "flex" : "hidden"}  border-2 border-primary-950 top-full my-2 animate-slide z-50 absolute flex-col text-primary-100 bg-secondary-950 group-hover:shadow-primary-800 shadow-md shadow-primary-950 w-full rounded-md p-4 bg-clip-border transition-all`}
+				className={`${isOpen ? "flex" : "hidden"}  border-2 border-primary-950 top-full my-2 animate-slide z-[9999] absolute flex-col text-primary-100 bg-secondary-950 group-hover:shadow-primary-800 shadow-md shadow-primary-950 w-full rounded-md p-4 bg-clip-border transition-all`}
 			>
-				{search ? (
-					<InputField placeholder={"Search"} onChange={filterData}></InputField>
-				) : null}
 				<ul
 					className={
-						"flex  max-h-64 overflow-y-auto flex-col mt-2 font-sans text-base font-normal text-blue-gray-700"
+						"flex  max-h-64 overflow-y-auto flex-col text-base font-normal text-blue-gray-700"
 					}
 				>
 					{loading ? (
@@ -116,20 +120,17 @@ function Select({
 						data.map((option) => {
 							return (
 								<li
-									id={option[options.value]}
+									id={option[id]}
 									role={"button"}
 									className={
 										"flex items-center w-full p-2 leading-tight transition-all rounded outline-none text-start hover:bg-primary-500 hover:bg-opacity-40 hover:text-primary-100 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
 									}
 									onClick={(event) => {
-										setSelected({
-											display: event.target.textContent,
-											value: event.target.id,
-										});
+										setSelected(event.target.id);
 										setIsOpen(false);
 									}}
 								>
-									{option[options.display]}
+									{option[value]}
 								</li>
 							);
 						})

@@ -12,9 +12,15 @@ export default {
 };
 
 // More on writing src with args: https://storybook.js.org/docs/writing-stories/args
-export const Data = {
+export const Primary = {
   args: {
     primary: true,
-    text: 'Button',
+    text: 'Select',
+    source:[
+      {id: 1, value: 'One'},
+      {id: 2, value: 'Two'},
+      {id: 3, value: 'Three'},
+      {id: 4, value: 'Four'},
+    ],
   },
 };
