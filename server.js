@@ -10,7 +10,7 @@ app.prepare().then(() => {
   const server = express();
 
   server.use('/dmsapi', createProxyMiddleware({
-    target: 'https://localhost:44325',
+    target: 'https://demodms.aitalkx.com/webapi',
     changeOrigin: true,
     secure: false,
   }));
