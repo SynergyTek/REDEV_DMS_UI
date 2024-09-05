@@ -1,29 +1,26 @@
-import {InputField, Button, Loader} from "~";
+import { Button, InputField, Loader } from "~";
 import React from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
 function Select({
-	                name,
-	                id,
-	                load,
-	                parameter,
-	                search = true,
-	                onChange,
-	                onSelect,
-	                options = {
-		                data: [
-			                {name: "Option 1", value: 1},
-			                {name: "Option 2", value: 2},
-			                {name: "Option 3", value: 3},
-			                {name: "Option 4", value: 4},
-			                {name: "Option 5", value: 5},
-		                ],
-		                display: "name",
-		                value: "value",
-	                },
-	                primary = false,
-                }) {
+	load,
+	parameter,
+	search = true,
+	onSelect,
+	options = {
+		data: [
+			{ name: "Option 1", value: 1 },
+			{ name: "Option 2", value: 2 },
+			{ name: "Option 3", value: 3 },
+			{ name: "Option 4", value: 4 },
+			{ name: "Option 5", value: 5 },
+		],
+		display: "name",
+		value: "value",
+	},
+	primary = false,
+}) {
 	const [data, setData] = React.useState(null);
 	const [selected, setSelected] = React.useState("Select");
 	const [loading, isLoading] = React.useState(true);
@@ -68,7 +65,7 @@ function Select({
 					setData(
 						res.sort((a, b) => {
 							return a[options["display"]] > b[options["display"]];
-						}),
+						})
 					);
 					isLoading(false);
 				})
@@ -104,8 +101,7 @@ function Select({
 				className={`${isOpen ? "flex" : "hidden"}  border-2 border-primary-950 top-full my-2 animate-slide z-50 absolute flex-col text-primary-100 bg-secondary-950 group-hover:shadow-primary-800 shadow-md shadow-primary-950 w-full rounded-md p-4 bg-clip-border transition-all`}
 			>
 				{search ? (
-					<InputField placeholder={"Search"}
-					            onChange={filterData}></InputField>
+					<InputField placeholder={"Search"} onChange={filterData}></InputField>
 				) : null}
 				<ul
 					className={
@@ -146,28 +142,12 @@ function Select({
 	);
 }
 
-
 Select.propTypes = {
-	/**
-	 * Is this the principal call to action on the page?
-	 */
+	load: PropTypes.oneOf(["LOV", "Enum", "Data"]),
+	parameter: PropTypes.string,
+	search: PropTypes.bool,
+	onSelect: PropTypes.func,
+	options: PropTypes.object,
 	primary: PropTypes.bool,
-	/**
-	 * What background color to use
-	 */
-	backgroundColor: PropTypes.string,
-	/**
-	 * How large should the button be?
-	 */
-	size: PropTypes.oneOf(['small', 'medium', 'large']),
-	/**
-	 * Button contents
-	 */
-	label: PropTypes.string.isRequired,
-	/**
-	 * Optional click handler
-	 */
-	onClick: PropTypes.func,
 };
-
-export default Select
+export default Select;

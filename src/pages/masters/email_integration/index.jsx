@@ -1,19 +1,14 @@
-import { Button } from "~/Button";
-import Table from "~/Table";
+import { Button, Table } from "~";
+import Link from "next/link";
 
 export default function index() {
 	return (
 		<div>
 			<div className="text-white text-2xl mb-6">Email Integration</div>
 			<div>
-				<Button
-					className="mb-3"
-					onClick={() => {
-						alert("To be Added...");
-					}}
-					primary
-					text="Create"
-				/>
+				<Link href="/masters/email_integration/manage_email">
+					<Button className="mb-3" primary text="Create" />
+				</Link>
 
 				<Table
 					actions={[

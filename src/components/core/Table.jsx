@@ -1,11 +1,14 @@
-import {ContextMenu} from "./ContextMenu";
+import {CheckBox, ContextMenu, Loader, Pagination} from "~";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-	faAngleDoubleLeft, faAngleDoubleRight, faChevronLeft, faChevronRight, faClose, faPencil,
+	faAngleDoubleLeft,
+	faAngleDoubleRight,
+	faChevronLeft,
+	faChevronRight,
+	faPencil,
 } from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import {CheckBox, InputField, Button, Select, Loader} from "~";
 
 function Table({
 	               data = {
@@ -159,7 +162,6 @@ function Table({
 					newFilteredData.push(allItem)
 				}
 			} else {
-				
 				const tempData = []
 				colFilter.data.forEach(item => {
 					if (allItem[item.value].toLowerCase().includes(inputText.toString().toLowerCase())) {
@@ -312,79 +314,8 @@ function Table({
             </span>{" "}
 				out of <span className={"font-bold"}>{fetchedData.length}</span>
 			</p>
-			<ul className="flex items-center -space-x-px h-8 text-xs">
-				<li
-					role={"button"}
-					className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white rounded-s-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					onClick={() => {
-						setCurrentPage(1);
-					}}
-				>
-					<span className="sr-only">First</span>
-					<FontAwesomeIcon
-						className={"size-2.5"}
-						icon={faAngleDoubleLeft}
-					></FontAwesomeIcon>
-				</li>
-				<li
-					role={"button"}
-					className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					onClick={() => {
-						setCurrentPage(Math.max(1, currentPage - 1));
-					}}
-				>
-					<span className="sr-only">Previous</span>
-					<FontAwesomeIcon
-						icon={faChevronLeft}
-						className={"size-2.5"}
-					></FontAwesomeIcon>
-				</li>
-				
-				{Array.from({
-					length: Math.ceil(fetchedData.length / pageLimit),
-				}).map((page, index) => {
-					return (<li
-						role={"button"}
-						aria-current="page"
-						id={`page-${index + 1}`}
-						className={`${[currentPage - 1, currentPage, currentPage + 1].includes(index + 1) ? "flex" : "hidden"} items-center justify-center px-3 h-8 text-gray-500 leading-tight border 
-                  border-blue-300 bg-blue-50 hover:bg-blue-100 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700
-                  ${currentPage === index + 1 && "bg-indigo-400 text-white hover:bg-indigo-400 dark:bg-blue-100 dark:text-blue-700 dark:hover:bg-blue-100"}`}
-						onClick={() => {
-							setCurrentPage(index + 1);
-						}}
-					>
-						{index + 1}
-					</li>);
-				})}
-				
-				<li
-					role={"button"}
-					className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-					onClick={() => {
-						setCurrentPage(Math.min(Math.ceil(fetchedData.length / pageLimit), currentPage + 1,),);
-					}}
-				>
-					<span className="sr-only">Next</span>
-					<FontAwesomeIcon
-						className={"size-2.5"}
-						icon={faChevronRight}
-					></FontAwesomeIcon>
-				</li>
-				<li
-					role={"button"}
-					className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					onClick={() => {
-						setCurrentPage(Math.ceil(fetchedData.length / pageLimit));
-					}}
-				>
-					<span className="sr-only">Last</span>
-					<FontAwesomeIcon
-						className={"size-2.5"}
-						icon={faAngleDoubleRight}
-					></FontAwesomeIcon>
-				</li>
-			</ul>
+			{fetchedData.length ? (<Pagination pages={Math.ceil(fetchedData.length / pageLimit)} onChange={setCurrentPage} />) :
+				<Loader />}
 		</nav>) : null}
 	</div>)
 }
