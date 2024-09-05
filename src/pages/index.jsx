@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import dynamic from "next/dynamic";
 
 const Chart1 = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-export default function PieChartComponent(theme) {
+export default function Home(theme) {
     const options1 = {
         series: [44, 55, 13, 43],
         options: {
@@ -134,7 +134,6 @@ export default function PieChartComponent(theme) {
 
     useEffect(() => {
         console.log(theme);
-        for (var i=0; i<4; i++) {
             options1.options.theme.mode = theme.theme;
             options2.options.theme.mode = theme.theme;
             options3.options.theme.mode = theme.theme;
@@ -143,7 +142,6 @@ export default function PieChartComponent(theme) {
             setOptions2(options2);
             setOptions3(options3);
             setOptions4(options4);
-        }
     }, [theme]);
 
     return (
