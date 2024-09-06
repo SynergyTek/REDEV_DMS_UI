@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import dynamic from "next/dynamic";
+import {Button} from "~/ui/button";
 
 const Chart1 = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -146,6 +147,7 @@ export default function Home(theme) {
 
     return (
         <div className="p-4 grid lg:grid-cols-2 md:grid-cols-1 gap-4">
+            <Button>Hello</Button>
             <div className="bg-gray-50 dark:bg-gray-700 dark:bg-opacity-35 dark:text-white rounded-xl p-4">
                 <p className="text-lg font-semibold text-gray-900 dark:text-white opacity-90 sm:tracking-tight">
                     Document Types
