@@ -1,5 +1,5 @@
-import {CheckBox, ContextMenu, Loader, Pagination} from "~";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { CheckBox, ContextMenu, Loader, Pagination } from "~";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faAngleDoubleLeft,
 	faAngleDoubleRight,
@@ -7,24 +7,35 @@ import {
 	faChevronRight,
 	faPencil,
 } from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 function Table({
-	               data = {
-		               source: "https://jsonplaceholder.org/users"
-	               }, columns = [{
-		header: "First Name", field: "firstname"
-	}, {
-		header: "Last Name", field: "lastname"
-	}], pageLimit = 10, actions = [{
-		label: "Edit", icon: faPencil, onClick: () => {
-			console.log("Element edit");
-		},
+	data = {
+		source: "https://jsonplaceholder.org/users",
 	},
-	
-	], ...props
-               }) {
+	columns = [
+		{
+			header: "First Name",
+			field: "firstname",
+		},
+		{
+			header: "Last Name",
+			field: "lastname",
+		},
+	],
+	pageLimit = 10,
+	actions = [
+		{
+			label: "Edit",
+			icon: faPencil,
+			onClick: () => {
+				console.log("Element edit");
+			},
+		},
+	],
+	...props
+}) {
 	const [allData, setAllData] = useState([]);
 	const [fetchedData, setFetchedData] = useState(data);
 	const [fetchedColumns, setFetchedColumns] = useState(columns);
@@ -33,12 +44,15 @@ function Table({
 	const [currentPage, setCurrentPage] = useState(1);
 	const [selection, setSelection] = useState(false);
 	const [colFilter, selColFilter] = useState({
-		data: [], display: "display", value: "value"
+		data: [],
+		display: "display",
+		value: "value",
 	});
-	const [fInput, setFInput] = useState("")
+	const [fInput, setFInput] = useState("");
 	const [fSelect, SetFSelect] = useState({
-		display: "", value: ""
-	})
+		display: "",
+		value: "",
+	});
 	const contextMenu = useRef();
 	useEffect(() => {
 		document.addEventListener("click", (event) => {
@@ -71,40 +85,47 @@ function Table({
 			setLoading(false);
 		}
 		if (typeof data.source === "string") {
-			axios.get(data.source).then((res) => {
-				if (Array.isArray(res.data)) {
-					setFetchedData(res.data);
-					setAllData(res.data);
-					setLoading(false);
-				}
-			}).catch((e) => {
-				setFetchedData(null);
-				console.log(e);
-			});
-			
+			axios
+				.get(data.source)
+				.then((res) => {
+					if (Array.isArray(res.data)) {
+						setFetchedData(res.data);
+						setAllData(res.data);
+						setLoading(false);
+					}
+				})
+				.catch((e) => {
+					setFetchedData(null);
+					console.log(e);
+				});
+
 			if (columns.length > 0) {
 				const cols = columns.map((item) => {
 					const tempObj = {
-						display: item.header, value: item.field
-					}
-					return tempObj
-				})
-				const tempData = {...colFilter}
-				tempData.data = [...cols]
-				
+						display: item.header,
+						value: item.field,
+					};
+					return tempObj;
+				});
+				const tempData = { ...colFilter };
+				tempData.data = [...cols];
+
 				//console.log(tempData, "my cols")
 				selColFilter(tempData);
 			}
 		}
 	}, []);
-	
+
 	useEffect(() => {
 		if (Array.isArray(fetchedData)) {
-			let _data = [], lowerLimit = (currentPage - 1) * pageLimit,
-				upperLimit = Math.min(fetchedData.length, pageLimit + (currentPage - 1) * pageLimit,);
+			let _data = [],
+				lowerLimit = (currentPage - 1) * pageLimit,
+				upperLimit = Math.min(
+					fetchedData.length,
+					pageLimit + (currentPage - 1) * pageLimit
+				);
 			for (let i = lowerLimit; i < upperLimit; i++) {
 				if (fetchedData[i]) {
-					
 					_data.push(fetchedData[i]);
 				}
 			}
@@ -112,62 +133,72 @@ function Table({
 			setPageData(_data);
 		}
 	}, [fetchedData, currentPage]);
-	
+
 	function hideContextMenu() {
 		const menu = contextMenu.current;
 		if (menu) {
 			menu.classList.add("hidden");
 		}
 	}
-	
+
 	function showContextMenu() {
 		const menu = contextMenu.current;
 		if (menu) {
 			menu.classList.remove("hidden");
 		}
 	}
-	
+
 	function refresh(event) {
 		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);
 		}, 2000);
 	}
-	
+
 	const selectRow = (event) => {
 		setSelection(true);
 	};
 	const onSelect = (selectedVal) => {
 		SetFSelect(selectedVal);
-		handleFilter(fInput, selectedVal)
+		handleFilter(fInput, selectedVal);
 		// console.log(selectedVal, "value on select");
-	}
+	};
 	const onChange = (inputVal) => {
 		setFInput(inputVal);
-		handleFilter(inputVal, fSelect)
+		handleFilter(inputVal, fSelect);
 		// console.log(inputVal, "input from textField")
-	}
+	};
 	const handleFilter = (inputText, selectText) => {
 		if (!fetchedData.length > 0) {
-			return
+			return;
 		}
-		console.log(colFilter, " col data")
+		console.log(colFilter, " col data");
 		//console.log(allData, " all data", typeof allData)
 		const newFilteredData = [];
 		allData.forEach((allItem) => {
-			console.log(allItem, " my item")
+			console.log(allItem, " my item");
 			if (selectText.value) {
-				
-				if (allItem[selectText.value].toLowerCase().includes(inputText.toString().toLowerCase())) {
-					newFilteredData.push(allItem)
+				if (
+					allItem[selectText.value]
+						.toLowerCase()
+						.includes(inputText.toString().toLowerCase())
+				) {
+					newFilteredData.push(allItem);
 				}
 			} else {
-				const tempData = []
-				colFilter.data.forEach(item => {
-					if (allItem[item.value].toLowerCase().includes(inputText.toString().toLowerCase())) {
-						
-						console.log(allItem[item.value], " inside item ", inputText.toString().toLowerCase())
-						newFilteredData.push(allItem)
+				const tempData = [];
+				colFilter.data.forEach((item) => {
+					if (
+						allItem[item.value]
+							.toLowerCase()
+							.includes(inputText.toString().toLowerCase())
+					) {
+						console.log(
+							allItem[item.value],
+							" inside item ",
+							inputText.toString().toLowerCase()
+						);
+						newFilteredData.push(allItem);
 					}
 					//console.log(allItem[item.value], " fields" ,  inputText.toString().toLowerCase())
 					//return allItem[item.value].toLowerCase().includes(inputText.toString().toLowerCase())
@@ -175,20 +206,26 @@ function Table({
 				//console.log(tempData, " dynamic filter");
 				//return tempData
 			}
-		})
-		console.log(inputText, " input", selectText, " select", newFilteredData, " new f")
+		});
+		console.log(
+			inputText,
+			" input",
+			selectText,
+			" select",
+			newFilteredData,
+			" new f"
+		);
 		if (Array.isArray(newFilteredData)) {
-			
-			setFetchedData(newFilteredData)
+			setFetchedData(newFilteredData);
 		}
-	}
+	};
 	const handleContextMenu = (event) => {
 		event.preventDefault();
 		hideContextMenu();
 		const menu = contextMenu.current;
 		event.currentTarget.classList.add("active");
 		const offsetBox = event.currentTarget.offsetParent;
-		
+
 		menu.style.display = "block";
 		const menuWidth = menu.offsetWidth;
 		const menuHeight = menu.offsetHeight;
@@ -200,124 +237,154 @@ function Table({
 		if (posX + menuWidth > offsetBox.offsetLeft + offsetBox.clientWidth) {
 			posX = offsetBox.offsetLeft + offsetBox.clientWidth - menuWidth;
 		}
-		
+
 		// Check if the menu goes beyond the bottom edge of the window
 		if (posY + menuHeight > offsetBox.offsetTop + offsetBox.clientHeight) {
 			posY = offsetBox.offsetTop + offsetBox.clientHeight - menuHeight;
 		}
-		
+
 		menu.style.left = posX + "px";
 		menu.style.top = posY + "px";
 		menu.contextData = {
-			id: event.currentTarget.id, name: event.currentTarget.dataset.name,
+			id: event.currentTarget.id,
+			name: event.currentTarget.dataset.name,
 		};
 		showContextMenu();
 	};
-	return (<div
-		id={"table-wrapper"}
-		className={"rounded-md overflow-clip flex flex-col border-2 dark:border-primary-950"}
-	>
-		<ContextMenu innerRef={contextMenu}
-		             options={actions}></ContextMenu>
-		<div className="overflow-x-auto shadow-md ">
-			
-			{/*<div*/}
-			{/*	className={"p-4 bg-primary-300 shadow-md border-l-4 text-primary-100 dark:bg-primary-950 dark:text-primary-300"}*/}
-			{/*>*/}
-			{/*	{selection ? (*/}
-			{/*		*/}
-			{/*		<Button*/}
-			{/*			icon={faClose}*/}
-			{/*			onClick={() => {*/}
-			{/*				setSelection(false);*/}
-			{/*			}}*/}
-			{/*		></Button>) : null}*/}
-			{/*	{columns.length > 0 ? < >*/}
-			{/*		<InputField*/}
-			{/*			type="text"*/}
-			{/*			placeholder="Search Here"*/}
-			{/*			required={false}*/}
-			{/*			id="Search-filter"*/}
-			{/*			onChange={onChange}*/}
-			{/*		/>*/}
-			{/*		<Select*/}
-			{/*			options={colFilter}*/}
-			{/*			onSelect={onSelect}*/}
-			{/*		/>*/}
-			{/*	</> : null}*/}
-			{/*</div>*/}
-		</div>
-		<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-			<thead className="text-xs text-primary-900 uppercase bg-primary-200 dark:bg-primary-950 dark:bg-opacity-50 dark:text-primary-50">
-			<tr>
-				{selection ? (<td className={"p-4"}>
-					<CheckBox />
-				</td>) : null}
-				{fetchedColumns ? fetchedColumns.map((column, index) => {
-					return (<th scope="col"
-					            className="px-6 py-5"
-					            key={index}>
-						{column.header}
-					</th>);
-				}) : null}
-			</tr>
-			</thead>
-			<tbody>
-			{loading ? (<tr>
-				<td
-					className="p-6 text-center select-none cursor-pointer"
-					colSpan={columns.length}
-				>
-					<div className={"w-full flex items-center justify-center"}>
-						<Loader></Loader>
-					</div>
-				</td>
-			</tr>) : pageData ? (pageData.map((row, index) => {
-				return (<tr
-					className={`${index === pageData.length - 1 ? null : "border-b"} h-10 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all ease-linear cursor-pointer`}
-					onClick={selectRow}
-					onContextMenu={handleContextMenu}
-					id={row[props.rowId]}
-					data-name={row[props.rowName]}
-				>
-					{selection ? (<td className={"p-4 "}>
-						<CheckBox />
-					</td>) : null}
-					{fetchedColumns ? fetchedColumns.map((column, index) => {
-						return (<td className=" px-6 py-4"
-						            key={index}>
-							{row[column.field]}
-						</td>);
-					}) : null}
-				</tr>);
-			})) : (<tr>
-				<td
-					className="p-6 text-center select-none cursor-pointer"
-					colSpan={columns.length}
-					onClick={refresh}
-				>
-					<p className={"text-lg font-bold"}>No data found</p>
-				</td>
-			</tr>)}
-			</tbody>
-		</table>
-		
-		{fetchedData ? (<nav
-			className={"w-full flex items-center justify-between p-4 dark:bg-primary-950 dark:bg-opacity-50 text-primary-50"}
+	return (
+		<div
+			id={"table-wrapper"}
+			className={
+				"rounded-md overflow-clip flex flex-col border-2 dark:border-primary-950"
+			}
 		>
-			<p className={"text-sm"}>
-				Showing{" "}
-				<span className={"font-bold"}>
-              {pageLimit * (currentPage - 1)}
-					{" - "}
-					{pageLimit + pageLimit * (currentPage - 1)}
-            </span>{" "}
-				out of <span className={"font-bold"}>{fetchedData.length}</span>
-			</p>
-			{fetchedData.length ? (<Pagination pages={Math.ceil(fetchedData.length / pageLimit)} onChange={setCurrentPage} />) :
-				<Loader />}
-		</nav>) : null}
-	</div>)
+			<ContextMenu innerRef={contextMenu} options={actions}></ContextMenu>
+			<div className="overflow-x-auto shadow-md ">
+				{/*<div*/}
+				{/*	className={"p-4 bg-primary-300 shadow-md border-l-4 text-primary-100 dark:bg-primary-950 dark:text-primary-300"}*/}
+				{/*>*/}
+				{/*	{selection ? (*/}
+				{/*		*/}
+				{/*		<Button*/}
+				{/*			icon={faClose}*/}
+				{/*			onClick={() => {*/}
+				{/*				setSelection(false);*/}
+				{/*			}}*/}
+				{/*		></Button>) : null}*/}
+				{/*	{columns.length > 0 ? < >*/}
+				{/*		<InputField*/}
+				{/*			type="text"*/}
+				{/*			placeholder="Search Here"*/}
+				{/*			required={false}*/}
+				{/*			id="Search-filter"*/}
+				{/*			onChange={onChange}*/}
+				{/*		/>*/}
+				{/*		<Select*/}
+				{/*			options={colFilter}*/}
+				{/*			onSelect={onSelect}*/}
+				{/*		/>*/}
+				{/*	</> : null}*/}
+				{/*</div>*/}
+			</div>
+			<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+				<thead className="text-xs text-primary-900 uppercase bg-primary-200 dark:bg-primary-950 dark:bg-opacity-50 dark:text-primary-50">
+					<tr>
+						{selection ? (
+							<td className={"p-4"}>
+								<CheckBox />
+							</td>
+						) : null}
+						{fetchedColumns
+							? fetchedColumns.map((column, index) => {
+									return (
+										<th scope="col" className="px-6 py-5" key={index}>
+											{column.header}
+										</th>
+									);
+								})
+							: null}
+					</tr>
+				</thead>
+				<tbody>
+					{loading ? (
+						<tr>
+							<td
+								className="p-6 text-center select-none cursor-pointer"
+								colSpan={columns.length}
+							>
+								<div className={"w-full flex items-center justify-center"}>
+									<Loader></Loader>
+								</div>
+							</td>
+						</tr>
+					) : pageData ? (
+						pageData.map((row, index) => {
+							return (
+								<tr
+									className={`${index === pageData.length - 1 ? null : "border-b"} h-10 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all ease-linear cursor-pointer`}
+									onClick={selectRow}
+									onContextMenu={handleContextMenu}
+									id={row[props.rowId]}
+									data-name={row[props.rowName]}
+								>
+									{selection ? (
+										<td className={"p-4 "}>
+											<CheckBox />
+										</td>
+									) : null}
+									{fetchedColumns
+										? fetchedColumns.map((column, index) => {
+												return (
+													<td className=" px-6 py-4" key={index}>
+														{row[column.field]}
+													</td>
+												);
+											})
+										: null}
+								</tr>
+							);
+						})
+					) : (
+						<tr>
+							<td
+								className="p-6 text-center select-none cursor-pointer"
+								colSpan={columns.length}
+								onClick={refresh}
+							>
+								<p className={"text-lg font-bold"}>No data found</p>
+							</td>
+						</tr>
+					)}
+				</tbody>
+			</table>
+
+			{fetchedData ? (
+				<nav
+					className={
+						"w-full flex items-center justify-between p-4 dark:bg-primary-950 dark:bg-opacity-50 text-primary-50"
+					}
+				>
+					<p className={"text-sm"}>
+						Showing{" "}
+						<span className={"font-bold"}>
+							{pageLimit * (currentPage - 1)}
+							{" - "}
+							{pageLimit + pageLimit * (currentPage - 1)}
+						</span>{" "}
+						out of <span className={"font-bold"}>{fetchedData.length}</span>
+					</p>
+					{fetchedData.length ? (
+						<Pagination
+							pages={Math.ceil(fetchedData.length / pageLimit)}
+							onChange={setCurrentPage}
+						/>
+					) : (
+						<Loader />
+					)}
+				</nav>
+			) : null}
+		</div>
+	);
 }
 
 export default Table;
