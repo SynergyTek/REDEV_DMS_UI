@@ -1,11 +1,26 @@
 import { InputField, Select, Button } from "~";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
-function manage_email() {
+export default function manage_email() {
+	const router = useRouter();
+	const { id = null, name = null } = router.query;
+	if (id) {
+		console.log(id);
+		const [data, setData] = useState();
+
+		// axios.get("/dmsapi/cms/query/TableData?tableName=cms.F_DMS_DMSEmailIntegration?filterKey={id}")
+		// .then( (response) => {
+		//   console.log(response);
+		// })
+	}
+
 	return (
 		<div className="mx-auto my-auto w-96">
 			<div className="text-white text-2xl">Manage Email</div>
 			<div>
-				<div className="mt-3">
+				<div key="emailAddress" className="mt-3">
 					<InputField
 						id="emailAddress"
 						label="Email Address"
@@ -15,7 +30,7 @@ function manage_email() {
 						required
 					/>
 				</div>
-				<div className="mt-3">
+				<div key="senderName" className="mt-3">
 					<InputField
 						id="senderName"
 						label="Sender Name"
@@ -24,7 +39,7 @@ function manage_email() {
 						primary
 					/>
 				</div>
-				<div className="mt-3">
+				<div key="host" className="mt-3">
 					<InputField
 						id="host"
 						label="Host"
@@ -34,7 +49,7 @@ function manage_email() {
 						required
 					/>
 				</div>
-				<div className="mt-3">
+				<div key="port" className="mt-3">
 					<InputField
 						id="port"
 						label="Port"
@@ -44,7 +59,7 @@ function manage_email() {
 						required
 					/>
 				</div>
-				<div className="mt-3">
+				<div key="password" className="mt-3">
 					<div className="text-red-500 text-sm">
 						Note: Use App password for Gmail
 					</div>
@@ -57,7 +72,7 @@ function manage_email() {
 						required
 					/>
 				</div>
-				<div className="mt-3">
+				<div key="dropdown" className="mt-3">
 					<Select
 						options={{
 							data: [
@@ -72,7 +87,7 @@ function manage_email() {
 						text="Button"
 					/>
 				</div>
-				<div className="mt-3">
+				<div key="apiUrl" className="mt-3">
 					<InputField
 						id="apiUrl"
 						label="Api Url"
@@ -81,7 +96,7 @@ function manage_email() {
 						primary
 					/>
 				</div>
-				<div className="mt-3">
+				<div key="apiKey" className="mt-3">
 					<InputField
 						id="apiKey"
 						label="Api Key"
@@ -98,5 +113,3 @@ function manage_email() {
 		</div>
 	);
 }
-
-export default manage_email;
