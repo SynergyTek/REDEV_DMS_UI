@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-function manage_email() {
+export default function manage_email() {
 	const router = useRouter();
 	const { id = null, name = null } = router.query;
 	if (id) {
@@ -113,5 +113,3 @@ function manage_email() {
 		</div>
 	);
 }
-
-export default manage_email;
