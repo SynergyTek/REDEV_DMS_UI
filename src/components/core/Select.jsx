@@ -1,5 +1,5 @@
 import { Button, InputField, Loader } from "~";
-import React from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
@@ -21,22 +21,31 @@ function Select({
 	},
 	primary = false,
 }) {
-	const [data, setData] = React.useState(null);
-	const [selected, setSelected] = React.useState("Select");
-	const [loading, isLoading] = React.useState(true);
-	const [isOpen, setIsOpen] = React.useState(false);
-	const selectRef = React.useRef();
-	React.useEffect(() => {
-		window.addEventListener("click", (event) => {
+	const [data, setData] = useState(null);
+	const [selected, setSelected] = useState({ display: "Select" });
+	const [loading, isLoading] = useState(true);
+	const [isOpen, setIsOpen] = useState(false);
+	const selectRef = useRef();
+	useEffect(() => {
+		const handleClickOutside = (event) => {
 			if (selectRef.current && !selectRef.current.contains(event.target)) {
 				setIsOpen(false);
 			}
-		});
-		window.addEventListener("blur", (event) => {
+		};
+
+		const handleBlur = () => {
 			setIsOpen(false);
-		});
+		};
+
+		window.addEventListener("click", handleClickOutside);
+		window.addEventListener("blur", handleBlur);
+
+		return () => {
+			window.removeEventListener("click", handleClickOutside);
+			window.removeEventListener("blur", handleBlur);
+		};
 	}, []);
-	React.useEffect(() => {
+	useEffect(() => {
 		switch (load) {
 			case "LOV":
 				axios
@@ -75,7 +84,7 @@ function Select({
 				});
 		}
 	}, [options]);
-	React.useEffect(() => {
+	useEffect(() => {
 		onSelect && onSelect(selected);
 	}, [selected]);
 	const filterData = async (value) => {
