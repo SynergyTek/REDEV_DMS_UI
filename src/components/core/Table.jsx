@@ -7,7 +7,7 @@ import {
 	faChevronRight,
 	faPencil,
 } from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useId } from "react";
 import axios from "axios";
 
 function Table({
@@ -54,6 +54,8 @@ function Table({
 		value: "",
 	});
 	const contextMenu = useRef();
+	const keyId = useId();
+
 	useEffect(() => {
 		document.addEventListener("click", (event) => {
 			hideContextMenu();
@@ -321,6 +323,7 @@ function Table({
 						pageData.map((row, index) => {
 							return (
 								<tr
+									key={`${keyId}-${index}`}
 									className={`${index === pageData.length - 1 ? null : "border-b"} h-10 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all ease-linear cursor-pointer`}
 									onClick={selectRow}
 									onContextMenu={handleContextMenu}

@@ -1,5 +1,5 @@
 import { Button, InputField, Loader } from "~";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useId } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
@@ -26,6 +26,8 @@ function Select({
 	const [loading, isLoading] = useState(true);
 	const [isOpen, setIsOpen] = useState(false);
 	const selectRef = useRef();
+	const keyId = useId();
+
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (selectRef.current && !selectRef.current.contains(event.target)) {
@@ -122,9 +124,10 @@ function Select({
 							<Loader></Loader>
 						</div>
 					) : data ? (
-						data.map((option) => {
+						data.map((option, index) => {
 							return (
 								<li
+									key={`${keyId}-${index}`}
 									id={option[options.value]}
 									role={"button"}
 									className={
