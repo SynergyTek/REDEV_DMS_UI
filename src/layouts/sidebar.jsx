@@ -266,7 +266,7 @@ const Sidebar = () => {
 								<ul>
 									<li>
 										<Link
-											href="/report/search_documents/"
+											href="/report/search-documents/"
 											className={
 												"flex items-center rounded-lg px-4 pl-12 ml-0.5 py-2 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
 											}
