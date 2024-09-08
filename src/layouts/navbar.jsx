@@ -6,8 +6,8 @@ import ThemeToggle from '/src/components/theme';
 
 const Navbar = ({setTheme}) => {
     return (
-        <div className="fixed w-full z-20 bg-white dark:bg-secondary-950 dark:text-gray-200 transition-colors duration-500 ease-out">
-            <div className={"md:ml-72 px-7 h-20 flex items-center justify-between"}>
+        <div className="sticky top-0 w-full z-20 bg-white dark:bg-secondary-950 dark:text-gray-200 transition-colors duration-500 ease-out">
+            <div className={"px-7 h-20 flex items-center justify-between"}>
                 <h1 className={'text-2xl font-semibold text-gray-900 dark:text-white opacity-90 sm:text-2xl sm:tracking-tight'}>Document Management System</h1>
                 <div className={'flex items-center gap-4'}>
                     <div className="relative none hidden md:block w-80 mr-5">
@@ -35,7 +35,7 @@ const Navbar = ({setTheme}) => {
                     <ThemeToggle setGlobalTheme={setTheme} />
                 </div>
             </div>
-            <div className={'md:ml-72'}>
+            <div>
                 <div className={'border-b-2 border-gray-200 dark:border-gray-800 border-opacity-60 mx-7'}></div>
             </div>
         </div>

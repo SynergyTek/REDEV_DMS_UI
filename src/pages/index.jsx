@@ -149,32 +149,6 @@ export default function Home(theme) {
         <div className="p-4 grid lg:grid-cols-2 md:grid-cols-1 gap-4">
             <div className="bg-gray-50 dark:bg-gray-700 dark:bg-opacity-35 dark:text-white rounded-xl p-4">
                 <p className="text-lg font-semibold text-gray-900 dark:text-white opacity-90 sm:tracking-tight">
-                    Document Types
-                </p>
-                <div className={'xl:mx-10'}>
-                    <Chart1
-                        options={chart1.options}
-                        series={chart1.series}
-                        type="donut"
-                        width={"100%"}
-                    />
-                </div>
-            </div>
-            <div className="bg-gray-50 dark:bg-gray-700 dark:bg-opacity-35 dark:text-white rounded-xl p-4">
-                <p className="text-lg font-semibold text-gray-900 dark:text-white opacity-90 sm:tracking-tight">
-                    Document Status
-                </p>
-                <div className={'xl:mx-10'}>
-                    <Chart1
-                        options={chart2.options}
-                        series={chart2.series}
-                        type="donut"
-                        width={"100%"}
-                    />
-                </div>
-            </div>
-            <div className="bg-gray-50 dark:bg-gray-700 dark:bg-opacity-35 dark:text-white rounded-xl p-4">
-                <p className="text-lg font-semibold text-gray-900 dark:text-white opacity-90 sm:tracking-tight">
                     Project Document Issue Code
                 </p>
                 <Chart1
