@@ -26,6 +26,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { far } from "@awesome.me/kit-9b926a9ec0/icons";
 import React from "react";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "~/ui/tooltip";
 
 const Sidebar = () => {
 	const router = useRouter();
@@ -35,7 +36,7 @@ const Sidebar = () => {
 		<aside className="left-0 z-30 p-2 h-screen">
 			<div
 				className={
-					"relative min-w-14 overflow-hidden border-opacity-50 border-secondary-200 rounded-lg h-full bg-secondary-50 dark:bg-secondary-900 dark:text-primary-900 "
+					"relative min-w-full overflow-hidden border-opacity-50 border-secondary-200 rounded-lg h-full bg-secondary-50 dark:bg-secondary-900 dark:text-primary-900 "
 				}
 			>
 				<div className={"h-20 px-2 pb-2 flex items-center gap-3"}>
@@ -55,59 +56,82 @@ const Sidebar = () => {
 				</div>
 				<ul className="space-y-1 mx-1 dark:text-gray-100">
 					<li>
-						<Link
-							href="/"
-							className={`flex items-center gap-4 rounded-md px-4 py-2 ${
-								currentRoute === "/"
-									? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
-									: "hover:bg-secondary-100 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
-							}
-                                `}
-						>
-							<FontAwesomeIcon icon={faHome} className={"w-4"}/>
-							<span className="text-sm font-medium"> Dashboard </span>
-						</Link>
+						<TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger className={'w-full'}>
+									<Link
+										href="/"
+										className={`flex items-center gap-4 rounded-md px-3 py-2 ${
+											currentRoute === "/"
+												? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
+												: "hover:bg-secondary-100 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
+										}
+											`}
+									>
+										<FontAwesomeIcon icon={faHome} className={"w-4"}/>
+										<span className="text-sm font-medium onDesktop"> Dashboard </span>
+									</Link>
+								</TooltipTrigger>
+								<TooltipContent side={'right'} className={'onMoblie'}>Dashboard</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
 					</li>
 					<li>
-						<Link
-							href="/files"
-							className={`flex items-center gap-4 rounded-md px-4 py-2 ${
-								currentRoute === "/analytics"
-									? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
-									: "hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700  dark:hover:bg-opacity-35 dark:hover:text-white"
-							}
-                                `}
-						>
-							<FontAwesomeIcon icon={faChartPie} className={"w-4"}/>
-							<span className="text-sm font-medium"> Analytics </span>
-						</Link>
+						<TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger className={'w-full'}>
+										<Link
+											href="/files"
+											className={`flex items-center gap-4 rounded-md px-3 py-2 ${
+												currentRoute === "/analytics"
+													? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
+													: "hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700  dark:hover:bg-opacity-35 dark:hover:text-white"
+											}
+												`}
+										>
+											<FontAwesomeIcon icon={faChartPie} className={"w-4"}/>
+											<span className="text-sm font-medium onDesktop"> Analytics </span>
+										</Link>
+									</TooltipTrigger>
+								<TooltipContent side={'right'} className={'onMoblie'}>Analytics</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
 					</li>
 					<li>
-						<Link
-							href="/files"
-							className={`flex items-center gap-4 rounded-md px-4 py-2 ${
-								currentRoute === "/files"
-									? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
-									: "hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700  dark:hover:bg-opacity-35 dark:hover:text-white"
-							}
-                                `}
-						>
-							<FontAwesomeIcon icon={far.faFiles} className={"w-4"}/>
-							<span className="text-sm font-medium"> Files </span>
-						</Link>
+						<TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger className={'w-full'}>
+									<Link
+										href="/files"
+										className={`flex items-center gap-4 rounded-md px-3 py-2 ${
+											currentRoute === "/files"
+												? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
+												: "hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700  dark:hover:bg-opacity-35 dark:hover:text-white"
+										}
+											`}
+									>
+										<FontAwesomeIcon icon={far.faFiles} className={"w-4"}/>
+										<span className="text-sm font-medium onDesktop"> Files </span>
+									</Link>
+								</TooltipTrigger>
+								<TooltipContent side={'right'} className={'onMoblie'}>File Explorer</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
 					</li>
 				</ul>
 				<Sidebar_menu>
 					<MenubarSeparator/>
 					<MenubarMenu>
 						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2'}>
+							<div className={'py-2 flex items-center'}>
 								<FontAwesomeIcon icon={faBook} className={"w-4 mr-5"}/>
-								Document Management
+								<span className={'hidden md:block'}>Document Management</span>
 							</div>
-							<FontAwesomeIcon icon={faAngleRight}/>
+							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
 						</MenubarTrigger>
 						<MenubarContent>
+							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Document Management</MenubarItem>
+							<MenubarSeparator className={'onMoblie'}/>
 							<Link href={'/admin/dashboard'}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
@@ -127,13 +151,15 @@ const Sidebar = () => {
 					</MenubarMenu>
 					<MenubarMenu>
 						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2'}>
+							<div className={'py-2 flex items-center'}>
 								<FontAwesomeIcon icon={faUserTie} className={"w-4 mr-5"}/>
-								Admin
+								<span className={'hidden md:block'}>Admin</span>
 							</div>
-							<FontAwesomeIcon icon={faAngleRight}/>
+							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
 						</MenubarTrigger>
 						<MenubarContent>
+							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Admin</MenubarItem>
+							<MenubarSeparator className={'onMoblie'}/>
 							<Link href={'/admin/dashboard'}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
@@ -153,13 +179,15 @@ const Sidebar = () => {
 					</MenubarMenu>
 					<MenubarMenu>
 						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2'}>
+							<div className={'py-2 flex items-center'}>
 								<FontAwesomeIcon icon={faListCheck} className={"w-4 mr-5"}/>
-								Work List
+								<span className={'hidden md:block'}>Work List</span>
 							</div>
-							<FontAwesomeIcon icon={faAngleRight}/>
+							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
 						</MenubarTrigger>
 						<MenubarContent>
+							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Work List</MenubarItem>
+							<MenubarSeparator className={'onMoblie'}/>
 							<Link href={'/admin/dashboard'}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
@@ -179,13 +207,15 @@ const Sidebar = () => {
 					</MenubarMenu>
 					<MenubarMenu>
 						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2'}>
+							<div className={'py-2 flex items-center'}>
 								<FontAwesomeIcon icon={faFileAlt} className={"w-4 mr-5"}/>
-								Report
+								<span className={'hidden md:block'}>Report</span>
 							</div>
-							<FontAwesomeIcon icon={faAngleRight}/>
+							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
 						</MenubarTrigger>
 						<MenubarContent>
+							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Report</MenubarItem>
+							<MenubarSeparator className={'onMoblie'}/>
 							<Link href={'/admin/dashboard'}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
@@ -205,13 +235,15 @@ const Sidebar = () => {
 					</MenubarMenu>
 					<MenubarMenu>
 						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2'}>
+							<div className={'py-2 flex items-center'}>
 								<FontAwesomeIcon icon={faUpload} className={"w-4 mr-5"}/>
-								Upload
+								<span className={'hidden md:block'}>Upload</span>
 							</div>
-							<FontAwesomeIcon icon={faAngleRight}/>
+							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
 						</MenubarTrigger>
 						<MenubarContent>
+							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Upload</MenubarItem>
+							<MenubarSeparator className={'onMoblie'}/>
 							<Link href={'/admin/dashboard'}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
@@ -232,13 +264,15 @@ const Sidebar = () => {
 					<MenubarSeparator/>
 					<MenubarMenu>
 						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2'}>
+							<div className={'py-2 flex items-center'}>
 								<FontAwesomeIcon icon={faWindowRestore} className={"w-4 mr-5"}/>
-								Masters
+								<span className={'hidden md:block'}>Masters</span>
 							</div>
-							<FontAwesomeIcon icon={faAngleRight}/>
+							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
 						</MenubarTrigger>
 						<MenubarContent>
+							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Masters</MenubarItem>
+							<MenubarSeparator className={'onMoblie'}/>
 							<Link href={'/admin/dashboard'}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
@@ -258,34 +292,34 @@ const Sidebar = () => {
 					</MenubarMenu>
 				</Sidebar_menu>
 				<div className="p-2 mb-4 text-secondary-500 overflow-y-auto absolute bottom-0">
-							<ul className="space-y-1">
+							<ul className="space-y-1 w-full">
 								<li>
 									<Link
 										href="/public"
 										className={
-											"flex items-center gap-4 rounded-lg px-4 py-2 text-secondary-700 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:text-secondary-200 dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
+											"flex items-center gap-4 rounded-md px-2 py-2 md:w-full text-secondary-700 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:text-secondary-200 dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
 										}
 									>
 										<FontAwesomeIcon icon={faQuestionCircle} className={"w-4 mr-1"}/>
-										<span className="text-sm font-medium"> Support </span>
+										<span className="text-sm font-medium hidden md:block"> Support </span>
 									</Link>
 								</li>
 								<li>
 									<Link
 										href="/public"
 										className={
-											"flex items-center gap-4 rounded-lg px-4 py-2 text-secondary-700 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:text-secondary-200 dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
+											"flex items-center gap-4 rounded-md px-2 py-2 text-secondary-700 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:text-secondary-200 dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
 										}
 									>
 										<FontAwesomeIcon icon={faGears} className={"w-4 mr-1"}/>
-										<span className="text-sm font-medium"> Settings </span>
+										<span className="text-sm font-medium hidden md:block"> Settings </span>
 									</Link>
 								</li>
 							</ul>
 						</div>
 			</div>
 		</aside>
-);
+	);
 };
 
 export default Sidebar;

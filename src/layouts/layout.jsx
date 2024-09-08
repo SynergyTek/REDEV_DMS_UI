@@ -15,14 +15,14 @@ export default function RootLayout({ children }) {
                 <link rel={'icon'} href={'/public/favicon.ico'}/>
             </Head>
             <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel className={'min-w-72'} defaultSize={19}>
+                <ResizablePanel className={'max-w-16 min-w-16 md:min-w-72'} defaultSize={19}>
                 <Sidebar/>
                 </ResizablePanel>
                 {/*<ResizableHandle withHandle />*/}
                 <ResizablePanel>
                     <div className={'h-screen overflow-auto'}>
                         <Navbar setTheme={setTheme}/>
-                        <div className={'px-4'}>
+                        <div className={'md:px-4'}>
                             {React.createElement(children.type, {theme})}
                         </div>
                     </div>

@@ -129,3 +129,11 @@ p{
 svg {
   background: transparent !important;
 }
+
+.onDesktop {
+  @apply hidden md:block
+}
+
+.onMoblie {
+  @apply block md:hidden
+}

@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMoonStars, faSunBright} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 
-export default function ThemeToggle({setGlobalTheme}) {
+export default function ThemeToggle({setGlobalTheme, className}) {
     const [theme, setTheme] = useState(null);
 
     useEffect(() => {
@@ -36,7 +36,7 @@ export default function ThemeToggle({setGlobalTheme}) {
     };
 
     return (
-        <button onClick={toggleTheme} className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg">
+        <button onClick={toggleTheme} className={`px-4 py-2 font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg ${className}`}>
             {theme === 'dark' ? <FontAwesomeIcon icon={faSunBright}/> : <FontAwesomeIcon icon={faMoonStars}/>}
         </button>
     );
