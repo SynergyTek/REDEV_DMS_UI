@@ -1,10 +1,12 @@
+import "../public/styles/global.scss";
 import "../public/styles/storybook.scss";
 import {dark, light} from "./theme";
 import {addons} from "@storybook/preview-api";
 import {ensure} from "@storybook/theming"
 import {DARK_MODE_EVENT_NAME} from "storybook-dark-mode";
 import React from "react";
-import {DocsContainer} from "@storybook/blocks";
+import {DocsContainer, Title, ArgTypes, Canvas, Story, Description} from "@storybook/blocks";
+import DocsPage from "./DocsPage";
 
 export default {
 	controls: {
@@ -22,6 +24,7 @@ export const parameters = {
 	darkMode: {
 		dark, light, stylePreview: true, classTarget: 'html'
 	}, docs: {
+		page:()=> <DocsPage />,
 		toc: {
 			contentsSelector: '.sbdocs-content',
 			headingSelector: 'h1, h2, h3',
@@ -33,10 +36,8 @@ export const parameters = {
 			},
 		}, container: ({context, children}) => {
 			return <div className={"bg-indigo-50 dark:bg-secondary-950 "}>
-				<DocsContainer context={context}>
-					
+				<DocsContainer context={context} >
 					{children}
-				
 				</DocsContainer>
 			</div>
 		}

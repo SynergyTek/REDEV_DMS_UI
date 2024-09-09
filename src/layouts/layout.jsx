@@ -5,6 +5,7 @@ import React, {useState} from "react";
 
 import {config} from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import {Toaster} from "~";
 
 config.autoAddCss = false
 export default function RootLayout({children}) {
@@ -20,7 +21,9 @@ export default function RootLayout({children}) {
 			<Navbar setTheme={setTheme} />
 			<div className={"ml-72 pt-24 px-7"}>
 				{React.createElement(children.type, {theme})}
+				
 			</div>
+			<Toaster />
 		</>
 	);
 }

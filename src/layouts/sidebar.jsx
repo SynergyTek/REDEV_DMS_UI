@@ -47,29 +47,30 @@ const Sidebar = () => {
 						<li>
 							<Link
 								href="/"
-								className={`flex items-center gap-4 rounded-lg px-4 py-2 ${
-									currentRoute === "/"
-										? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
-										: "hover:bg-secondary-100 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
+								className={`flex items-center gap-4 rounded-lg px-4 py-2 ${currentRoute === "/"
+									? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
+									: "hover:bg-secondary-100 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
 								}
                                 `}
 							>
-								<FontAwesomeIcon icon={faHome} className={"w-4"} />
+								<FontAwesomeIcon icon={faHome}
+								                 className={"w-4"} />
 								<span className="text-sm font-medium"> Dashboard </span>
 							</Link>
 						</li>
-
+						
 						<li>
 							<Link
 								href="/files"
 								className={`flex items-center gap-4 rounded-lg px-4 py-2 ${
 									currentRoute === "/files"
-										? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
-										: "hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700  dark:hover:bg-opacity-35 dark:hover:text-white"
+									? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
+									: "hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700  dark:hover:bg-opacity-35 dark:hover:text-white"
 								}
                                 `}
 							>
-								<FontAwesomeIcon icon={far.faFiles} className={"w-4"} />
+								<FontAwesomeIcon icon={far.faFiles}
+								                 className={"w-4"} />
 								<span className="text-sm font-medium"> Files </span>
 							</Link>
 						</li>
@@ -82,17 +83,16 @@ const Sidebar = () => {
 							<details className="group [&_summary::-webkit-details-marker]:hidden">
 								<summary className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white">
 									<div className="flex items-center gap-4">
-										<FontAwesomeIcon icon={faBook} className={"w-4"} />
-										<span className="text-sm font-medium">
-											Document Management
-										</span>
+										<FontAwesomeIcon icon={faBook}
+										                 className={"w-4"} />
+										<span className="text-sm font-medium"> Document Management </span>
 									</div>
-
+									
 									<span className="shrink-0 text-xs transition duration-300 group-open:-rotate-180">
 										<FontAwesomeIcon icon={faChevronDown} />
 									</span>
 								</summary>
-
+								
 								<ul>
 									<li>
 										<Link
@@ -155,15 +155,16 @@ const Sidebar = () => {
 							<details className="group [&_summary::-webkit-details-marker]:hidden">
 								<summary className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white">
 									<div className="flex items-center gap-4">
-										<FontAwesomeIcon icon={faUserTie} className={"w-4"} />
+										<FontAwesomeIcon icon={faUserTie}
+										                 className={"w-4"} />
 										<span className="text-sm font-medium"> Admin </span>
 									</div>
-
+									
 									<span className="shrink-0 text-xs transition duration-300 group-open:-rotate-180">
 										<FontAwesomeIcon icon={faChevronDown} />
 									</span>
 								</summary>
-
+								
 								<ul>
 									<li>
 										<Link
@@ -214,15 +215,16 @@ const Sidebar = () => {
 							<details className="group [&_summary::-webkit-details-marker]:hidden">
 								<summary className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white">
 									<div className="flex items-center gap-4">
-										<FontAwesomeIcon icon={faListCheck} className={"w-4"} />
+										<FontAwesomeIcon icon={faListCheck}
+										                 className={"w-4"} />
 										<span className="text-sm font-medium"> Work List </span>
 									</div>
-
+									
 									<span className="shrink-0 text-xs transition duration-300 group-open:-rotate-180">
 										<FontAwesomeIcon icon={faChevronDown} />
 									</span>
 								</summary>
-
+								
 								<ul>
 									<li>
 										<Link
@@ -254,15 +256,16 @@ const Sidebar = () => {
 							<details className="group [&_summary::-webkit-details-marker]:hidden">
 								<summary className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white">
 									<div className="flex items-center gap-4">
-										<FontAwesomeIcon icon={faFileAlt} className={"w-4"} />
+										<FontAwesomeIcon icon={faFileAlt}
+										                 className={"w-4"} />
 										<span className="text-sm font-medium"> Report </span>
 									</div>
-
+									
 									<span className="shrink-0 text-xs transition duration-300 group-open:-rotate-180">
 										<FontAwesomeIcon icon={faChevronDown} />
 									</span>
 								</summary>
-
+								
 								<ul>
 									<li>
 										<Link
@@ -295,15 +298,16 @@ const Sidebar = () => {
 							<details className="group [&_summary::-webkit-details-marker]:hidden">
 								<summary className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white">
 									<div className="flex items-center gap-4">
-										<FontAwesomeIcon icon={faUpload} className={"w-4"} />
+										<FontAwesomeIcon icon={faUpload}
+										                 className={"w-4"} />
 										<span className="text-sm font-medium"> Upload </span>
 									</div>
-
+									
 									<span className="shrink-0 text-xs transition duration-300 group-open:-rotate-180">
 										<FontAwesomeIcon icon={faChevronDown} />
 									</span>
 								</summary>
-
+								
 								<ul>
 									<li>
 										<Link
@@ -359,14 +363,16 @@ const Sidebar = () => {
 							<details className="group [&_summary::-webkit-details-marker]:hidden">
 								<summary className="group flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 transition-all hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white">
 									<div className="flex items-center gap-4">
-										<FontAwesomeIcon icon={faWindowRestore} className={"w-4"} />
+										<FontAwesomeIcon icon={faWindowRestore}
+										                 className={"w-4"} />
 										<span className="text-sm font-medium"> Masters </span>
 									</div>
-
+									
 									<span className="shrink-0 text-xs transition duration-300 group-open:-rotate-180">
 										<FontAwesomeIcon icon={faChevronDown} />
 									</span>
 								</summary>
+								
 								<ul>
 									<li>
 										<Link
@@ -404,12 +410,13 @@ const Sidebar = () => {
 									"flex items-center gap-4 rounded-lg px-4 py-2 text-secondary-700 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:text-secondary-200 dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
 								}
 							>
-								<FontAwesomeIcon icon={faQuestionCircle} className={"w-4"} />
+								<FontAwesomeIcon icon={faQuestionCircle}
+								                 className={"w-4"} />
 								<span className="text-sm font-medium"> Support </span>
 							</Link>
 						</li>
 						<li>
-							<Link
+						<Link
 								href="/public"
 								className={
 									"flex items-center gap-4 rounded-lg px-4 py-2 text-secondary-700 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:text-secondary-200 dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"

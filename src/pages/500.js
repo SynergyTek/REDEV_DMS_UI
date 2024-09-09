@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChainBroken, faCircleExclamation} from "@fortawesome/free-solid-svg-icons";
+import {faChainBroken, faCircleExclamation} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 
 export default function Custom500() {
 	return <div className={"w-full h-dvh flex items-center justify-center"}>
@@ -11,7 +11,7 @@ export default function Custom500() {
 				<p className="mt-6 text-base leading-7">We couldn’t process this request due to internal issues.</p>
 				<p className={"mt-6 mb-3 text-base text-start font-bold"}>What can you do?</p>
 				
-				<ul class="max-w-md space-y-1 text-gray-500 text-start list-disc list-inside dark:text-gray-400">
+				<ul className="max-w-md space-y-1 text-gray-500 text-start list-disc list-inside dark:text-gray-400">
 					<li>
 						Try again later when the issue is resolved
 					</li>

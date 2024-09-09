@@ -31,6 +31,7 @@ function Button({
 	                onClick,
 	                type = "button",
 	                ratio = 0,
+	
 	                ...props
                 }) {
 	if (!Object.keys(sizeMap).includes(size)) {
@@ -49,10 +50,11 @@ function Button({
 	}
 	return (
 		<button
-			className={`${sizeMap[size].btnPadding} ${modeMap[mode]} ${ratio && ratioMap[ratio]}  flex rounded items-center justify-center text-sm font-semibold gap-2 transition-all ${type === "dropdown" ? "bg-primary-600 bg-opacity-50 flex-row-reverse group-hover:bg-opacity-65 text-primary-100 justify-between" : null} ${props.className} `}
+			className={`${sizeMap[size].btnPadding} ${modeMap[mode]} ${ratio && ratioMap[ratio]}  flex rounded items-center justify-center text-sm font-semibold gap-2 transition-all ${type === "dropdown" ? "bg-primary-600 bg-opacity-50 flex-row-reverse group-hover:bg-opacity-65 text-primary-100 justify-between" : null} disabled:pointer-events-none disabled:cursor-not-allowed ${props.className} `}
 			id={props.id}
 			onClick={handleOnClick}
 			type={type}
+			disabled={props.disabled? true : null}
 		>
 			
 			<>

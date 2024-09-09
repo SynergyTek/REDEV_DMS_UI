@@ -19,6 +19,7 @@ const generatePathParts = (pathStr) => {
 function Crumb({
 	               title: defaultText,
 	               textGenerator,
+	               id,
 	               href,
 	               icon,
 	               query,
@@ -41,7 +42,7 @@ function Crumb({
 	const handleClick = (e) => {
 		if (typeof onClick === "function") {
 			
-			onClick({text, icon, href})
+			onClick({text, icon, href, id})
 		}
 	}
 	return (
@@ -83,6 +84,7 @@ function Crumb({
 }
 
 function Breadcrumb({path = [], onClick}) {
+	console.log(path)
 	const router = useRouter();
 	const breadcrumbs = useMemo(() => {
 		const asPathNestedRoutes = generatePathParts(router.asPath);
@@ -117,6 +119,7 @@ function Breadcrumb({path = [], onClick}) {
 			crumbList.push({
 				href: crumb.href,
 				title: toTitle(crumb.title),
+				id: crumb.id,
 				icon: index === 0 && faHome,
 			})
 		})

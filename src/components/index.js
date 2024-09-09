@@ -6,6 +6,7 @@ import ContextMenu from './core/ContextMenu';
 import DataGrid from './core/DataGrid';
 import Loader from './core/Loader';
 import Select from './core/Select';
+import Icon from './ui/icon';
 import Table from './core/Table';
 import Text from './core/Text';
 import Separator from "./core/Separator";
@@ -21,9 +22,9 @@ import Slider from './form/Slider';
 // Info Modules
 import Notification from './info/Notification';
 import Alert from './info/Alert';
+import Toaster from "~/ui/sonner";
 
-// Picker Modules
-import DateTime from './picker/DateTime';
+import Template from "~/Template";
 
 export {
 	Alert,
@@ -33,7 +34,6 @@ export {
 	Columns,
 	ContextMenu,
 	DataGrid,
-	DateTime,
 	FileExplorer,
 	InputField,
 	Loader,
@@ -45,5 +45,8 @@ export {
 	Text,
 	Toolbar,
 	Separator,
-	Slider
+	Slider,
+	Icon,
+	Toaster,
+	Template
 }
