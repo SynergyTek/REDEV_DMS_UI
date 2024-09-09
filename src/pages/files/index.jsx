@@ -16,7 +16,7 @@ export default function Index() {
 			        mode={"secondary"}></Button>
 		</div>
 		<div className={"w-full"}>
-			<FileExplorer source={files}/>
+			<FileExplorer source={"/dmsapi/dms/workspace/GetParentWorkspace?userId=45bba746-3309-49b7-9c03-b5793369d73c&portalName=DMS"}/>
 		</div>
 	</div>
 }

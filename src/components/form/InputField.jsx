@@ -8,6 +8,7 @@ function InputField({
 	                    placeholder = "",
 	                    required = false,
 	                    button,
+	                    addon,
 	                    ...props
                     }) {
 	const [error, setError] = useState(null);
@@ -30,8 +31,8 @@ function InputField({
 	};
 	return (
 		<div id={"input"}
-		     className={"flex gap-4 w-full"}>
-			<div className={`flex flex-col w-full gap-2 ${error ? "mb-4" : ""}`}>
+		     className={`flex gap-4 w-full ${props.className}`}>
+			<div className={`flex w-full gap-2 ${error ? "mb-4" : ""}`}>
 				<div
 					className={
 						"group relative block rounded border border-primary-400 dark:border-secondary-700 bg-primary-50 shadow-sm hover:border-primary-600 dark:hover:border-primary-400 focus-within:border-primary-600 dark:focus-within:border-primary-400 focus-within:ring-0 dark:bg-gray-950 transition-all duration-300"
@@ -49,6 +50,9 @@ function InputField({
 								props.onChange ? props.onChange(inputRef.current.value) : null;
 								validateInput();
 							}}
+							onBlur={() => {
+								props.onBlur && props.onBlur() ;
+							}}
 						></textarea>
 					) : (
 						<input
@@ -64,6 +68,9 @@ function InputField({
 								props.onChange ? props.onChange(inputRef.current.value) : null;
 								validateInput();
 							}}
+						onBlur={() => {
+							props.onBlur && props.onBlur() ;
+						}}
 						/>
 					)}
 					
@@ -81,6 +88,19 @@ function InputField({
             <p className={`text-red-500 text-xs`}>{error}</p>
           </span>
 				</div>
+				{addon && addon.right && (
+					addon.right.map((item, index) => {
+						return (
+							<Button key={index}
+							        mode={"tertiary"}
+							        icon={item.icon}
+							        onClick={item.onClick}
+							>
+							
+							</Button>
+						)
+					})
+				)}
 			</div>
 			{button ? <Button {...button} onClick={handleSubmit}></Button> : null}
 		</div>
