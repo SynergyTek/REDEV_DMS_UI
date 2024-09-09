@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Table } from "~";
+import { Button, Table, Loader } from "~";
 import axios from 'axios';
 import { useRouter } from "next/router";
 import {
@@ -48,7 +48,7 @@ const Workspace = () => {
 		);
 	};
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Loader/>;
     if (error) return <div>{error}</div>;
 
     return (
