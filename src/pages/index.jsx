@@ -1,40 +1,71 @@
-import { Card, CardContent, CardHeader, CardTitle } from "~/ui/card"
+import {Card, CardContent, CardHeader, CardTitle} from "~/ui/card"
 import { Badge } from "~/ui/badge"
 import { Progress } from "~/ui/progress"
 import { Button } from "~/ui/button"
 import { FileIcon, FolderIcon, ClockIcon, StarIcon, UploadIcon, ShareIcon, TrashIcon } from "lucide-react"
-
-const userDocumentData = [
-    { name: 'PDFs', count: 45, color: 'bg-red-500' },
-    { name: 'DOCs', count: 30, color: 'bg-blue-500' },
-    { name: 'XLSs', count: 15, color: 'bg-green-500' },
-    { name: 'JPGs', count: 10, color: 'bg-yellow-500' },
-]
-
-const recentDocuments = [
-    { name: 'Q2 Report.pdf', accessed: '2 hours ago' },
-    { name: 'Meeting Notes.docx', accessed: 'Yesterday' },
-    { name: 'Budget 2023.xlsx', accessed: '3 days ago' },
-    { name: 'Project Proposal.pptx', accessed: '1 week ago' },
-]
-
-const recentActivities = [
-    { user: 'John Doe', action: 'uploaded', document: 'Q2 Report.pdf', time: '2 minutes ago' },
-    { user: 'Jane Smith', action: 'edited', document: 'Project Proposal.docx', time: '15 minutes ago' },
-    { user: 'Mike Johnson', action: 'deleted', document: 'Old Invoice.xlsx', time: '1 hour ago' },
-    { user: 'Sarah Williams', action: 'shared', document: 'Team Photo.jpg', time: '3 hours ago' },
-]
-
-const favoriteFolders = [
-    { name: 'Projects', count: 23 },
-    { name: 'Client Files', count: 45 },
-    { name: 'Personal', count: 12 },
-    { name: 'Archive', count: 78 },
-]
+import {
+    Pie,
+    PieChart,
+} from "recharts"
+import {ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent} from "~/ui/chart";
 
 export default function Component() {
+    const recentDocuments = [
+        { name: 'Q2 Report.pdf', accessed: '2 hours ago' },
+        { name: 'Meeting Notes.docx', accessed: 'Yesterday' },
+        { name: 'Budget 2023.xlsx', accessed: '3 days ago' },
+        { name: 'Project Proposal.pptx', accessed: '1 week ago' },
+    ]
+
+    const recentActivities = [
+        { user: 'John Doe', action: 'uploaded', document: 'Q2 Report.pdf', time: '2 minutes ago' },
+        { user: 'Jane Smith', action: 'edited', document: 'Project Proposal.docx', time: '15 minutes ago' },
+        { user: 'Mike Johnson', action: 'deleted', document: 'Old Invoice.xlsx', time: '1 hour ago' },
+        { user: 'Sarah Williams', action: 'shared', document: 'Team Photo.jpg', time: '3 hours ago' },
+    ]
+
+    const favoriteFolders = [
+        { name: 'Projects', count: 23 },
+        { name: 'Client Files', count: 45 },
+        { name: 'Personal', count: 12 },
+        { name: 'Archive', count: 78 },
+    ]
+
+    const chartData = [
+        { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+        { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+        { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
+        { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+        { browser: "other", visitors: 90, fill: "var(--color-other)" },
+    ]
+    const chartConfig = {
+        visitors: {
+            label: "Visitors",
+        },
+        chrome: {
+            label: "PDFs",
+            color: "hsl(var(--chart-1))",
+        },
+        safari: {
+            label: "DOCs",
+            color: "hsl(var(--chart-2))",
+        },
+        firefox: {
+            label: "XLSs",
+            color: "hsl(var(--chart-3))",
+        },
+        edge: {
+            label: "PNGs",
+            color: "hsl(var(--chart-4))",
+        },
+        other: {
+            label: "Other",
+            color: "hsl(var(--chart-5))",
+        },
+    }
+
     return (
-        <div className="min-h-screen p-8 space-y-8">
+        <div className="min-h-screen p-3 md:p-8 space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -79,21 +110,25 @@ export default function Component() {
                 </Card>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                     <CardHeader>
                         <CardTitle>Document Types</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {/*<div className="space-y-2">*/}
-                        {/*    {userDocumentData.map((doc, index) => (*/}
-                        {/*        <div key={index} className="flex items-center">*/}
-                        {/*            <div className={`w-4 h-4 ${doc.color} rounded-full mr-2`}></div>*/}
-                        {/*            <span className="flex-1">{doc.name}</span>*/}
-                        {/*            <span className="font-bold">{doc.count}</span>*/}
-                        {/*        </div>*/}
-                        {/*    ))}*/}
-                        {/*</div>*/}
+                        <ChartContainer
+                            config={chartConfig}
+                            className="mx-auto aspect-square w-full max-h-[300px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+                        >
+                            <PieChart>
+                                <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+                                <Pie data={chartData} dataKey="visitors" label nameKey="browser" />
+                                <ChartLegend
+                                    content={<ChartLegendContent nameKey="browser" />}
+                                    className="flex-wrap gap-4 [&>*]:justify-center"
+                                />
+                            </PieChart>
+                        </ChartContainer>
                     </CardContent>
                 </Card>
 
@@ -165,7 +200,7 @@ export default function Component() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-wrap gap-4">
-                        <Button className="flex items-center">
+                        <Button variant="ghost" className="flex items-center">
                             <UploadIcon className="mr-2 h-4 w-4" /> Upload File
                         </Button>
                         <Button variant="outline" className="flex items-center">
