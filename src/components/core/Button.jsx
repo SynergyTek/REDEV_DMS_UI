@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronDown} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
+import {Icon} from "~";
 
 /**
  * Primary UI component for user interaction
@@ -38,7 +37,7 @@ function Button({
 		size = "regular"
 	}
 	if (type === "dropdown") {
-		props.icon = faChevronDown
+		props.icon = "chevron-down"
 	}
 	if (!props.text && props.icon) {
 		ratio = 1
@@ -59,11 +58,12 @@ function Button({
 			
 			<>
 				{props.icon ? (
-					<FontAwesomeIcon
+					<Icon
 						icon={props.icon}
-						className={`${ratio && ratioMap[ratio]} p-auto`}
+						className={`text-inherit ${ratio && ratioMap[ratio]} p-auto`}
 						size={sizeMap[size].icon}
-					></FontAwesomeIcon>
+						hover={{container: this, variant: "fas"}}
+					></Icon>
 				) : null}
 				{props.text ? <span className={sizeMap[size].text}>{props.text}</span> : null}
 			</>
@@ -89,7 +89,7 @@ Button.propTypes = {
 	/**
 	 * Icon
 	 */
-	icon: PropTypes.object,
+	icon: PropTypes.string,
 	/**
 	 * Optional click handler
 	 */

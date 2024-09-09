@@ -1,50 +1,43 @@
 import axios from "axios";
-import React, {useEffect, useRef, useState, useMemo} from "react";
-import {Breadcrumb, Button, Loader, Separator, Slider, Text, Toolbar} from "~";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFile, faFileExclamation, faFolder} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
-import {
-	faArrowLeft,
-	faArrowRight, faFolderTree,
-	faHome,
-	faLeft,
-	faPlus,
-	faRefresh
-} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
-import {faFolders} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
+import React, {useEffect, useRef, useState, useMemo, forwardRef} from "react";
+import {Breadcrumb, Button, Icon, Loader, Separator, Slider, Text, Toolbar} from "~";
 
 const iconMap = {
-	"folder": faFolder,
-	"GENERAL_FOLDER": faFolder,
-	"file": faFile,
-	"GENERAL_DOCUMENT": faFile,
-	"workspace": faFolders,
-	"WORKSPACE_GENERAL": faFolders,
+	"folder": "folder",
+	"GENERAL_FOLDER": "folder",
+	"file": "file",
+	"GENERAL_DOCUMENT": "file",
+	"workspace": "folders",
+	"WORKSPACE_GENERAL": "folders",
 }
 const userId = "45bba746-3309-49b7-9c03-b5793369d73c"
 
-function Item({scale, id, type, title, onDoubleClick, ...props}) {
-	console.log(type)
+const Item = forwardRef(({scale, id, type, title, onDoubleClick, ...props}, ref) => {
+	ref = ref || useRef()
 	return <div role={"button"}
 	            onDoubleClick={onDoubleClick}
 	            title={title}
-	            className={`transition-all hover:bg-primary-200 bg-opacity-80 dark:hover:bg-primary-950 dark:bg-opacity-80 p-4 rounded flex flex-col gap-2`}>
-		<FontAwesomeIcon icon={iconMap[type] || faFileExclamation}
-		                 size={`${scale}x`}
-		                 className={"text-primary-900 dark:text-primary-50"}
+	            ref={ref}
+	            className={`text-primary-800 dark:text-primary-200 transition-all hover:bg-primary-200 bg-opacity-80 dark:hover:bg-primary-950 dark:bg-opacity-80 p-4 rounded flex flex-col gap-2`}>
+		<Icon icon={iconMap[type] || "file-exclamation"}
+		      variant={"fal"}
+		      hover={
+			      {variant: "fad", container: ref}
+		      }
+		      size={`${scale}x`}
 		/>
 		<Text
-			wrap={scale * 2} 
-		className={"break-words"}
+			wrap={scale * 2}
+			className={"break-words"}
 		>
 			{title}
-			
-			
+		
+		
 		</Text>
 	</div>
 	
 	
-}
+})
 
 function FileExplorer(props) {
 	const [loading, setLoading] = useState(true);
@@ -52,7 +45,7 @@ function FileExplorer(props) {
 	const [level, setLevel] = useState(0);
 	const [scale, setScale] = useState(4);
 	const [structure, setStructure] = useState(null);
-	const [path, setPath] = useState([{href: "/", title: "Home", icon: faHome}]);
+	const [path, setPath] = useState([{href: "/", title: "Home", icon: "home"}]);
 	const [currentFolder, setCurrentFolder] = useState(null);
 	const [source, setSource] = useState(`/dmsapi/dms/workspace/GetParentWorkspace?userId=${userId}&portalName=DMS`)
 	const sliderRef = useRef();
@@ -62,7 +55,6 @@ function FileExplorer(props) {
 		setPath([props])
 	}
 	useEffect(() => {
-		console.log(currentFolder)
 		if (!currentFolder) return;
 		
 		if (currentFolder === '/') {
@@ -78,7 +70,6 @@ function FileExplorer(props) {
 		if (typeof source === "string") {
 			axios.get(source).then((res) => {
 				setData(res.data);
-				console.log(res.data, source, level)
 			}).catch((e) => {
 				console.log(e);
 				setLoading(false)
@@ -101,14 +92,18 @@ function FileExplorer(props) {
 		let temp = []
 		data.sort((a, b) => (a.Name || a.title).localeCompare((b.Name || b.title)))
 		data.forEach((item, index) => {
-			if(level === 0) item["TemplateCode"] = "WORKSPACE_GENERAL"
+			if (level === 0) item["TemplateCode"] = "WORKSPACE_GENERAL"
 			temp.push(<Item title={item["Name"] || item['title']}
 			                type={item["TemplateCode"]}
 			                scale={scale}
 			                onDoubleClick={() => {
-				                setCurrentFolder(item.id||item.key)
-				                setPath([...path, {href: item.id||item.key, title: item["Name"] || item['title'], icon: iconMap[item["TemplateCode"]]}])
-				                setLevel(level+1)
+				                setCurrentFolder(item.id || item.key)
+				                setPath([...path, {
+					                href: item.id || item.key,
+					                title: item["Name"] || item['title'],
+					                icon: iconMap[item["TemplateCode"]]
+				                }])
+				                setLevel(level + 1)
 			                }}
 			/>)
 			
@@ -124,20 +119,21 @@ function FileExplorer(props) {
 			<div className={"min-h-96 flex flex-col bg-primary-50 bg-opacity-60 border-primary-200 border-b-0 shadow dark:bg-secondary-900 dark:bg-opacity-20 border-2 dark:border-secondary-900 dark:shadow-xl"}>
 				<div className={"flex gap-2 bg-primary-100 shadow dark:bg-secondary-900 p-2 items-center justify-between"}>
 					<div className={"flex"}>
-						<Button icon={faArrowLeft}
+						<Button icon={"arrow-left"}
 						        mode={"tertiary"}
-						        size={"sm"} 
-						onClick={()=>{
-							const previousPath = path[path.length-2]
-							console.log(previousPath)
-							setCurrentFolder(previousPath.href)
-							setPath(path.slice(0, path.length-1))
-							setLevel(level-1)
-						}} className={"disabled"} disabled={true}></Button>
-						<Button icon={faArrowRight}
+						        size={"sm"}
+						        onClick={() => {
+							        const previousPath = path[path.length - 2]
+							        setCurrentFolder(previousPath.href)
+							        setPath(path.slice(0, path.length - 1))
+							        setLevel(level - 1)
+						        }}
+						        className={"disabled"}
+						        disabled={true}></Button>
+						<Button icon={"arrow-right"}
 						        mode={"tertiary"}
 						        size={"sm"}></Button>
-						<Button icon={faRefresh}
+						<Button icon={"arrows-rotate"}
 						        mode={"tertiary"}
 						        size={"sm"}></Button>
 					</div>
@@ -146,7 +142,7 @@ function FileExplorer(props) {
 					{/*            onClick={handlePathClick} />*/}
 					<Separator vertical={true}
 					           className={"ml-auto"} />
-					<Button icon={faPlus}
+					<Button icon={"plus"}
 					        mode={"tertiary"}
 					        size={"sm"}
 					        ratio={1} />
