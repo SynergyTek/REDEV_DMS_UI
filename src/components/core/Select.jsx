@@ -1,165 +1,177 @@
-import { Button, InputField, Loader } from "~";
-import { useState, useRef, useEffect, useId } from "react";
+import {forwardRef, useEffect, useMemo, useState} from "react";
+import {type} from "@/lib/utils";
+import {toast} from "sonner";
 import axios from "axios";
+import {useMediaQuery} from "usehooks-ts"
+
+import {Popover, PopoverContent, PopoverTrigger} from "~/ui/popover";
+import {Button} from "~/ui/button";
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "~/ui/command";
+import {Drawer, DrawerContent, DrawerTrigger} from "~/ui/drawer";
+import {Icon, Loader, Text} from "~";
 import PropTypes from "prop-types";
 
-function Select({
-	load,
-	parameter,
-	search = true,
-	onSelect,
-	options = {
-		data: [
-			{ name: "Option 1", value: 1 },
-			{ name: "Option 2", value: 2 },
-			{ name: "Option 3", value: 3 },
-			{ name: "Option 4", value: 4 },
-			{ name: "Option 5", value: 5 },
-		],
-		display: "name",
-		value: "value",
-	},
-	primary = false,
-}) {
-	const [data, setData] = useState(null);
-	const [selected, setSelected] = useState({ display: "Select" });
+const Select = forwardRef((
+	{className, source, map = {key: "id", value: "name"}, ...props},
+	ref) => {
+	const [data, setData] = useState([]);
+	const isDesktop = useMediaQuery("(min-width: 768px)")
 	const [loading, isLoading] = useState(true);
-	const [isOpen, setIsOpen] = useState(false);
-	const selectRef = useRef();
-	const keyId = useId();
-
-	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (selectRef.current && !selectRef.current.contains(event.target)) {
-				setIsOpen(false);
-			}
-		};
-
-		const handleBlur = () => {
-			setIsOpen(false);
-		};
-
-		window.addEventListener("click", handleClickOutside);
-		window.addEventListener("blur", handleBlur);
-
-		return () => {
-			window.removeEventListener("click", handleClickOutside);
-			window.removeEventListener("blur", handleBlur);
-		};
-	}, []);
-	useEffect(() => {
-		switch (load) {
-			case "LOV":
-				axios
-					.get(`/forms/GetLOVIdNameList?lovType=${parameter}`)
-					.then((res) => {
-						console.log(res);
-						options.data = res.data;
-					});
+	const [selected, setSelected] = useState(null)
+	const [open, setOpen] = useState(false)
+	const [value, setValue] = useState("")
+	
+	useMemo(() => {
+		console.log(source)
+		switch (type(source)) {
+			
+			case "array":
+				setData(source)
+				break
+			case "object":
+				if (!source.type) toast("Source type not defined");
+				switch (source.type.toLowerCase()) {
+					case "lov":
+						axios
+							.get(`/forms/GetLOVIdNameList?lovType=${source.parameter}`)
+							.then((res) => {
+								console.log(res);
+								setData(res.data)
+								
+							});
+						break;
+					case "enum":
+						axios
+							.get(`/forms/GetEnumIdNameList?enumType=${source.parameter}`)
+							.then((res) => {
+								console.log(res);
+								setData(res.data)
+							});
+						break;
+					case "table":
+						axios
+							.get(`/dmsapi/cms/query/TableData?tableName=${source.parameter}`)
+							.then((res) => {
+								console.log(res);
+								setData(res.data)
+							});
+				}
 				break;
-			case "Enum":
-				axios
-					.get(`/forms/GetEnumIdNameList?enumType=${parameter}`)
+			case "string":
+				
+				axios.get(source)
 					.then((res) => {
-						console.log(res);
-						options.data = res.data;
-					});
-				break;
-		}
-		if (Array.isArray(options.data)) {
-			setData(options.data);
-			isLoading(false);
-		} else if (typeof options.source === "string") {
-			fetch(options.source)
-				.then((res) => res.json())
-				.then((res) => {
-					setData(
-						res.sort((a, b) => {
-							return a[options["display"]] > b[options["display"]];
+						if (!res.data) {
+							console.error("No data found")
+							setData([])
+						}
+						let sortedData = res.data.sort((a, b) => {
+							return a[map.id] > b[map.id];
 						})
-					);
-					isLoading(false);
-				})
-				.catch((e) => {
-					console.log(e);
-					isLoading(false);
-				});
+						setData(sortedData);
+					})
+					.catch((e) => {
+						console.log(e);
+						isLoading(false);
+					});
+			
 		}
-	}, [options]);
-	useEffect(() => {
-		onSelect && onSelect(selected);
-	}, [selected]);
-	const filterData = async (value) => {
-		isLoading(true);
-		let filteredData = data.filter((d) => {
-			return Object.values(d).includes(value);
-		});
-		setData(filteredData);
-		isLoading(false);
-	};
+	}, [source]);
+	useMemo(() => {
+		isLoading(false)
+	}, [data])
+	if (isDesktop) {
+		return (
+			<Popover open={open}
+			         onOpenChange={setOpen}>
+				<PopoverTrigger asChild>
+					<Button variant="outline"
+					        className="w-[200px] justify-between gap-2">
+						
+						<Text truncate={10}
+						      className={"opacity-80"}>{selected?.[map.value] || "Select"}</Text>
+						<Icon icon="chevron-down"
+						      className={`ml-4 shrink-0 ${open ? "rotate-180" : "rotate-0"}`} />
+					
+					</Button>
+				</PopoverTrigger>
+				<PopoverContent className="w-[200px] p-0"
+				                align="start">
+					{loading ? <Loader /> : <ContentList data={data}
+					                                     map={map}
+					                                     setOpen={setOpen}
+					                                     setSelected={setSelected} />}
+				</PopoverContent>
+			</Popover>
+		)
+	}
+	
 	return (
-		<div
-			className={`relative group min-w-36 ${isOpen ? "active" : null}`}
-			ref={selectRef}
-		>
-			<Button
-				type={"dropdown"}
-				text={selected.display}
-				className={"w-full"}
-				onClick={() => setIsOpen(!isOpen)}
-			/>
-			<div
-				className={`${isOpen ? "flex" : "hidden"}  border-2 border-primary-950 top-full my-2 animate-slide z-50 absolute flex-col text-primary-100 bg-secondary-950 group-hover:shadow-primary-800 shadow-md shadow-primary-950 w-full rounded-md p-4 bg-clip-border transition-all`}
-			>
-				{search ? (
-					<InputField placeholder={"Search"} onChange={filterData}></InputField>
-				) : null}
-				<ul
-					className={
-						"flex  max-h-64 overflow-y-auto flex-col mt-2 font-sans text-base font-normal text-blue-gray-700"
-					}
-				>
-					{loading ? (
-						<div className={"w-full flex items-center justify-center p-2 mt-4"}>
-							<Loader></Loader>
-						</div>
-					) : data ? (
-						data.map((option, index) => {
-							return (
-								<li
-									key={`${keyId}-${index}`}
-									id={option[options.value]}
-									role={"button"}
-									className={
-										"flex items-center w-full p-2 leading-tight transition-all rounded outline-none text-start hover:bg-primary-500 hover:bg-opacity-40 hover:text-primary-100 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
-									}
-									onClick={(event) => {
-										setSelected({
-											display: event.target.textContent,
-											value: event.target.id,
-										});
-										setIsOpen(false);
-									}}
-								>
-									{option[options.display]}
-								</li>
-							);
-						})
-					) : (
-						<p>No data to select</p>
-					)}
-				</ul>
-			</div>
-		</div>
-	);
+		<Drawer open={open}
+		        onOpenChange={setOpen}>
+			<DrawerTrigger asChild>
+				<Button variant="outline"
+				        className="w-[150px] justify-start">
+					{selected ? <>{selected[map.value]}</> : <>Select</>}
+				</Button>
+			</DrawerTrigger>
+			<DrawerContent>
+				{loading ? <Loader /> : <div className="mt-4 border-t">
+					<ContentList data={data}
+					             map={map}
+					             setOpen={setOpen}
+					             setSelected={setSelected} />
+				</div>
+				}
+			</DrawerContent>
+		</Drawer>
+	)
+})
+
+function ContentList({
+	                     setOpen,
+	                     setSelected,
+	                     data,
+	                     map,
+                     }) {
+	console.log(data)
+	return (
+		<Command>
+			<CommandInput placeholder="Search ..." />
+			<CommandList>
+				<CommandEmpty>No results found.</CommandEmpty>
+				<CommandGroup>
+					{data.map((item) => (
+						<CommandItem
+							key={item[map.key]}
+							value={item[map.value]}
+							onSelect={(value) => {
+								setSelected(data.find((d) => d[map.value] === value))
+								
+								setOpen(false)
+							}}
+						>
+							{item[map.value]}
+						</CommandItem>
+					))}
+				</CommandGroup>
+			</CommandList>
+		</Command>
+	)
 }
 
 Select.propTypes = {
-	load: PropTypes.oneOf(["LOV", "Enum", "Data"]),
-	parameter: PropTypes.string,
-	search: PropTypes.bool,
-	onSelect: PropTypes.func,
-	options: PropTypes.object,
-	primary: PropTypes.bool,
-};
-export default Select;
+	/**
+	 * The source of the data. Can be an array, object or a string
+	 */
+	source: PropTypes.oneOf(["array", "object","string"]),
+	/**
+	 * Which fields should be mapped to your data?
+	 * */
+	map: PropTypes.shape({
+		key: PropTypes.string,
+		value: PropTypes.string,
+	}),
+}
+
+export default Select

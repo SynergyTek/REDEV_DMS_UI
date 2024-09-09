@@ -1,5 +1,6 @@
 import {fn} from '@storybook/test';
 import {Button} from '~';
+import {faHome} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
@@ -57,5 +58,12 @@ export const Huge = {
 		size: 'lg',
 		text: 'Button',
 	},
+};
+
+export const Icon = {
+    args: {
+        primary: true,
+        icon: faHome
+    }
 };
 
