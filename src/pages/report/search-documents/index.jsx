@@ -1,71 +1,35 @@
-import { InputField, Table, Select, Button } from "~";
+import { InputField, Table, Select, Text } from "~";
+import { Button } from "~/ui/button";
 import { faPencil, faTrash } from "@awesome.me/kit-9b926a9ec0";
-// import { useState, useEffect } from "react";
-// import axios from "axios";
 
 export default function search_report() {
-	// const [projectNoData, setProjectNoData] = useState();
-	// const [documentNoData, setDocumentNoData] = useState([]);
-
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		try {
-	// 			const response = await axios.get(
-	// 				"/dmsapi/cms/query/GetLOVIdNameList?lovType=DPFU_ProjectNo"
-	// 			);
-	// 			debugger;
-	// 			console.log(`search_document: ${response.data}`);
-	// 			if (Array.isArray(response.data)) {
-	// 				setProjectNoData(response.data);
-	// 				console.log(projectNoData);
-	// 			}
-	// 		} catch (error) {
-	// 			console.error("Error fetching data:", error);
-	// 		}
-	// 	};
-	// 	fetchData();
-	// }, []);
-
 	return (
 		<div>
 			<div>
 				<div className="flex space-x-4 items-end">
-					<div className="flex-1 min-w-0">
+					{/* <div className="flex-1 min-w-0 flex">
 						<span className="text-white text-xs">Project No</span>
 						<Select
-							options={{
-								// data: { projectNoData },
-								display: "Name",
-								value: "Id",
+							source="/dmsapi/dms/query/GetBulkUploadTemplateCodeNameList"
+							map={{
+								key: "Id",
+								value: "Name",
 							}}
-							primary
-							text="Button"
-							label="button"
-							search={false}
-							// load="LOV"
-							// parameter="DPFU_ProjectNo"
 						/>
 					</div>
-					<div className="flex-1 min-w-0">
+					<div className="flex-1 min-w-0 flex">
 						<span className="text-white text-xs">Document No</span>
 						<Select
-							options={{
-								data: [
-									{
-										name: "Engineering Subcontract",
-										value: "engineeringSubcontract",
-									},
-									{ name: "Vendor Documents", value: "vendorDocuments" },
-									{ name: "Project Documents", value: "projectDocuments" },
-								],
-								display: "name",
-								value: "value",
+							source={{
+								type: "lov",
+								parameter: "DPFU_ProjectNo",
 							}}
-							primary
-							text="Button"
-							search={false}
+							map={{
+								key: "Id",
+								value: "Name",
+							}}
 						/>
-					</div>
+					</div> */}
 					<div className="flex-1 min-w-0">
 						<InputField
 							id="documentNo"
@@ -85,13 +49,16 @@ export default function search_report() {
 						/>
 					</div>
 				</div>
-				<div className="flex gap-4 mt-2">
-					<Button onClick={() => {}} primary text="Apply Filter" />
-					<Button onClick={() => {}} text="Reset" />
+				<div className="">
+					<Button variant="outline">Apply Filter</Button>
+					<Button variant="outline">Reset</Button>
 				</div>
 			</div>
 			<div className="mt-8">
-				<Button onClick={() => {}} text="Export To Excel" />
+				<Button variant="outline" className="flex items-center">
+					{/* <Text variant="span">Export To Excel</Text> */}
+					{/* Export To Excel */}
+				</Button>
 			</div>
 			<div className="mt-1">
 				<Table
