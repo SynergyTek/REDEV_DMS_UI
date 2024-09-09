@@ -327,8 +327,8 @@ const Sidebar = () => {
 								Masters
 							</MenubarItem>
 							<MenubarSeparator className={"onMoblie"} />
-							<Link href={"/admin/dashboard"}>
-								<MenubarItem>Admin Dashboard</MenubarItem>
+							<Link href={"/masters/email-integration"}>
+								<MenubarItem>Email Integration</MenubarItem>
 							</Link>
 							<Link href={"/"}>
 								<MenubarItem>Document Custom Template</MenubarItem>
