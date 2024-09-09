@@ -34,5 +34,6 @@ export default function RootLayout({ children }) {
                 </ResizablePanel>
             </ResizablePanelGroup>
         </>
-    );
+    )
+}
 
