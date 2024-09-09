@@ -10,6 +10,8 @@ import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandL
 import {Drawer, DrawerContent, DrawerTrigger} from "~/ui/drawer";
 import {Icon, Loader, Text} from "~";
 import PropTypes from "prop-types";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faChevronDown} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 
 const Select = forwardRef((
 	{className, source, map = {key: "id", value: "name"}, defaultValue ,  ...props},
@@ -20,8 +22,10 @@ const Select = forwardRef((
 	const [selected, setSelected] = useState(null)
 	const [open, setOpen] = useState(false)
 	const [value, setValue] = useState("")
+	const [isClient, setIsClient] = useState(false);
 	
 	useEffect(() => {
+		setIsClient(true);
 		if (defaultValue) {
 			setSelected(defaultValue)
 		}
@@ -89,14 +93,14 @@ const Select = forwardRef((
 			<Popover open={open}
 			         onOpenChange={setOpen}>
 				<PopoverTrigger asChild>
-					<Button variant="outline"
-					        className="w-[200px] justify-between gap-2">
-						
-						<Text truncate={10}
-						      className={"opacity-80"}>{selected?.[map.value] || "Select"}</Text>
-						<Icon icon="chevron-down"
-						      className={`ml-4 shrink-0 ${open ? "rotate-180" : "rotate-0"}`} />
-					
+					<Button variant="outline" className="min-w-[200px] justify-between gap-2">
+						{selected?.[map.value] || "Select"}
+						{isClient && (
+							<Icon
+								icon="chevron-down"
+								className={`ml-4 shrink-0 ${open ? "rotate-180" : "rotate-0"}`}
+							/>
+						)}
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent className="w-[200px] p-0"
@@ -109,13 +113,13 @@ const Select = forwardRef((
 			</Popover>
 		)
 	}
-	
+
 	return (
 		<Drawer open={open}
 		        onOpenChange={setOpen}>
 			<DrawerTrigger asChild>
 				<Button variant="outline"
-				        className="w-[150px] justify-start">
+				        className="min-w-[150px] justify-between">
 					{selected ? <>{selected[map.value]}</> : <>Select</>}
 				</Button>
 			</DrawerTrigger>

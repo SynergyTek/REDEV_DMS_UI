@@ -7,7 +7,7 @@ export default function search_report() {
 		<div>
 			<div>
 				<div className="flex space-x-4 items-end">
-					{/* <div className="flex-1 min-w-0 flex">
+					<div className="flex-1 min-w-0 flex">
 						<span className="text-white text-xs">Project No</span>
 						<Select
 							source="/dmsapi/dms/query/GetBulkUploadTemplateCodeNameList"
@@ -29,7 +29,7 @@ export default function search_report() {
 								value: "Name",
 							}}
 						/>
-					</div> */}
+					</div>
 					<div className="flex-1 min-w-0">
 						<InputField
 							id="documentNo"
