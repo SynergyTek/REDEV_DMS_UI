@@ -34,8 +34,11 @@ function Item({scale, id, type, title, onDoubleClick, ...props}) {
 		                 className={"text-primary-900 dark:text-primary-50"}
 		/>
 		<Text
-			wrap={scale * 2} >
+			wrap={scale * 2} 
+		className={"break-words"}
+		>
 			{title}
+			
 			
 		</Text>
 	</div>

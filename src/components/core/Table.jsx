@@ -1,12 +1,4 @@
 import { CheckBox, ContextMenu, Loader, Pagination, Template, Text } from "~";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faAngleDoubleLeft,
-	faAngleDoubleRight,
-	faChevronLeft,
-	faChevronRight,
-	faPencil,
-} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
