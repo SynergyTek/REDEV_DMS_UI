@@ -22,7 +22,7 @@ export default function index() {
 		<div>
 			<div className="text-white text-2xl mb-6">Email Integration</div>
 			<div>
-				<Link href="/masters/email-integration/manage_email">
+				<Link href="/masters/email-integration/manage-email">
 					<Button className="mb-3" primary text="Create" />
 				</Link>
 

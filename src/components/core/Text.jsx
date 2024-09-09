@@ -31,10 +31,10 @@ const variantMap = {
 	h6: "text-base",
 }
 
-function Text({variant = "p", truncate, align = "start", ...props}) {
-	const Comp = variant
+function Text({variant, truncate = true, wrap, align = "start", ...props}) {
+	const Comp = variant || "p"
 	return <Comp title={props.children}
-	             className={`${alignMap[align]} ${variantMap[variant]} ${typeof truncate === "number" && sizeMap[truncate]} text-primary-950 dark:text-primary-100 ${truncate && "truncate ..."} ${props.className}`}>{props.children}</Comp>
+	             className={`${alignMap[align]} ${variantMap[variant]}  ${typeof wrap === "number" && sizeMap[wrap]}  text-primary-950 dark:text-primary-100 text-ellipsis overflow-hidden ${props.className}`}>{props.children}</Comp>
 }
 
 export default Text;

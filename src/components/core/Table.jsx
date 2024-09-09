@@ -1,68 +1,59 @@
-import {CheckBox, ContextMenu, Loader, Pagination, Template, Text} from "~";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {
-	faAngleDoubleLeft,
-	faAngleDoubleRight,
-	faChevronLeft,
-	faChevronRight,
-	faPencil,
-} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
-import React, {useEffect, useRef, useState} from "react";
+import { CheckBox, ContextMenu, Loader, Pagination, Template, Text } from "~";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-function TableRow({row, data, onClick, onContextMenu, ...props}) {
-	return <tr
-		className={`border-b h-10 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all ease-linear cursor-pointer`}
-		onClick={onClick}
-		onContextMenu={onContextMenu}
-		id={row[props.rowId]}
-		data-name={row[props.rowName]}
-	>
-		{props.selection ? (
-			<td className={"p-4 "}>
-				<CheckBox />
-			</td>
-		) : null}
-		{data
-			? data.map((column, index) => {
-				return (
-					<td className="px-6 py-4"
-					    key={index}>
-						{column.template ?
-							<Template context={row[column.field]}>
-								{column.template}
-							</Template>
-							:
-							<Text>
-								{row[column.field]}
-							</Text>
-						}
-					</td>
-				);
-			})
-			: null}
-	</tr>;
+function TableRow({ row, data, onClick, onContextMenu, ...props }) {
+	return (
+		<tr
+			className={`border-b h-10 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all ease-linear cursor-pointer`}
+			onClick={onClick}
+			onContextMenu={onContextMenu}
+			id={row[props.rowId]}
+			data-name={row[props.rowName]}
+		>
+			{props.selection ? (
+				<td className={"p-4 "}>
+					<CheckBox />
+				</td>
+			) : null}
+			{data
+				? data.map((column, index) => {
+						return (
+							<td className="px-6 py-4" key={index}>
+								{column.template ? (
+									<Template context={row[column.field]}>
+										{column.template}
+									</Template>
+								) : (
+									<Text>{row[column.field]}</Text>
+								)}
+							</td>
+						);
+					})
+				: null}
+		</tr>
+	);
 }
 
 function Table({
-	               data = {
-		               source: "https://jsonplaceholder.org/users",
-	               },
-	               columns = [
-		               {
-			               header: "First Name",
-			               field: "firstname",
-		               },
-		               {
-			               header: "Last Name",
-			               field: "lastname",
-		               },
-	               ],
-	               pageLimit = 10,
-	               actions,
-	               pagination = true,
-	               ...props
-               }) {
+	data = {
+		source: "https://jsonplaceholder.org/users",
+	},
+	columns = [
+		{
+			header: "First Name",
+			field: "firstname",
+		},
+		{
+			header: "Last Name",
+			field: "lastname",
+		},
+	],
+	pageLimit = 10,
+	actions,
+	pagination = true,
+	...props
+}) {
 	const [allData, setAllData] = useState([]);
 	const [fetchedData, setFetchedData] = useState(data);
 	const [fetchedColumns, setFetchedColumns] = useState(columns);
@@ -125,7 +116,7 @@ function Table({
 					setFetchedData(null);
 					console.log(e);
 				});
-			
+
 			if (columns.length > 0) {
 				const cols = columns.map((item) => {
 					const tempObj = {
@@ -134,15 +125,15 @@ function Table({
 					};
 					return tempObj;
 				});
-				const tempData = {...colFilter};
+				const tempData = { ...colFilter };
 				tempData.data = [...cols];
-				
+
 				//console.log(tempData, "my cols")
 				selColFilter(tempData);
 			}
 		}
 	}, []);
-	
+
 	useEffect(() => {
 		if (Array.isArray(fetchedData)) {
 			let _data = [],
@@ -160,28 +151,28 @@ function Table({
 			setPageData(_data);
 		}
 	}, [fetchedData, currentPage]);
-	
+
 	function hideContextMenu() {
 		const menu = contextMenu.current;
 		if (menu) {
 			menu.classList.add("hidden");
 		}
 	}
-	
+
 	function showContextMenu() {
 		const menu = contextMenu.current;
 		if (menu) {
 			menu.classList.remove("hidden");
 		}
 	}
-	
+
 	function refresh(event) {
 		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);
 		}, 2000);
 	}
-	
+
 	const selectRow = (event) => {
 		setSelection(true);
 	};
@@ -252,7 +243,7 @@ function Table({
 		const menu = contextMenu.current;
 		event.currentTarget.classList.add("active");
 		const offsetBox = event.currentTarget.offsetParent;
-		
+
 		menu.style.display = "block";
 		const menuWidth = menu.offsetWidth;
 		const menuHeight = menu.offsetHeight;
@@ -264,12 +255,12 @@ function Table({
 		if (posX + menuWidth > offsetBox.offsetLeft + offsetBox.clientWidth) {
 			posX = offsetBox.offsetLeft + offsetBox.clientWidth - menuWidth;
 		}
-		
+
 		// Check if the menu goes beyond the bottom edge of the window
 		if (posY + menuHeight > offsetBox.offsetTop + offsetBox.clientHeight) {
 			posY = offsetBox.offsetTop + offsetBox.clientHeight - menuHeight;
 		}
-		
+
 		menu.style.left = posX + "px";
 		menu.style.top = posY + "px";
 		menu.contextData = {
@@ -285,11 +276,9 @@ function Table({
 				"rounded-md overflow-clip flex flex-col border dark:border-secondary-800"
 			}
 		>
-			{
-				actions &&
-				<ContextMenu innerRef={contextMenu}
-				             options={actions}></ContextMenu>
-			}
+			{actions && (
+				<ContextMenu innerRef={contextMenu} options={actions}></ContextMenu>
+			)}
 			<div className="overflow-x-auto shadow-md ">
 				{/*<div*/}
 				{/*	className={"p-4 bg-primary-300 shadow-md border-l-4 text-primary-100 dark:bg-primary-950 dark:text-primary-300"}*/}
@@ -318,60 +307,60 @@ function Table({
 				{/*</div>*/}
 			</div>
 			<table className="w-full text-sm text-left rtl:text-right">
-				<thead className="text-xs text-primary-900 uppercase bg-primary-200 dark:bg-secondary-900 dark:text-primary-50">
-				<tr>
-					{selection ? (
-						<td className={"p-4"}>
-							<CheckBox />
-						</td>
-					) : null}
-					{fetchedColumns
-						? fetchedColumns.map((column, index) => {
-							return (
-								<th scope="col"
-								    className="px-6 py-5"
-								    key={index}>
-									{column.header}
-								</th>
-							);
-						})
-						: null}
-				</tr>
+				<thead className="text-xs text-primary-50 uppercase bg-primary-900 bg-opacity-90 dark:bg-secondary-900 dark:text-primary-50">
+					<tr>
+						{selection ? (
+							<td className={"p-4"}>
+								<CheckBox />
+							</td>
+						) : null}
+						{fetchedColumns
+							? fetchedColumns.map((column, index) => {
+									return (
+										<th scope="col" className="px-6 py-5" key={index}>
+											{column.header}
+										</th>
+									);
+								})
+							: null}
+					</tr>
 				</thead>
 				<tbody>
-				{loading ? (
-					<tr>
-						<td
-							className="p-6 text-center select-none cursor-pointer"
-							colSpan={columns.length}
-						>
-							<div className={"w-full flex items-center justify-center"}>
-								<Loader></Loader>
-							</div>
-						</td>
-					</tr>
-				) : pageData ? (
-					pageData.map((row, index) => {
-						return (
-							<TableRow row={row}
-							          onContextMenu={actions && handleContextMenu}
-							          data={fetchedColumns} />
-						);
-					})
-				) : (
-					<tr>
-						<td
-							className="p-6 text-center select-none cursor-pointer"
-							colSpan={columns.length}
-							onClick={refresh}
-						>
-							<p className={"text-lg font-bold"}>No data found</p>
-						</td>
-					</tr>
-				)}
+					{loading ? (
+						<tr>
+							<td
+								className="p-6 text-center select-none cursor-pointer"
+								colSpan={columns.length}
+							>
+								<div className={"w-full flex items-center justify-center"}>
+									<Loader></Loader>
+								</div>
+							</td>
+						</tr>
+					) : pageData ? (
+						pageData.map((row, index) => {
+							return (
+								<TableRow
+									row={row}
+									onContextMenu={actions && handleContextMenu}
+									data={fetchedColumns}
+								/>
+							);
+						})
+					) : (
+						<tr>
+							<td
+								className="p-6 text-center select-none cursor-pointer"
+								colSpan={columns.length}
+								onClick={refresh}
+							>
+								<p className={"text-lg font-bold"}>No data found</p>
+							</td>
+						</tr>
+					)}
 				</tbody>
 			</table>
-			
+
 			{pagination && fetchedData && (
 				<nav
 					className={
@@ -387,16 +376,14 @@ function Table({
 						</span>{" "}
 						out of <span className={"font-bold"}>{fetchedData.length}</span>
 					</p>
-					{
-						fetchedData.length ? (
-							<Pagination
-								pages={Math.ceil(fetchedData.length / pageLimit)}
-								onChange={setCurrentPage}
-							/>
-						) : (
-							<Loader />
-						)
-					}
+					{fetchedData.length ? (
+						<Pagination
+							pages={Math.ceil(fetchedData.length / pageLimit)}
+							onChange={setCurrentPage}
+						/>
+					) : (
+						<Loader />
+					)}
 				</nav>
 			)}
 		</div>

@@ -10,23 +10,35 @@ import {
 	faUpload,
 	faUserTie,
 	faWindowRestore,
-	faAngleRight, faChartPie
+	faAngleRight,
+	faChartPie,
 } from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 import {
-	Sidebar_menu, MenubarCheckboxItem,
+	Sidebar_menu,
+	MenubarCheckboxItem,
 	MenubarContent,
 	MenubarItem,
-	MenubarMenu, MenubarRadioGroup, MenubarRadioItem,
+	MenubarMenu,
+	MenubarRadioGroup,
+	MenubarRadioItem,
 	MenubarSeparator,
-	MenubarShortcut, MenubarSub, MenubarSubContent, MenubarSubTrigger,
+	MenubarShortcut,
+	MenubarSub,
+	MenubarSubContent,
+	MenubarSubTrigger,
 	MenubarTrigger,
-} from "~/ui/sidebar_menu"
+} from "~/ui/sidebar_menu";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { far } from "@awesome.me/kit-9b926a9ec0/icons";
 import React from "react";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "~/ui/tooltip";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "~/ui/tooltip";
 
 const Sidebar = () => {
 	const router = useRouter();
@@ -58,7 +70,7 @@ const Sidebar = () => {
 					<li>
 						<TooltipProvider>
 							<Tooltip>
-								<TooltipTrigger className={'w-full'}>
+								<TooltipTrigger className={"w-full"}>
 									<Link
 										href="/"
 										className={`flex items-center gap-4 rounded-md px-3 py-2 ${
@@ -68,39 +80,49 @@ const Sidebar = () => {
 										}
 											`}
 									>
-										<FontAwesomeIcon icon={faHome} className={"w-4"}/>
-										<span className="text-sm font-medium onDesktop"> Dashboard </span>
+										<FontAwesomeIcon icon={faHome} className={"w-4"} />
+										<span className="text-sm font-medium onDesktop">
+											{" "}
+											Dashboard{" "}
+										</span>
 									</Link>
 								</TooltipTrigger>
-								<TooltipContent side={'right'} className={'onMoblie'}>Dashboard</TooltipContent>
+								<TooltipContent side={"right"} className={"onMoblie"}>
+									Dashboard
+								</TooltipContent>
 							</Tooltip>
 						</TooltipProvider>
 					</li>
 					<li>
 						<TooltipProvider>
 							<Tooltip>
-								<TooltipTrigger className={'w-full'}>
-										<Link
-											href="/files"
-											className={`flex items-center gap-4 rounded-md px-3 py-2 ${
-												currentRoute === "/analytics"
-													? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
-													: "hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700  dark:hover:bg-opacity-35 dark:hover:text-white"
-											}
+								<TooltipTrigger className={"w-full"}>
+									<Link
+										href="/files"
+										className={`flex items-center gap-4 rounded-md px-3 py-2 ${
+											currentRoute === "/analytics"
+												? "bg-secondary-200 bg-opacity-60 text-black dark:bg-secondary-700 dark:text-white dark:bg-opacity-35"
+												: "hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:hover:bg-secondary-700  dark:hover:bg-opacity-35 dark:hover:text-white"
+										}
 												`}
-										>
-											<FontAwesomeIcon icon={faChartPie} className={"w-4"}/>
-											<span className="text-sm font-medium onDesktop"> Analytics </span>
-										</Link>
-									</TooltipTrigger>
-								<TooltipContent side={'right'} className={'onMoblie'}>Analytics</TooltipContent>
+									>
+										<FontAwesomeIcon icon={faChartPie} className={"w-4"} />
+										<span className="text-sm font-medium onDesktop">
+											{" "}
+											Analytics{" "}
+										</span>
+									</Link>
+								</TooltipTrigger>
+								<TooltipContent side={"right"} className={"onMoblie"}>
+									Analytics
+								</TooltipContent>
 							</Tooltip>
 						</TooltipProvider>
 					</li>
 					<li>
 						<TooltipProvider>
 							<Tooltip>
-								<TooltipTrigger className={'w-full'}>
+								<TooltipTrigger className={"w-full"}>
 									<Link
 										href="/files"
 										className={`flex items-center gap-4 rounded-md px-3 py-2 ${
@@ -110,213 +132,254 @@ const Sidebar = () => {
 										}
 											`}
 									>
-										<FontAwesomeIcon icon={far.faFiles} className={"w-4"}/>
-										<span className="text-sm font-medium onDesktop"> Files </span>
+										<FontAwesomeIcon icon={far.faFiles} className={"w-4"} />
+										<span className="text-sm font-medium onDesktop">
+											{" "}
+											Files{" "}
+										</span>
 									</Link>
 								</TooltipTrigger>
-								<TooltipContent side={'right'} className={'onMoblie'}>File Explorer</TooltipContent>
+								<TooltipContent side={"right"} className={"onMoblie"}>
+									File Explorer
+								</TooltipContent>
 							</Tooltip>
 						</TooltipProvider>
 					</li>
 				</ul>
 				<Sidebar_menu>
-					<MenubarSeparator/>
+					<MenubarSeparator />
 					<MenubarMenu>
-						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2 flex items-center'}>
-								<FontAwesomeIcon icon={faBook} className={"w-4 mr-5"}/>
-								<span className={'hidden md:block'}>Document Management</span>
+						<MenubarTrigger className={"flex justify-between items-center"}>
+							<div className={"py-2 flex items-center"}>
+								<FontAwesomeIcon icon={faBook} className={"w-4 mr-5"} />
+								<span className={"hidden md:block"}>Document Management</span>
 							</div>
-							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
+							<span className={"hidden md:block"}>
+								<FontAwesomeIcon icon={faAngleRight} />
+							</span>
 						</MenubarTrigger>
 						<MenubarContent>
-							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Document Management</MenubarItem>
-							<MenubarSeparator className={'onMoblie'}/>
-							<Link href={'/admin/dashboard'}>
+							<MenubarItem className={"font-bold pointer-events-none onMoblie"}>
+								Document Management
+							</MenubarItem>
+							<MenubarSeparator className={"onMoblie"} />
+							<Link href={"/admin/dashboard"}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
-								<Link href={'/'}>
-									<MenubarItem>Document Custom Template</MenubarItem>
-								</Link>
-								<Link href={'/'}>
-									<MenubarItem>User</MenubarItem>
-								</Link>
-								<Link href={'/'}>
-									<MenubarItem>User Role</MenubarItem>
-								</Link>
-								<Link href={'/'}>
-									<MenubarItem>User Group</MenubarItem>
-								</Link>
-						</MenubarContent>
-					</MenubarMenu>
-					<MenubarMenu>
-						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2 flex items-center'}>
-								<FontAwesomeIcon icon={faUserTie} className={"w-4 mr-5"}/>
-								<span className={'hidden md:block'}>Admin</span>
-							</div>
-							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
-						</MenubarTrigger>
-						<MenubarContent>
-							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Admin</MenubarItem>
-							<MenubarSeparator className={'onMoblie'}/>
-							<Link href={'/admin/dashboard'}>
-								<MenubarItem>Admin Dashboard</MenubarItem>
-							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>Document Custom Template</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User Role</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User Group</MenubarItem>
 							</Link>
 						</MenubarContent>
 					</MenubarMenu>
 					<MenubarMenu>
-						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2 flex items-center'}>
-								<FontAwesomeIcon icon={faListCheck} className={"w-4 mr-5"}/>
-								<span className={'hidden md:block'}>Work List</span>
+						<MenubarTrigger className={"flex justify-between items-center"}>
+							<div className={"py-2 flex items-center"}>
+								<FontAwesomeIcon icon={faUserTie} className={"w-4 mr-5"} />
+								<span className={"hidden md:block"}>Admin</span>
 							</div>
-							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
+							<span className={"hidden md:block"}>
+								<FontAwesomeIcon icon={faAngleRight} />
+							</span>
 						</MenubarTrigger>
 						<MenubarContent>
-							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Work List</MenubarItem>
-							<MenubarSeparator className={'onMoblie'}/>
-							<Link href={'/admin/dashboard'}>
+							<MenubarItem className={"font-bold pointer-events-none onMoblie"}>
+								Admin
+							</MenubarItem>
+							<MenubarSeparator className={"onMoblie"} />
+							<Link href={"/admin/dashboard"}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>Document Custom Template</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User Role</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User Group</MenubarItem>
 							</Link>
 						</MenubarContent>
 					</MenubarMenu>
 					<MenubarMenu>
-						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2 flex items-center'}>
-								<FontAwesomeIcon icon={faFileAlt} className={"w-4 mr-5"}/>
-								<span className={'hidden md:block'}>Report</span>
+						<MenubarTrigger className={"flex justify-between items-center"}>
+							<div className={"py-2 flex items-center"}>
+								<FontAwesomeIcon icon={faListCheck} className={"w-4 mr-5"} />
+								<span className={"hidden md:block"}>Work List</span>
 							</div>
-							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
+							<span className={"hidden md:block"}>
+								<FontAwesomeIcon icon={faAngleRight} />
+							</span>
 						</MenubarTrigger>
 						<MenubarContent>
-							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Report</MenubarItem>
-							<MenubarSeparator className={'onMoblie'}/>
-							<Link href={'/admin/dashboard'}>
+							<MenubarItem className={"font-bold pointer-events-none onMoblie"}>
+								Work List
+							</MenubarItem>
+							<MenubarSeparator className={"onMoblie"} />
+							<Link href={"/admin/dashboard"}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>Document Custom Template</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User Role</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User Group</MenubarItem>
 							</Link>
 						</MenubarContent>
 					</MenubarMenu>
 					<MenubarMenu>
-						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2 flex items-center'}>
-								<FontAwesomeIcon icon={faUpload} className={"w-4 mr-5"}/>
-								<span className={'hidden md:block'}>Upload</span>
+						<MenubarTrigger className={"flex justify-between items-center"}>
+							<div className={"py-2 flex items-center"}>
+								<FontAwesomeIcon icon={faFileAlt} className={"w-4 mr-5"} />
+								<span className={"hidden md:block"}>Report</span>
 							</div>
-							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
+							<span className={"hidden md:block"}>
+								<FontAwesomeIcon icon={faAngleRight} />
+							</span>
 						</MenubarTrigger>
 						<MenubarContent>
-							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Upload</MenubarItem>
-							<MenubarSeparator className={'onMoblie'}/>
-							<Link href={'/admin/dashboard'}>
-								<MenubarItem>Admin Dashboard</MenubarItem>
+							<MenubarItem className={"font-bold pointer-events-none onMoblie"}>
+								Report
+							</MenubarItem>
+							<MenubarSeparator className={"onMoblie"} />
+							<Link href={"/report/search-documents"}>
+								<MenubarItem>Search Documents</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>Document Custom Template</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User Role</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User Group</MenubarItem>
 							</Link>
 						</MenubarContent>
 					</MenubarMenu>
-					<MenubarSeparator/>
 					<MenubarMenu>
-						<MenubarTrigger className={'flex justify-between items-center'}>
-							<div className={'py-2 flex items-center'}>
-								<FontAwesomeIcon icon={faWindowRestore} className={"w-4 mr-5"}/>
-								<span className={'hidden md:block'}>Masters</span>
+						<MenubarTrigger className={"flex justify-between items-center"}>
+							<div className={"py-2 flex items-center"}>
+								<FontAwesomeIcon icon={faUpload} className={"w-4 mr-5"} />
+								<span className={"hidden md:block"}>Upload</span>
 							</div>
-							<span className={'hidden md:block'}><FontAwesomeIcon icon={faAngleRight}/></span>
+							<span className={"hidden md:block"}>
+								<FontAwesomeIcon icon={faAngleRight} />
+							</span>
 						</MenubarTrigger>
 						<MenubarContent>
-							<MenubarItem className={'font-bold pointer-events-none onMoblie'}>Masters</MenubarItem>
-							<MenubarSeparator className={'onMoblie'}/>
-							<Link href={'/admin/dashboard'}>
+							<MenubarItem className={"font-bold pointer-events-none onMoblie"}>
+								Upload
+							</MenubarItem>
+							<MenubarSeparator className={"onMoblie"} />
+							<Link href={"/admin/dashboard"}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>Document Custom Template</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
 								<MenubarItem>User Role</MenubarItem>
 							</Link>
-							<Link href={'/'}>
+							<Link href={"/"}>
+								<MenubarItem>User Group</MenubarItem>
+							</Link>
+						</MenubarContent>
+					</MenubarMenu>
+					<MenubarSeparator />
+					<MenubarMenu>
+						<MenubarTrigger className={"flex justify-between items-center"}>
+							<div className={"py-2 flex items-center"}>
+								<FontAwesomeIcon
+									icon={faWindowRestore}
+									className={"w-4 mr-5"}
+								/>
+								<span className={"hidden md:block"}>Masters</span>
+							</div>
+							<span className={"hidden md:block"}>
+								<FontAwesomeIcon icon={faAngleRight} />
+							</span>
+						</MenubarTrigger>
+						<MenubarContent>
+							<MenubarItem className={"font-bold pointer-events-none onMoblie"}>
+								Masters
+							</MenubarItem>
+							<MenubarSeparator className={"onMoblie"} />
+							<Link href={"/masters/email-integration"}>
+								<MenubarItem>Email Integration</MenubarItem>
+							</Link>
+							<Link href={"/"}>
+								<MenubarItem>Document Custom Template</MenubarItem>
+							</Link>
+							<Link href={"/"}>
+								<MenubarItem>User</MenubarItem>
+							</Link>
+							<Link href={"/"}>
+								<MenubarItem>User Role</MenubarItem>
+							</Link>
+							<Link href={"/"}>
 								<MenubarItem>User Group</MenubarItem>
 							</Link>
 						</MenubarContent>
 					</MenubarMenu>
 				</Sidebar_menu>
 				<div className="p-2 mb-4 text-secondary-500 overflow-y-auto absolute bottom-0">
-							<ul className="space-y-1 w-full">
-								<li>
-									<Link
-										href="/public"
-										className={
-											"flex items-center gap-4 rounded-md px-2 py-2 md:w-full text-secondary-700 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:text-secondary-200 dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
-										}
-									>
-										<FontAwesomeIcon icon={faQuestionCircle} className={"w-4 mr-1"}/>
-										<span className="text-sm font-medium hidden md:block"> Support </span>
-									</Link>
-								</li>
-								<li>
-									<Link
-										href="/public"
-										className={
-											"flex items-center gap-4 rounded-md px-2 py-2 text-secondary-700 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:text-secondary-200 dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
-										}
-									>
-										<FontAwesomeIcon icon={faGears} className={"w-4 mr-1"}/>
-										<span className="text-sm font-medium hidden md:block"> Settings </span>
-									</Link>
-								</li>
-							</ul>
-						</div>
+					<ul className="space-y-1 w-full">
+						<li>
+							<Link
+								href="/public"
+								className={
+									"flex items-center gap-4 rounded-md px-2 py-2 md:w-full text-secondary-700 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:text-secondary-200 dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
+								}
+							>
+								<FontAwesomeIcon
+									icon={faQuestionCircle}
+									className={"w-4 mr-1"}
+								/>
+								<span className="text-sm font-medium hidden md:block">
+									{" "}
+									Support{" "}
+								</span>
+							</Link>
+						</li>
+						<li>
+							<Link
+								href="/public"
+								className={
+									"flex items-center gap-4 rounded-md px-2 py-2 text-secondary-700 hover:bg-secondary-200 hover:bg-opacity-60 hover:text-black dark:text-secondary-200 dark:hover:bg-secondary-700 dark:hover:bg-opacity-35 dark:hover:text-white"
+								}
+							>
+								<FontAwesomeIcon icon={faGears} className={"w-4 mr-1"} />
+								<span className="text-sm font-medium hidden md:block">
+									{" "}
+									Settings{" "}
+								</span>
+							</Link>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</aside>
 	);
