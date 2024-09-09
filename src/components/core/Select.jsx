@@ -12,7 +12,7 @@ import {Icon, Loader, Text} from "~";
 import PropTypes from "prop-types";
 
 const Select = forwardRef((
-	{className, source, map = {key: "id", value: "name"}, ...props},
+	{className, source, map = {key: "id", value: "name"}, defaultValue ,  ...props},
 	ref) => {
 	const [data, setData] = useState([]);
 	const isDesktop = useMediaQuery("(min-width: 768px)")
@@ -21,8 +21,12 @@ const Select = forwardRef((
 	const [open, setOpen] = useState(false)
 	const [value, setValue] = useState("")
 	
+	useEffect(() => {
+		if (defaultValue) {
+			setSelected(defaultValue)
+		}
+	}, []);
 	useMemo(() => {
-		console.log(source)
 		switch (type(source)) {
 			
 			case "array":
@@ -33,7 +37,7 @@ const Select = forwardRef((
 				switch (source.type.toLowerCase()) {
 					case "lov":
 						axios
-							.get(`/forms/GetLOVIdNameList?lovType=${source.parameter}`)
+							.get(`/dmsapi/cms/query/GetLOVIdNameList?lovType=${source.parameter}`)
 							.then((res) => {
 								console.log(res);
 								setData(res.data)
@@ -42,7 +46,7 @@ const Select = forwardRef((
 						break;
 					case "enum":
 						axios
-							.get(`/forms/GetEnumIdNameList?enumType=${source.parameter}`)
+							.get(`/dmsapi/cms/query/GetEnumIdNameList?enumType=${source.parameter}`)
 							.then((res) => {
 								console.log(res);
 								setData(res.data)
@@ -50,7 +54,7 @@ const Select = forwardRef((
 						break;
 					case "table":
 						axios
-							.get(`/dmsapi/cms/query/TableData?tableName=${source.parameter}`)
+							.get(`/dmsapi/cms/query/cms/query/TableData?tableName=${source.parameter}`)
 							.then((res) => {
 								console.log(res);
 								setData(res.data)

@@ -33,8 +33,11 @@ function Item({scale, id, type, title, onDoubleClick, ...props}) {
 		                 size={`${scale}x`}
 		                 className={"text-primary-900 dark:text-primary-50"}
 		/>
-		<Text text={title}
-		      truncate={scale * 2} />
+		<Text
+			wrap={scale * 2} >
+			{title}
+			
+		</Text>
 	</div>
 	
 	

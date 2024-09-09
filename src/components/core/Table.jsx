@@ -318,7 +318,7 @@ function Table({
 				{/*</div>*/}
 			</div>
 			<table className="w-full text-sm text-left rtl:text-right">
-				<thead className="text-xs text-primary-900 uppercase bg-primary-200 dark:bg-secondary-900 dark:text-primary-50">
+				<thead className="text-xs text-primary-50 uppercase bg-primary-900 bg-opacity-90 dark:bg-secondary-900 dark:text-primary-50">
 				<tr>
 					{selection ? (
 						<td className={"p-4"}>

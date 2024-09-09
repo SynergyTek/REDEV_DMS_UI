@@ -9,6 +9,9 @@
     "build": "next build",
     "start": "NODE_ENV=production node server.js"
   },
+  "proxy": {
+    "/dmsapi": "https://demodms.aitalkx.com/webapi"
+  },
   "devDependencies": {
     "@awesome.me/kit-9b926a9ec0": "^1.0.7",
     "@babel/preset-env": "^7.25.4",
