@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, {useEffect, useRef, useState, useMemo, forwardRef} from "react";
 import {Breadcrumb, Button, Icon, Loader, Separator, Slider, Text, Toolbar} from "~";
+import {useRouter} from "next/router";
 
 const iconMap = {
 	"folder": "folder",
@@ -12,9 +13,10 @@ const iconMap = {
 }
 const userId = "45bba746-3309-49b7-9c03-b5793369d73c"
 
-const Item = forwardRef(({scale, id, type, title, onDoubleClick, ...props}, ref) => {
+const Item = forwardRef(({scale, id, type, title, onClick, onDoubleClick, ...props}, ref) => {
 	ref = ref || useRef()
 	return <div role={"button"}
+	            onClick={onClick}
 	            onDoubleClick={onDoubleClick}
 	            title={title}
 	            ref={ref}
@@ -40,6 +42,7 @@ const Item = forwardRef(({scale, id, type, title, onDoubleClick, ...props}, ref)
 })
 
 function FileExplorer(props) {
+	const router = useRouter()
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState(null);
 	const [level, setLevel] = useState(0);
@@ -48,6 +51,7 @@ function FileExplorer(props) {
 	const [path, setPath] = useState([{href: "/", title: "Home", icon: "home"}]);
 	const [currentFolder, setCurrentFolder] = useState(null);
 	const [source, setSource] = useState(`/dmsapi/dms/workspace/GetParentWorkspace?userId=${userId}&portalName=DMS`)
+	const {currentDirectory} = router.query;
 	const sliderRef = useRef();
 	
 	const handlePathClick = (props) => {
@@ -55,6 +59,14 @@ function FileExplorer(props) {
 		setPath([props])
 	}
 	useEffect(() => {
+		console.log(currentDirectory || "/")
+		
+		setCurrentFolder(currentDirectory || "/")
+		// setPath([...path, {href: currentDirectory, title: currentDirectory, icon: "folder"}])
+		
+	}, [currentDirectory]);
+	useEffect(() => {
+		console.log(currentFolder)
 		if (!currentFolder) return;
 		
 		if (currentFolder === '/') {
@@ -97,13 +109,12 @@ function FileExplorer(props) {
 			                type={item["TemplateCode"]}
 			                scale={scale}
 			                onDoubleClick={() => {
-				                setCurrentFolder(item.id || item.key)
-				                setPath([...path, {
-					                href: item.id || item.key,
-					                title: item["Name"] || item['title'],
-					                icon: iconMap[item["TemplateCode"]]
-				                }])
-				                setLevel(level + 1)
+				                router.push({
+					                pathname: "/files",
+					                query: {currentDirectory: item["id"] || item["key"]},
+				                }).then(() => {
+									setLevel(level + 1)
+				                })
 			                }}
 			/>)
 			
@@ -123,13 +134,11 @@ function FileExplorer(props) {
 						        mode={"tertiary"}
 						        size={"sm"}
 						        onClick={() => {
-							        const previousPath = path[path.length - 2]
-							        setCurrentFolder(previousPath.href)
-							        setPath(path.slice(0, path.length - 1))
-							        setLevel(level - 1)
-						        }}
-						        className={"disabled"}
-						        disabled={true}></Button>
+							        if (level > 0) {
+								        
+								        router.back()
+							        }
+						        }}></Button>
 						<Button icon={"arrow-right"}
 						        mode={"tertiary"}
 						        size={"sm"}></Button>

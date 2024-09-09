@@ -10,11 +10,9 @@ import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandL
 import {Drawer, DrawerContent, DrawerTrigger} from "~/ui/drawer";
 import {Icon, Loader, Text} from "~";
 import PropTypes from "prop-types";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronDown} from "@awesome.me/kit-9b926a9ec0/icons/duotone/solid";
 
 const Select = forwardRef((
-	{className, source, map = {key: "id", value: "name"}, defaultValue ,  ...props},
+	{className, source, map = {key: "id", value: "name"}, defaultValue, ...props},
 	ref) => {
 	const [data, setData] = useState([]);
 	const isDesktop = useMediaQuery("(min-width: 768px)")
@@ -22,14 +20,8 @@ const Select = forwardRef((
 	const [selected, setSelected] = useState(null)
 	const [open, setOpen] = useState(false)
 	const [value, setValue] = useState("")
-	const [isClient, setIsClient] = useState(false);
 	
-	useEffect(() => {
-		setIsClient(true);
-		if (defaultValue) {
-			setSelected(defaultValue)
-		}
-	}, []);
+	
 	useMemo(() => {
 		switch (type(source)) {
 			
@@ -86,54 +78,70 @@ const Select = forwardRef((
 		}
 	}, [source]);
 	useMemo(() => {
-		isLoading(false)
+		if (defaultValue) {
+			let defaultKey = defaultValue
+			if (type(defaultValue) === "object") {
+				defaultKey = data.find((d) => d[map.value] === defaultValue[map.value])
+				
+			}
+			setSelected(defaultKey)
+		}
 	}, [data])
-	if (isDesktop) {
-		return (
-			<Popover open={open}
-			         onOpenChange={setOpen}>
-				<PopoverTrigger asChild>
-					<Button variant="outline" className="min-w-[200px] justify-between gap-2">
-						{selected?.[map.value] || "Select"}
-						{isClient && (
-							<Icon
-								icon="chevron-down"
-								className={`ml-4 shrink-0 ${open ? "rotate-180" : "rotate-0"}`}
-							/>
-						)}
-					</Button>
-				</PopoverTrigger>
-				<PopoverContent className="w-[200px] p-0"
-				                align="start">
-					{loading ? <Loader /> : <ContentList data={data}
-					                                     map={map}
-					                                     setOpen={setOpen}
-					                                     setSelected={setSelected} />}
-				</PopoverContent>
-			</Popover>
-		)
-	}
-
+	useEffect(() => {
+		isLoading(false)
+		
+	}, []);
+	
 	return (
-		<Drawer open={open}
-		        onOpenChange={setOpen}>
-			<DrawerTrigger asChild>
-				<Button variant="outline"
-				        className="min-w-[150px] justify-between">
-					{selected ? <>{selected[map.value]}</> : <>Select</>}
-				</Button>
-			</DrawerTrigger>
-			<DrawerContent>
-				{loading ? <Loader /> : <div className="mt-4 border-t">
-					<ContentList data={data}
-					             map={map}
-					             setOpen={setOpen}
-					             setSelected={setSelected} />
-				</div>
-				}
-			</DrawerContent>
-		</Drawer>
+		loading ?
+			<Loader />
+			: (
+				isDesktop ?
+					<Popover open={open}
+					         onOpenChange={setOpen}>
+						<PopoverTrigger asChild>
+							<Button variant="outline"
+							        className="w-[200px] justify-between gap-2">
+								
+								<Text truncate={10}
+								      className={"opacity-80"}>{selected?.[map.value] || "Select"}</Text>
+								<Icon icon="chevron-down"
+								      className={`ml-4 shrink-0 ${open ? "rotate-180" : "rotate-0"}`} />
+							
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent className="w-[200px] p-0"
+						                align="start">
+							{loading ? <Loader /> : <ContentList data={data}
+							                                     map={map}
+							                                     setOpen={setOpen}
+							                                     setSelected={setSelected} />}
+						</PopoverContent>
+					</Popover> :
+					<Drawer open={open}
+					        onOpenChange={setOpen}>
+						<DrawerTrigger asChild>
+							<Button variant="outline"
+							        className="w-[150px] justify-start">
+								{selected ? <>{selected[map.value]}</> : <>Select</>}
+							</Button>
+						</DrawerTrigger>
+						<DrawerContent>
+							{loading ? <Loader /> : <div className="mt-4 border-t">
+								<ContentList data={data}
+								             map={map}
+								             setOpen={setOpen}
+								             setSelected={setSelected} />
+							</div>
+							}
+						</DrawerContent>
+					</Drawer>
+			)
+	
+	
 	)
+	
+	
 })
 
 function ContentList({
@@ -172,7 +180,7 @@ Select.propTypes = {
 	/**
 	 * The source of the data. Can be an array, object or a string
 	 */
-	source: PropTypes.oneOf(["array", "object","string"]),
+	source: PropTypes.oneOf(["array", "object", "string"]),
 	/**
 	 * Which fields should be mapped to your data?
 	 * */

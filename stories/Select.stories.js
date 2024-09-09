@@ -22,12 +22,12 @@ export const Primary = {
 export const DataFromLOV = {
 	args: {
 		source: {
-			type:"lov",
-			parameter:"LOV_NOTE_STATUS"
+			type: "lov",
+			parameter: "LOV_NOTE_STATUS"
 		},
-		map:{
-			key:"Id",
-			value:"Name"
+		map: {
+			key: "Id",
+			value: "Name"
 		}
 	},
 };

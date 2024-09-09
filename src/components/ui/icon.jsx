@@ -39,8 +39,9 @@ const Icon = forwardRef((
 		<FontAwesomeIcon icon={renderedIcon}
 		                 className={`transition-all text-inherit ${className}`}
 		                 size={size}
-		                 onMouseEnter={hover ? () => setHovered(true) : null}
-		                 onMouseLeave={hover ? () => setHovered(false) : null}
+		                 // The following line is a ternary operator that checks if the hover prop contains reference to a container object. 
+		                 onMouseEnter={!hover?.container?.current ? () => setHovered(true) : null}
+		                 onMouseLeave={!hover?.container?.current ? () => setHovered(false) : null}
 		
 		></FontAwesomeIcon>
 	

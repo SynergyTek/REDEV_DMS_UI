@@ -1,16 +1,15 @@
 import { InputField, Table, Select, Text } from "~";
 import { Button } from "~/ui/button";
-import { faPencil, faTrash } from "@awesome.me/kit-9b926a9ec0";
 
-export default function search_report() {
+export default function SearchReport() {
 	return (
 		<div>
 			<div>
 				<div className="flex space-x-4 items-end">
-					<div className="flex-1 min-w-0 flex">
+					 <div className="flex-1 min-w-0 flex">
 						<span className="text-white text-xs">Project No</span>
 						<Select
-							source="/dmsapi/dms/query/GetBulkUploadTemplateCodeNameList"
+							source={"/dmsapi/dms/query/GetBulkUploadTemplateCodeNameList"}
 							map={{
 								key: "Id",
 								value: "Name",
@@ -50,35 +49,19 @@ export default function search_report() {
 					</div>
 				</div>
 				<div className="">
-					<Button variant="outline">Apply Filter</Button>
-					<Button variant="outline">Reset</Button>
+					{/*<Button variant="outline">Apply Filter</Button>*/}
+					{/*<Button variant="outline">Reset</Button>*/}
 				</div>
 			</div>
 			<div className="mt-8">
-				<Button variant="outline" className="flex items-center">
-					{/* <Text variant="span">Export To Excel</Text> */}
-					{/* Export To Excel */}
-				</Button>
+				{/*<Button variant="outline" className="flex items-center">*/}
+				{/*	 <Text variant="span">Export To Excel</Text> */}
+				{/*</Button>*/}
 			</div>
 			<div className="mt-1">
 				<Table
-					actions={[
-						{
-							icon: faPencil,
-							label: "Detail Grid",
-							onClick: () => {},
-						},
-						{
-							icon: faTrash,
-							label: "Go To Location",
-							onClick: () => {},
-						},
-						{
-							icon: faTrash,
-							label: "View Metadata",
-							onClick: () => {},
-						},
-					]}
+					pagination={false}
+					
 					columns={[
 						{
 							field: "ProjectNo",
@@ -116,8 +99,6 @@ export default function search_report() {
 					data={{
 						source: "/dmsapi/dms/query/GetDPFUDocumentDataGrid",
 					}}
-					primary
-					text="Button"
 				/>
 			</div>
 		</div>
