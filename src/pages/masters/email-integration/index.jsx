@@ -12,17 +12,17 @@ export default function index() {
 	const editEmail = (id, name) => {
 		router.push(
 			{
-				pathname: "/masters/email_integration/manage_email",
+				pathname: "/masters/email-integration/manage-email",
 				query: { id, name },
 			},
-			"/masters/email_integration/manage_email"
+			"/masters/email-integration/manage-email"
 		);
 	};
 	return (
 		<div>
 			<div className="text-white text-2xl mb-6">Email Integration</div>
 			<div>
-				<Link href="/masters/email_integration/manage_email">
+				<Link href="/masters/email-integration/manage_email">
 					<Button className="mb-3" primary text="Create" />
 				</Link>
 

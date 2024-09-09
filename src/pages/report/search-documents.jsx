@@ -1,24 +1,69 @@
 import { InputField, Table, Select, Button } from "~";
 import { faPencil, faTrash } from "@awesome.me/kit-9b926a9ec0";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
 
 export default function search_report() {
+	// const [projectNoData, setProjectNoData] = useState();
+	// const [documentNoData, setDocumentNoData] = useState([]);
+
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const response = await axios.get(
+	// 				"/dmsapi/cms/query/GetLOVIdNameList?lovType=DPFU_ProjectNo"
+	// 			);
+	// 			debugger;
+	// 			console.log(`search_document: ${response.data}`);
+	// 			if (Array.isArray(response.data)) {
+	// 				setProjectNoData(response.data);
+	// 				console.log(projectNoData);
+	// 			}
+	// 		} catch (error) {
+	// 			console.error("Error fetching data:", error);
+	// 		}
+	// 	};
+	// 	fetchData();
+	// }, []);
+
 	return (
 		<div>
 			<div>
-				<div className="flex space-x-4">
+				<div className="flex space-x-4 items-end">
 					<div className="flex-1 min-w-0">
+						<span className="text-white text-xs">Project No</span>
+						<Select
+							options={{
+								// data: { projectNoData },
+								display: "Name",
+								value: "Id",
+							}}
+							primary
+							text="Button"
+							label="button"
+							search={false}
+							// load="LOV"
+							// parameter="DPFU_ProjectNo"
+						/>
+					</div>
+					<div className="flex-1 min-w-0">
+						<span className="text-white text-xs">Document No</span>
 						<Select
 							options={{
 								data: [
-									{ name: "All", value: "all" },
-									{ name: "4460", value: "4460" },
+									{
+										name: "Engineering Subcontract",
+										value: "engineeringSubcontract",
+									},
+									{ name: "Vendor Documents", value: "vendorDocuments" },
+									{ name: "Project Documents", value: "projectDocuments" },
 								],
 								display: "name",
 								value: "value",
 							}}
 							primary
 							text="Button"
-							label="button"
+							search={false}
 						/>
 					</div>
 					<div className="flex-1 min-w-0">
@@ -39,31 +84,13 @@ export default function search_report() {
 							primary
 						/>
 					</div>
-					<div className="flex-1 min-w-0">
-						<Select
-							options={{
-								data: [
-									{
-										name: "Engineering Subcontract",
-										value: "engineeringSubcontract",
-									},
-									{ name: "Vendor Documents", value: "vendorDocuments" },
-									{ name: "Project Documents", value: "projectDocuments" },
-								],
-								display: "name",
-								value: "value",
-							}}
-							primary
-							text="Button"
-						/>
-					</div>
 				</div>
-				<div className="flex gap-4 mt-4">
+				<div className="flex gap-4 mt-2">
 					<Button onClick={() => {}} primary text="Apply Filter" />
 					<Button onClick={() => {}} text="Reset" />
 				</div>
 			</div>
-			<div className="mt-6">
+			<div className="mt-8">
 				<Button onClick={() => {}} text="Export To Excel" />
 			</div>
 			<div className="mt-1">
@@ -87,42 +114,41 @@ export default function search_report() {
 					]}
 					columns={[
 						{
-							field: "projectNo",
+							field: "ProjectNo",
 							header: "Project No",
 						},
 						{
-							field: "documentNo",
+							field: "DocumentNo",
 							header: "Document No",
 						},
 						{
-							field: "documentDescription",
+							field: "DocumentDescription",
 							header: "Document Description",
 						},
 						{
-							field: "revision",
+							field: "Revision",
 							header: "Revision",
 						},
 						{
-							field: "descipline",
+							field: "Descipline",
 							header: "Descipline",
 						},
 						{
-							field: "issueCode",
+							field: "IssueCode",
 							header: "Issue Code",
 						},
 						{
-							field: "stageStatus",
+							field: "StageStatus",
 							header: "Stage Status",
 						},
 						{
-							field: "documentOwner",
+							field: "DocumentOwner",
 							header: "Document Owner",
 						},
 					]}
-					// data={{
-					// 	source:
-					// 		"/dmsapi/cms/query/TableData?tableName=cms.F_DMS_DMSEmailIntegration",
-					// }}
+					data={{
+						source: "/dmsapi/dms/query/GetDPFUDocumentDataGrid",
+					}}
 					primary
 					text="Button"
 				/>
