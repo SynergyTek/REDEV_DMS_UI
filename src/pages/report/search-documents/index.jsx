@@ -1,7 +1,16 @@
 import { InputField, Table, Select, Text } from "~";
 import { Button } from "~/ui/button";
+import {useEffect, useRef, useState} from "react";
+
+
 
 export default function SearchReport() {
+	const reference = useRef();
+
+	useEffect(() => {
+		console.log(reference);
+	}, []);
+
 	return (
 		<div>
 			<div>
@@ -14,6 +23,8 @@ export default function SearchReport() {
 								key: "Id",
 								value: "Name",
 							}}
+							onSelect={(e) => console.log(reference.current?.getAttribute("value"))}
+							ref={reference}
 						/>
 					</div>
 					<div className="flex-1 min-w-0 flex">
