@@ -18,11 +18,11 @@ export default function SearchReport() {
 	);
 
 	const projectNoReference = useRef();
-	const documentNoReference = useRef();
+	const documentTypeReference = useRef();
 
 	const OnApplyFilter = () => {
 		setTableDataUrl(
-			`/dmsapi/dms/query/GetDPFUDocumentDataGrid?projectNo="${projectNo}"&documentNo="${documentNo}"&documentType="${documentType}"&documentdescription="${documentDescription}"`
+			`/dmsapi/dms/query/GetDPFUDocumentDataGrid?projectNo=${projectNo}&documentNo=${documentNo}&documentType=${documentType}&documentdescription=${documentDescription}`
 		);
 		console.log(tableDataUrl);
 	};
@@ -57,7 +57,7 @@ export default function SearchReport() {
 					</div>
 					<div className="lg:flex-1 min-w-0 flex-col">
 						<Text variant="span" className="ms-1">
-							Document No
+							Document Type
 						</Text>
 						<Select
 							source={"/dmsapi/dms/query/GetBulkUploadTemplateCodeNameList"}
@@ -65,10 +65,10 @@ export default function SearchReport() {
 								key: "Id",
 								value: "Name",
 							}}
-							ref={documentNoReference}
+							ref={documentTypeReference}
 							onSelect={() =>
 								setDocumentType(
-									documentNoReference.current?.getAttribute("value")
+									documentTypeReference.current?.getAttribute("value")
 								)
 							}
 						/>
@@ -94,7 +94,7 @@ export default function SearchReport() {
 						/>
 					</div>
 				</div>
-				<div className="mt-2">
+				<div className="mt-2 flex gap-2">
 					<Button variant="outline" onClick={OnApplyFilter}>
 						Apply Filter
 					</Button>
