@@ -26,7 +26,7 @@ export default function index() {
 					<Button className="mb-3" primary text="Create" />
 				</Link>
 
-				{/* <Table
+				<Table
 					rowId={"Id"}
 					rowName={"Email"}
 					actions={[
@@ -53,7 +53,7 @@ export default function index() {
 					}}
 					primary
 					text="Button"
-				/> */}
+				/>
 			</div>
 		</div>
 	);

@@ -1,34 +1,23 @@
 import { InputField, Table, Select, Text } from "~";
 import { Button } from "~/ui/button";
 import {useEffect, useRef, useState} from "react";
-
-
+import {
+	faArrowTurnRight,
+	faCircleInfo,
+	faEye,
+} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 
 export default function SearchReport() {
 	const reference = useRef();
 
-	useEffect(() => {
-		console.log(reference);
-	}, []);
-
 	return (
-		<div>
+		<div className="mt-5">
 			<div>
-				<div className="flex space-x-4 items-end">
-					 <div className="flex-1 min-w-0 flex">
-						<span className="text-white text-xs">Project No</span>
-						<Select
-							source={"/dmsapi/dms/query/GetBulkUploadTemplateCodeNameList"}
-							map={{
-								key: "Id",
-								value: "Name",
-							}}
-							onSelect={(e) => console.log(reference.current?.getAttribute("value"))}
-							ref={reference}
-						/>
-					</div>
-					<div className="flex-1 min-w-0 flex">
-						<span className="text-white text-xs">Document No</span>
+				<div className="flex space-x-4 items-end flex-wrap">
+					<div className="lg:flex-1 min-w-0 flex-col">
+						<Text variant="span" className="ms-1">
+							Project No
+						</Text>
 						<Select
 							source={{
 								type: "lov",
@@ -38,9 +27,23 @@ export default function SearchReport() {
 								key: "Id",
 								value: "Name",
 							}}
+							onSelect={(e) => console.log(reference.current?.getAttribute("value"))}
+							ref={reference}
 						/>
 					</div>
-					<div className="flex-1 min-w-0">
+					<div className="lg:flex-1 min-w-0 flex-col">
+						<Text variant="span" className="ms-1">
+							Document No
+						</Text>
+						<Select
+							source={"/dmsapi/dms/query/GetBulkUploadTemplateCodeNameList"}
+							map={{
+								key: "Id",
+								value: "Name",
+							}}
+						/>
+					</div>
+					<div className="lg:flex-1 min-w-0">
 						<InputField
 							id="documentNo"
 							label="Document No"
@@ -49,7 +52,7 @@ export default function SearchReport() {
 							primary
 						/>
 					</div>
-					<div className="flex-1 min-w-0">
+					<div className="lg:flex-1 min-w-0">
 						<InputField
 							id="documentDescription"
 							label="Document Description"
@@ -59,20 +62,37 @@ export default function SearchReport() {
 						/>
 					</div>
 				</div>
-				<div className="">
-					{/*<Button variant="outline">Apply Filter</Button>*/}
-					{/*<Button variant="outline">Reset</Button>*/}
+				<div className="mt-2">
+					<Button variant="outline">Apply Filter</Button>
+					<Button variant="outline">Reset</Button>
 				</div>
 			</div>
 			<div className="mt-8">
-				{/*<Button variant="outline" className="flex items-center">*/}
-				{/*	 <Text variant="span">Export To Excel</Text> */}
-				{/*</Button>*/}
+				<Button variant="outline" className="flex items-center">
+					<Text variant="span">Export To Excel</Text>
+				</Button>
 			</div>
 			<div className="mt-1">
 				<Table
-					pagination={false}
-					
+					rowId={"TemplateId"}
+					rowName={"TemplateOwner"}
+					actions={[
+						{
+							icon: faCircleInfo,
+							label: "Grid Details",
+							onClick: ({ id, name }) => editEmail(id, name),
+						},
+						{
+							icon: faArrowTurnRight,
+							label: "Go To Location",
+							onClick: () => {},
+						},
+						{
+							icon: faEye,
+							label: "View Metadata",
+							onClick: () => {},
+						},
+					]}
 					columns={[
 						{
 							field: "ProjectNo",
