@@ -341,6 +341,8 @@ function Table({
 						pageData.map((row, index) => {
 							return (
 								<TableRow
+									rowId ={props.rowId}
+									rowName={props.rowName}
 									row={row}
 									onContextMenu={actions && handleContextMenu}
 									data={fetchedColumns}
