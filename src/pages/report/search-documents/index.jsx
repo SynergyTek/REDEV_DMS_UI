@@ -22,14 +22,12 @@ export default function SearchReport() {
 
 	const OnApplyFilter = () => {
 		setTableDataUrl(
-			`/dmsapi/dms/query/GetDPFUDocumentDataGrid?projectNo=${projectNo}&documentNo=${documentNo}&documentType=${documentType}&documentdescription=${documentDescription}`
+			`/dmsapi/dms/query/GetDPFUDocumentDataGrid?projectNo=${projectNo || ""}&documentNo=${documentNo || ""}&documentType=${documentType || ""}&documentdescription=${documentDescription || ""}`
 		);
-		console.log(tableDataUrl);
 	};
 
 	const OnReset = () => {
 		setTableDataUrl("/dmsapi/dms/query/GetDPFUDocumentDataGrid");
-		console.log(tableDataUrl);
 	};
 
 	return (
