@@ -1,8 +1,8 @@
-import { CheckBox, ContextMenu, Loader, Pagination, Template, Text } from "~";
-import React, { useEffect, useRef, useState } from "react";
+import {CheckBox, ContextMenu, Loader, Pagination, Template, Text} from "~";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import axios from "axios";
 
-function TableRow({ row, data, onClick, onContextMenu, ...props }) {
+function TableRow({row, data, onClick, onContextMenu, ...props}) {
 	return (
 		<tr
 			className={`border-b h-10 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all ease-linear cursor-pointer`}
@@ -18,43 +18,43 @@ function TableRow({ row, data, onClick, onContextMenu, ...props }) {
 			) : null}
 			{data
 				? data.map((column, index) => {
-						return (
-							<td className="px-6 py-4" key={index}>
-								{column.template ? (
-									<Template context={row[column.field]}>
-										{column.template}
-									</Template>
-								) : (
-									<Text>{row[column.field]}</Text>
-								)}
-							</td>
-						);
-					})
+					return (
+						<td className="px-6 py-4"
+						    key={index}>
+							{column.template ? (
+								<Template context={row[column.field]}>
+									{column.template}
+								</Template>
+							) : (
+								<Text>{row[column.field]}</Text>
+							)}
+						</td>
+					);
+				})
 				: null}
 		</tr>
 	);
 }
 
 function Table({
-	data = {
-		source: "https://jsonplaceholder.org/users",
-	},
-	columns = [
-		{
-			header: "First Name",
-			field: "firstname",
-		},
-		{
-			header: "Last Name",
-			field: "lastname",
-		},
-	],
-	pageLimit = 10,
-	actions,
-	pagination = true,
-	...props
-}) {
-	const [allData, setAllData] = useState([]);
+	               data = {
+		               source: "https://jsonplaceholder.org/users",
+	               },
+	               columns = [
+		               {
+			               header: "First Name",
+			               field: "firstname",
+		               },
+		               {
+			               header: "Last Name",
+			               field: "lastname",
+		               },
+	               ],
+	               pageLimit = 10,
+	               actions,
+	               pagination = true,
+	               ...props
+               }) {
 	const [fetchedData, setFetchedData] = useState(data);
 	const [fetchedColumns, setFetchedColumns] = useState(columns);
 	const [pageData, setPageData] = useState([]);
@@ -71,21 +71,26 @@ function Table({
 		display: "",
 		value: "",
 	});
+	const handleClick = () => {
+		hideContextMenu();
+	};
+	const handleBlur = () => {
+		hideContextMenu();
+	};
 	const contextMenu = useRef();
 	useEffect(() => {
-		const handleClick = () => {
-			hideContextMenu();
-		};
-		const handleBlur = () => {
-			hideContextMenu();
-		};
 		document.addEventListener("click", handleClick);
 		document.addEventListener("blur", handleBlur);
-
+		return () => {
+			document.removeEventListener("click", handleClick);
+			document.removeEventListener("blur", handleBlur);
+		}
+	}, []);
+	useEffect(() => {
+		setLoading(true);
 		if (!data || !columns) {
 			setFetchedData(null);
 			setFetchedColumns(null);
-			setAllData([]);
 			setLoading(false);
 			return;
 		}
@@ -98,28 +103,28 @@ function Table({
 		if (typeof columns === "function") {
 			columns().then((res) => {
 				setFetchedColumns(res);
-				setLoading(false);
 			});
 		}
 		if (Array.isArray(data)) {
 			data.length ? setFetchedData(data) : setFetchedData(null);
-			setLoading(false);
 		}
 		if (typeof data.source === "string") {
 			axios
 				.get(data.source)
 				.then((res) => {
+					console.log(res.data)
 					if (Array.isArray(res.data)) {
 						setFetchedData(res.data);
-						setAllData(res.data);
-						setLoading(false);
+						setCurrentPage(1)
+					} else {
+						setFetchedData(null);
 					}
 				})
 				.catch((e) => {
 					setFetchedData(null);
 					console.log(e);
 				});
-
+			
 			if (columns.length > 0) {
 				const cols = columns.map((item) => {
 					const tempObj = {
@@ -128,129 +133,60 @@ function Table({
 					};
 					return tempObj;
 				});
-				const tempData = { ...colFilter };
+				const tempData = {...colFilter};
 				tempData.data = [...cols];
-
+				
 				//console.log(tempData, "my cols")
 				selColFilter(tempData);
 			}
 		}
-		return () => {
-			document.removeEventListener("click", handleClick);
-			document.removeEventListener("blur", handleBlur);
-		};
-	}, []);
-
+	}, [data]);
+	
 	useEffect(() => {
+		setLoading(false)
 		if (Array.isArray(fetchedData)) {
-			let _data = [],
-				lowerLimit = (currentPage - 1) * pageLimit,
-				upperLimit = Math.min(
-					fetchedData.length,
-					pageLimit + (currentPage - 1) * pageLimit
-				);
-			for (let i = lowerLimit; i < upperLimit; i++) {
-				if (fetchedData[i]) {
-					_data.push(fetchedData[i]);
+			if (fetchedData.length) {
+				let _data = [],
+					lowerLimit = (currentPage - 1) * pageLimit,
+					upperLimit = Math.min(
+						fetchedData.length,
+						pageLimit + (currentPage - 1) * pageLimit
+					);
+				for (let i = lowerLimit; i < upperLimit; i++) {
+					if (fetchedData[i]) {
+						_data.push(fetchedData[i]);
+					}
 				}
+				
+				setPageData(_data);
+			} else {
+				
+				setPageData(null)
 			}
-			// console.log("pagination", _data)
-			setPageData(_data);
 		}
 	}, [fetchedData, currentPage]);
-
+	
 	function hideContextMenu() {
 		const menu = contextMenu.current;
 		if (menu) {
 			menu.classList.add("hidden");
 		}
 	}
-
+	
 	function showContextMenu() {
 		const menu = contextMenu.current;
 		if (menu) {
 			menu.classList.remove("hidden");
 		}
 	}
-
-	function refresh(event) {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
-	}
-
-	const selectRow = (event) => {
-		setSelection(true);
-	};
-	const onSelect = (selectedVal) => {
-		SetFSelect(selectedVal);
-		handleFilter(fInput, selectedVal);
-		// console.log(selectedVal, "value on select");
-	};
-	const onChange = (inputVal) => {
-		setFInput(inputVal);
-		handleFilter(inputVal, fSelect);
-		// console.log(inputVal, "input from textField")
-	};
-	const handleFilter = (inputText, selectText) => {
-		if (!fetchedData.length > 0) {
-			return;
-		}
-		console.log(colFilter, " col data");
-		//console.log(allData, " all data", typeof allData)
-		const newFilteredData = [];
-		allData.forEach((allItem) => {
-			console.log(allItem, " my item");
-			if (selectText.value) {
-				if (
-					allItem[selectText.value]
-						.toLowerCase()
-						.includes(inputText.toString().toLowerCase())
-				) {
-					newFilteredData.push(allItem);
-				}
-			} else {
-				const tempData = [];
-				colFilter.data.forEach((item) => {
-					if (
-						allItem[item.value]
-							.toLowerCase()
-							.includes(inputText.toString().toLowerCase())
-					) {
-						console.log(
-							allItem[item.value],
-							" inside item ",
-							inputText.toString().toLowerCase()
-						);
-						newFilteredData.push(allItem);
-					}
-					//console.log(allItem[item.value], " fields" ,  inputText.toString().toLowerCase())
-					//return allItem[item.value].toLowerCase().includes(inputText.toString().toLowerCase())
-				});
-				//console.log(tempData, " dynamic filter");
-				//return tempData
-			}
-		});
-		console.log(
-			inputText,
-			" input",
-			selectText,
-			" select",
-			newFilteredData,
-			" new f"
-		);
-		if (Array.isArray(newFilteredData)) {
-			setFetchedData(newFilteredData);
-		}
-	};
+	
 	const handleContextMenu = (event) => {
 		event.preventDefault();
 		hideContextMenu();
 		const menu = contextMenu.current;
 		event.currentTarget.classList.add("active");
 		const offsetBox = event.currentTarget.offsetParent;
-
+		
 		menu.style.display = "block";
 		const menuWidth = menu.offsetWidth;
 		const menuHeight = menu.offsetHeight;
@@ -262,12 +198,12 @@ function Table({
 		if (posX + menuWidth > offsetBox.offsetLeft + offsetBox.clientWidth) {
 			posX = offsetBox.offsetLeft + offsetBox.clientWidth - menuWidth;
 		}
-
+		
 		// Check if the menu goes beyond the bottom edge of the window
 		if (posY + menuHeight > offsetBox.offsetTop + offsetBox.clientHeight) {
 			posY = offsetBox.offsetTop + offsetBox.clientHeight - menuHeight;
 		}
-
+		
 		menu.style.left = posX + "px";
 		menu.style.top = posY + "px";
 		menu.contextData = {
@@ -284,7 +220,8 @@ function Table({
 			}
 		>
 			{actions && (
-				<ContextMenu innerRef={contextMenu} options={actions}></ContextMenu>
+				<ContextMenu innerRef={contextMenu}
+				             options={actions}></ContextMenu>
 			)}
 			<div className="overflow-x-auto shadow-md ">
 				{/*<div*/}
@@ -315,62 +252,63 @@ function Table({
 			</div>
 			<table className="w-full text-sm text-left rtl:text-right">
 				<thead className="text-xs text-primary-50 uppercase bg-primary-900 bg-opacity-90 dark:bg-secondary-900 dark:text-primary-50">
-					<tr>
-						{selection ? (
-							<td className={"p-4"}>
-								<CheckBox />
-							</td>
-						) : null}
-						{fetchedColumns
-							? fetchedColumns.map((column, index) => {
-									return (
-										<th scope="col" className="px-6 py-5" key={index}>
-											{column.header}
-										</th>
-									);
-								})
-							: null}
-					</tr>
-				</thead>
-				<tbody>
-					{loading ? (
-						<tr>
-							<td
-								className="p-6 text-center select-none cursor-pointer"
-								colSpan={columns.length}
-							>
-								<div className={"w-full flex items-center justify-center"}>
-									<Loader></Loader>
-								</div>
-							</td>
-						</tr>
-					) : pageData ? (
-						pageData.map((row, index) => {
+				<tr>
+					{selection ? (
+						<td className={"p-4"}>
+							<CheckBox />
+						</td>
+					) : null}
+					{fetchedColumns
+						? fetchedColumns.map((column, index) => {
 							return (
-								<TableRow
-									rowId ={props.rowId}
-									rowName={props.rowName}
-									row={row}
-									onContextMenu={actions && handleContextMenu}
-									data={fetchedColumns}
-								/>
+								<th scope="col"
+								    className="px-6 py-5"
+								    key={index}>
+									{column.header}
+								</th>
 							);
 						})
-					) : (
-						<tr>
-							<td
-								className="p-6 text-center select-none cursor-pointer"
-								colSpan={columns.length}
-								onClick={refresh}
-							>
-								<p className={"text-lg font-bold"}>No data found</p>
-							</td>
-						</tr>
-					)}
+						: null}
+				</tr>
+				</thead>
+				<tbody>
+				{loading ? (
+					<tr>
+						<td
+							className="p-6 text-center select-none cursor-pointer"
+							colSpan={columns.length}
+						>
+							<div className={"w-full flex items-center justify-center"}>
+								<Loader></Loader>
+							</div>
+						</td>
+					</tr>
+				) : pageData ? (
+					pageData.map((row, index) => {
+						return (
+							<TableRow
+								rowId={props.rowId}
+								rowName={props.rowName}
+								row={row}
+								onContextMenu={actions && handleContextMenu}
+								data={fetchedColumns}
+							/>
+						);
+					})
+				) : (
+					<tr>
+						<td
+							className="p-6 text-center select-none cursor-pointer"
+							colSpan={columns.length}
+						>
+							<p className={"text-lg font-bold"}>No data found</p>
+						</td>
+					</tr>
+				)}
 				</tbody>
 			</table>
-
-			{pagination && fetchedData && (
+			
+			{pagination && pageData && (
 				<nav
 					className={
 						"w-full flex items-center justify-between p-4 dark:bg-primary-950 dark:bg-opacity-50 text-primary-50"
