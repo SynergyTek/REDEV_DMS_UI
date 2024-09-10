@@ -73,12 +73,15 @@ function Table({
 	});
 	const contextMenu = useRef();
 	useEffect(() => {
-		document.addEventListener("click", (event) => {
+		const handleClick = () => {
 			hideContextMenu();
-		});
-		document.addEventListener("blur", (event) => {
+		};
+		const handleBlur = () => {
 			hideContextMenu();
-		});
+		};
+		document.addEventListener("click", handleClick);
+		document.addEventListener("blur", handleBlur);
+
 		if (!data || !columns) {
 			setFetchedData(null);
 			setFetchedColumns(null);
@@ -132,6 +135,10 @@ function Table({
 				selColFilter(tempData);
 			}
 		}
+		return () => {
+			document.removeEventListener("click", handleClick);
+			document.removeEventListener("blur", handleBlur);
+		};
 	}, []);
 
 	useEffect(() => {

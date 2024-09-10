@@ -25,6 +25,7 @@ const Select = forwardRef(
 			source,
 			map = { key: "id", value: "name" },
 			defaultValue,
+			onSelect,
 			...props
 		},
 		ref
@@ -109,12 +110,16 @@ const Select = forwardRef(
 			isLoading(false);
 		}, []);
 
+		useEffect(() => {
+			onSelect && onSelect(selected);
+		}, [selected]);
+
 		return loading ? (
 			<Loader />
 		) : isDesktop ? (
 			<Popover open={open} onOpenChange={setOpen}>
 				<PopoverTrigger asChild>
-					<Button variant="outline" className="w-full justify-between gap-2">
+					<Button variant="outline" className="w-full justify-between gap-2" value={selected?.[map.value]} ref={ref}>
 						<Text truncate={10} className={"opacity-80"}>
 							{selected?.[map.value] || "Select"}
 						</Text>
@@ -133,6 +138,7 @@ const Select = forwardRef(
 							map={map}
 							setOpen={setOpen}
 							setSelected={setSelected}
+							// onSelect={onSelect}
 						/>
 					)}
 				</PopoverContent>
@@ -154,6 +160,7 @@ const Select = forwardRef(
 								map={map}
 								setOpen={setOpen}
 								setSelected={setSelected}
+								// onSelect={onSelect}
 							/>
 						</div>
 					)}
@@ -176,8 +183,8 @@ function ContentList({ setOpen, setSelected, data, map }) {
 							key={item[map.key]}
 							value={item[map.value]}
 							onSelect={(value) => {
-								setSelected(data.find((d) => d[map.value] === value));
-
+								const selectedVal = data.find((d) => d[map.value] === value);
+								setSelected(selectedVal);
 								setOpen(false);
 							}}
 						>

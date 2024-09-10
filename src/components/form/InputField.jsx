@@ -63,6 +63,7 @@ function InputField({
 							ref={inputRef}
 							placeholder={placeholder}
 							pattern={props.pattern}
+							value={props.value}
 							onChange={() => {
 								props.onChange ? props.onChange(inputRef.current.value) : null;
 								validateInput();
