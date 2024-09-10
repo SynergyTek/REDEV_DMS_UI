@@ -2,68 +2,18 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Table } from "~"; 
 
-
-const services = {
-  InProgress: [
-    { ServiceNo: 'S-23-07-2024-3', NoteSubject: '24', ServiceSubject: '24 - Approval Request', TemplateName: 'General Document', ServiceStatusName: 'Overdue', OwnerUser: 'Administrator', StartDate: '23-07-2024', DueDate: '24-07-2024', CreatedDate: '23-07-2024 08:34:04' },
-    { ServiceNo: 'S-23-07-2024-3', NoteSubject: '24', ServiceSubject: '24 - Approval Request', TemplateName: 'General Document', ServiceStatusName: 'Overdue', OwnerUser: 'Administrator', StartDate: '23-07-2024', DueDate: '24-07-2024', CreatedDate: '23-07-2024 08:34:04' },
-    { ServiceNo: 'S-23-07-2024-3', NoteSubject: '24', ServiceSubject: '24 - Approval Request', TemplateName: 'General Document', ServiceStatusName: 'Overdue', OwnerUser: 'Administrator', StartDate: '23-07-2024', DueDate: '24-07-2024', CreatedDate: '23-07-2024 08:34:04' },
-    { ServiceNo: 'S-23-07-2024-3', NoteSubject: '24', ServiceSubject: '24 - Approval Request', TemplateName: 'General Document', ServiceStatusName: 'Overdue', OwnerUser: 'Administrator', StartDate: '23-07-2024', DueDate: '24-07-2024', CreatedDate: '23-07-2024 08:34:04' },
-    // Add more rows as per your data...
-  ],
-  Completed: [
-    { ServiceNo: 'S-05-08-2024-1', NoteSubject: 'sample.pdf', ServiceSubject: 'sample.pdf - Approval Request', TemplateName: 'General Document', ServiceStatusName: 'Completed', OwnerUser: 'Administrator', StartDate: '05-08-2024', DueDate: '06-08-2024', CreatedDate: '05-08-2024 11:34:40' },
-    { ServiceNo: 'S-05-08-2024-1', NoteSubject: 'sample.pdf', ServiceSubject: 'sample.pdf - Approval Request', TemplateName: 'General Document', ServiceStatusName: 'Completed', OwnerUser: 'Administrator', StartDate: '05-08-2024', DueDate: '06-08-2024', CreatedDate: '05-08-2024 11:34:40' },
-    { ServiceNo: 'S-05-08-2024-1', NoteSubject: 'sample.pdf', ServiceSubject: 'sample.pdf - Approval Request', TemplateName: 'General Document', ServiceStatusName: 'Completed', OwnerUser: 'Administrator', StartDate: '05-08-2024', DueDate: '06-08-2024', CreatedDate: '05-08-2024 11:34:40' },
-    { ServiceNo: 'S-05-08-2024-1', NoteSubject: 'sample.pdf', ServiceSubject: 'sample.pdf - Approval Request', TemplateName: 'General Document', ServiceStatusName: 'Completed', OwnerUser: 'Administrator', StartDate: '05-08-2024', DueDate: '06-08-2024', CreatedDate: '05-08-2024 11:34:40' },
-    { ServiceNo: 'S-05-08-2024-1', NoteSubject: 'sample.pdf', ServiceSubject: 'sample.pdf - Approval Request', TemplateName: 'General Document', ServiceStatusName: 'Completed', OwnerUser: 'Administrator', StartDate: '05-08-2024', DueDate: '06-08-2024', CreatedDate: '05-08-2024 11:34:40' },
-    // Add more rows as per your data...
-  ]
-};
-
 var gridColumns = [
-  { header: "Select", field: "select", template: "<input type='checkbox' class='select-checkbox' data-id='#= ServiceId #' />", width: 50 },
- 
-  { 
-      header: "Service No", 
-      field: "ServiceNo", 
-      width: 180, 
-      template: function (dataItem) {
-          var statusClass = "";
-          if (dataItem.ServiceStatusCode === "SERVICE_STATUS_INPROGRESS") {
-              statusClass = "inprogress";
-          } else if (dataItem.ServiceStatusCode === "SERVICE_STATUS_OVERDUE") {
-              statusClass = "overdue";
-          }
-          return `<span class="chip ${statusClass}">${dataItem.ServiceNo}</span>`;
-      }
-  },
-  { 
-      header: "Document Name", 
-      field: "NoteSubject", 
-      width: 250, 
-      template: function (dataItem) {
-          return `<span class="clickable" onclick="openDocument('${dataItem.NoteId}', '${dataItem.NoteTemplateCode}', '${dataItem.PortalId}')">${dataItem.NoteSubject}</span>`;
-      }
-  },
-  { 
-      header: "Workflow Name", 
-      field: "ServiceSubject", 
-      width: 300, 
-      wrapText: true, 
-      autoHeight: true, 
-      template: function (dataItem) {
-          return `<span class="clickable" onclick="openService('${dataItem.ServiceId}', '${dataItem.TemplateCode}', '${dataItem.PortalId}')">${dataItem.ServiceSubject}</span>`;
-      }
-  },
-  { header: "Document Type", field: "TemplateName", width: 250 },
-  { header: "Status", field: "ServiceStatusName", width: 120 },
-  { header: "Owner User", field: "OwnerUser", width: 150 },
-  { header: "Start Date", field: "StartDate", format: "{0:dd-MM-yyyy}", width: 140 },
-  { header: "Due Date", field: "DueDate", format: "{0:dd-MM-yyyy}", width: 140 },
-  { header: "Created Date", field: "CreatedDate", format: "{0:dd-MM-yyyy HH:mm:ss}", width: 180 },
+  // { header: "Select", field: "select" },
+  { header: "Service No", field: "ServiceNo", },
+  { header: "Document Name", field: "NoteSubject", },
+  { header: "Workflow Name",   field: "ServiceSubject", },
+  { header: "Document Type", field: "TemplateName"},
+  { header: "Status", field: "ServiceStatusName" },
+  { header: "Owner User", field: "OwnerUser" },
+  { header: "Start Date", field: "StartDate" },
+  { header: "Due Date", field: "DueDate"},
+  { header: "Created Date", field: "CreatedDate"},
 ];
-
 
 
 function ServiceList() {
@@ -79,8 +29,8 @@ function ServiceList() {
 
   const fetchData = async () => {
     try {
-      const inProgressResponse = await axios.get('/api/inprogress'); // replace with your API endpoint
-      const completedResponse = await axios.get('/api/completed'); // replace with your API endpoint
+      const inProgressResponse = await axios.get('/dmsapi/dms/query/GetInProgressServiceData?portalName=DMS&userId=45bba746-3309-49b7-9c03-b5793369d73c'); 
+      const completedResponse = await axios.get('/dmsapi/dms/query/GetCompletedServiceData?portalName=DMS&userId=45bba746-3309-49b7-9c03-b5793369d73c');
       setInProgressData(inProgressResponse.data);
       setCompletedData(completedResponse.data);
     } catch (error) {
@@ -120,7 +70,7 @@ function ServiceList() {
             id="tabs-in-progress"
             role="tabpanel"
             className="transition-opacity duration-300 ease-in-out opacity-100">
-            <Table data={services.InProgress} columns={gridColumns}/>
+            <Table data={inProgressData} columns={gridColumns}/>
           </div>
         )}
         {activeTab === 'completed' && (
@@ -128,7 +78,7 @@ function ServiceList() {
             id="tabs-completed"
             role="tabpanel"
             className="transition-opacity duration-300 ease-in-out opacity-100">
-            <Table data={services.Completed} columns={gridColumns}/>
+            <Table data={completedData} columns={gridColumns}/>
           </div>
         )}
       </div>
