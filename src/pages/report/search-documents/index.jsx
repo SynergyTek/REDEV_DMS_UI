@@ -1,6 +1,7 @@
 import { InputField, Table, Select, Text } from "~";
 import { Button } from "~/ui/button";
 import { useRef, useState } from "react";
+import { useRouter } from "next/router";
 import {
 	faArrowTurnRight,
 	faCircleInfo,
@@ -12,6 +13,8 @@ export default function SearchReport() {
 	const [documentType, setDocumentType] = useState("");
 	const [documentNo, setDocumentNo] = useState("");
 	const [documentDescription, setDocumentDescription] = useState("");
+
+	const router = useRouter();
 
 	const [tableDataUrl, setTableDataUrl] = useState(
 		"/dmsapi/dms/query/GetDPFUDocumentDataGrid"
@@ -28,6 +31,16 @@ export default function SearchReport() {
 
 	const OnReset = () => {
 		setTableDataUrl("/dmsapi/dms/query/GetDPFUDocumentDataGrid");
+	};
+
+	const openDetailGrid = (TemplateId, DocumentNo) => {
+		router.push(
+			{
+				pathname: "/report/search-documents/view-document-details",
+				query: { TemplateId, DocumentNo },
+			},
+			"/report/search-documents/view-document-details"
+		);
 	};
 
 	return (
@@ -109,12 +122,12 @@ export default function SearchReport() {
 			<div className="mt-1">
 				<Table
 					rowId={"TemplateId"}
-					rowName={"TemplateOwner"}
+					rowName={"DocumentNo"}
 					actions={[
 						{
 							icon: faCircleInfo,
 							label: "Grid Details",
-							onClick: ({ id, name }) => editEmail(id, name),
+							onClick: ({ id, name }) => openDetailGrid(id, name),
 						},
 						{
 							icon: faArrowTurnRight,
