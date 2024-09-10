@@ -1,6 +1,6 @@
 import { InputField, Table, Select, Text } from "~";
 import { Button } from "~/ui/button";
-import {useEffect, useRef, useState} from "react";
+import { useRef, useState } from "react";
 import {
 	faArrowTurnRight,
 	faCircleInfo,
@@ -8,7 +8,29 @@ import {
 } from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 
 export default function SearchReport() {
-	const reference = useRef();
+	const [projectNo, setProjectNo] = useState("");
+	const [documentType, setDocumentType] = useState("");
+	const [documentNo, setDocumentNo] = useState("");
+	const [documentDescription, setDocumentDescription] = useState("");
+
+	const [tableDataUrl, setTableDataUrl] = useState(
+		"/dmsapi/dms/query/GetDPFUDocumentDataGrid"
+	);
+
+	const projectNoReference = useRef();
+	const documentNoReference = useRef();
+
+	const OnApplyFilter = () => {
+		setTableDataUrl(
+			`/dmsapi/dms/query/GetDPFUDocumentDataGrid?projectNo="${projectNo}"&documentNo="${documentNo}"&documentType="${documentType}"&documentdescription="${documentDescription}"`
+		);
+		console.log(tableDataUrl);
+	};
+
+	const OnReset = () => {
+		setTableDataUrl("/dmsapi/dms/query/GetDPFUDocumentDataGrid");
+		console.log(tableDataUrl);
+	};
 
 	return (
 		<div className="mt-5">
@@ -27,8 +49,10 @@ export default function SearchReport() {
 								key: "Id",
 								value: "Name",
 							}}
-							onSelect={(e) => console.log(reference.current?.getAttribute("value"))}
-							ref={reference}
+							ref={projectNoReference}
+							onSelect={() =>
+								setProjectNo(projectNoReference.current?.getAttribute("value"))
+							}
 						/>
 					</div>
 					<div className="lg:flex-1 min-w-0 flex-col">
@@ -41,30 +65,42 @@ export default function SearchReport() {
 								key: "Id",
 								value: "Name",
 							}}
+							ref={documentNoReference}
+							onSelect={() =>
+								setDocumentType(
+									documentNoReference.current?.getAttribute("value")
+								)
+							}
 						/>
 					</div>
 					<div className="lg:flex-1 min-w-0">
 						<InputField
 							id="documentNo"
 							label="Document No"
-							onClick={() => {}}
 							placeholder="Document No"
 							primary
+							value={documentNo}
+							onChange={(value) => setDocumentNo(value)}
 						/>
 					</div>
 					<div className="lg:flex-1 min-w-0">
 						<InputField
 							id="documentDescription"
 							label="Document Description"
-							onClick={() => {}}
 							placeholder="Document Description"
 							primary
+							value={documentDescription}
+							onChange={(value) => setDocumentDescription(value)}
 						/>
 					</div>
 				</div>
 				<div className="mt-2">
-					<Button variant="outline">Apply Filter</Button>
-					<Button variant="outline">Reset</Button>
+					<Button variant="outline" onClick={OnApplyFilter}>
+						Apply Filter
+					</Button>
+					<Button variant="outline" onClick={OnReset}>
+						Reset
+					</Button>
 				</div>
 			</div>
 			<div className="mt-8">
@@ -128,7 +164,7 @@ export default function SearchReport() {
 						},
 					]}
 					data={{
-						source: "/dmsapi/dms/query/GetDPFUDocumentDataGrid",
+						source: tableDataUrl,
 					}}
 				/>
 			</div>
