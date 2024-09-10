@@ -7,6 +7,7 @@ import {
 	faCircleInfo,
 	faEye,
 } from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
+import axios from "axios";
 
 export default function SearchReport() {
 	const [projectNo, setProjectNo] = useState("");
@@ -41,6 +42,16 @@ export default function SearchReport() {
 			},
 			"/report/search-documents/view-document-details"
 		);
+	};
+
+	const downloadExcelFile = () => {
+		console.log("first");
+		axios
+			.get(
+				`/dmsapi//dms/query/GetDownloadDocumentReport?projectNo=${projectNo || ""}&documentNo=${documentNo || ""}&documentType=${documentType || ""}&documentdescription=${documentDescription || ""}`
+			)
+			.catch((err) => console.log(err));
+		console.log("last");
 	};
 
 	return (
@@ -115,7 +126,11 @@ export default function SearchReport() {
 				</div>
 			</div>
 			<div className="mt-8">
-				<Button variant="outline" className="flex items-center">
+				<Button
+					variant="outline"
+					className="flex items-center"
+					onClick={downloadExcelFile}
+				>
 					<Text variant="span">Export To Excel</Text>
 				</Button>
 			</div>
