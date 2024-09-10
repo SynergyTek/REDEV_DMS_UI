@@ -227,20 +227,11 @@ const Sidebar = () => {
 								Work List
 							</MenubarItem>
 							<MenubarSeparator className={"onMoblie"} />
-							<Link href={"/admin/dashboard"}>
-								<MenubarItem>Admin Dashboard</MenubarItem>
+							<Link href={"/worklist/servicelist/"}>
+								<MenubarItem>Service List</MenubarItem>
 							</Link>
-							<Link href={"/"}>
-								<MenubarItem>Document Custom Template</MenubarItem>
-							</Link>
-							<Link href={"/"}>
-								<MenubarItem>User</MenubarItem>
-							</Link>
-							<Link href={"/"}>
-								<MenubarItem>User Role</MenubarItem>
-							</Link>
-							<Link href={"/"}>
-								<MenubarItem>User Group</MenubarItem>
+							<Link href={"/worklist/tasklist/"}>
+								<MenubarItem>Task List</MenubarItem>
 							</Link>
 						</MenubarContent>
 					</MenubarMenu>
