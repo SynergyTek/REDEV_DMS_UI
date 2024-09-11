@@ -1,11 +1,11 @@
-import { forwardRef, useEffect, useMemo, useState } from "react";
-import { type } from "@/lib/utils";
-import { toast } from "sonner";
+import {forwardRef, useEffect, useMemo, useState} from "react";
+import {type} from "@/lib/utils";
+import {toast} from "sonner";
 import axios from "axios";
-import { useMediaQuery } from "usehooks-ts";
+import {useMediaQuery} from "usehooks-ts";
 
-import { Popover, PopoverContent, PopoverTrigger } from "~/ui/popover";
-import { Button } from "~/ui/button";
+import {Popover, PopoverContent, PopoverTrigger} from "~/ui/popover";
+import {Button} from "~/ui/button";
 import {
 	Command,
 	CommandEmpty,
@@ -14,18 +14,25 @@ import {
 	CommandItem,
 	CommandList,
 } from "~/ui/command";
-import { Drawer, DrawerContent, DrawerTrigger } from "~/ui/drawer";
-import { Icon, Loader, Text } from "~";
+import {Drawer, DrawerContent, DrawerTrigger} from "~/ui/drawer";
+import {Icon, Loader, Text} from "~";
 import PropTypes from "prop-types";
 
+const sizeMap = {
+	"xs": {trigger: "w[100pt]", popover: "w[100pt]"},
+	"sm": {trigger: "w-[125pt]", popover: "w-[125pt]"},
+	"md": {trigger: "w-[150pt]", popover: "w-[150pt]"},
+	"lg": {trigger: "w-[175pt]", popover: "w-[175pt]"},
+	"xl": {trigger: "", popover: ""},
+	"2xl": {trigger: "", popover: ""},
+	"3xl": {trigger: "", popover: ""},
+	
+}
 const Select = forwardRef(
 	(
 		{
 			className,
-			source,
-			map = { key: "id", value: "name" },
-			defaultValue,
-			onSelect,
+			size = "md", source, map = {key: "id", value: "name"}, defaultValue, onSelect,
 			...props
 		},
 		ref
@@ -36,7 +43,7 @@ const Select = forwardRef(
 		const [selected, setSelected] = useState(null);
 		const [open, setOpen] = useState(false);
 		const [value, setValue] = useState("");
-
+		
 		useMemo(() => {
 			switch (type(source)) {
 				case "array":
@@ -109,27 +116,41 @@ const Select = forwardRef(
 		useEffect(() => {
 			isLoading(false);
 		}, []);
-
+		
 		useEffect(() => {
 			onSelect && onSelect(selected);
 		}, [selected]);
-
+		
 		return loading ? (
 			<Loader />
 		) : isDesktop ? (
-			<Popover open={open} onOpenChange={setOpen}>
-				<PopoverTrigger asChild>
-					<Button variant="outline" className="w-full justify-between gap-2" value={selected?.[map.value]} ref={ref}>
-						<Text truncate={10} className={"opacity-80"}>
+			<Popover open={open}
+			         onOpenChange={setOpen}>
+				<PopoverTrigger asChild
+				                className={selected && "pr-2"}>
+					<Button variant="outline"
+					        className="w-full justify-between gap-2"
+					        value={selected?.[map.value]}
+					        ref={ref}>
+						<Text truncate={10}
+						      className={"opacity-80"}>
 							{selected?.[map.value] || "Select"}
 						</Text>
 						<Icon
 							icon="chevron-down"
-							className={`ml-4 shrink-0 ${open ? "rotate-180" : "rotate-0"}`}
+							className={`ml-auto shrink-0 hover:translate-y-0.5 ${open ? "rotate-180" : "rotate-0"}`}
 						/>
+						<Icon
+							className={`ml-2 ${selected ? "block" : "hidden"} hover:text-danger-400`}
+							icon={"close"}
+							onClick={(e) => {
+								e.preventDefault()
+								setSelected(null)
+							}} />
 					</Button>
 				</PopoverTrigger>
-				<PopoverContent className="w-full p-0" align="start">
+				<PopoverContent className="w-full p-0"
+				                align="start">
 					{loading ? (
 						<Loader />
 					) : (
@@ -144,9 +165,11 @@ const Select = forwardRef(
 				</PopoverContent>
 			</Popover>
 		) : (
-			<Drawer open={open} onOpenChange={setOpen}>
+			<Drawer open={open}
+			        onOpenChange={setOpen}>
 				<DrawerTrigger asChild>
-					<Button variant="outline" className="w-[150px] justify-start">
+					<Button variant="outline"
+					        className="w-[150px] justify-start">
 						{selected ? <>{selected[map.value]}</> : <>Select</>}
 					</Button>
 				</DrawerTrigger>
@@ -170,7 +193,7 @@ const Select = forwardRef(
 	}
 );
 
-function ContentList({ setOpen, setSelected, data, map }) {
+function ContentList({setOpen, setSelected, data, map}) {
 	console.log(data);
 	return (
 		<Command>

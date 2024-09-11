@@ -17,10 +17,10 @@ var gridColumns = [
 
 
 function ServiceList() {
-  const [activeTab, setActiveTab] = useState('inProgress');
-
+  
   const [inProgressData, setInProgressData] = useState([]);
   const [completedData, setCompletedData] = useState([]);
+  const [activeTab, setActiveTab] = useState('inProgress');
   const [selectedServiceIds, setSelectedServiceIds] = useState([]);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ function ServiceList() {
             id="tabs-in-progress"
             role="tabpanel"
             className="transition-opacity duration-300 ease-in-out opacity-100">
-            <Table data={inProgressData} columns={gridColumns}/>
+            <Table data={inProgressData}  columns={gridColumns}/>
           </div>
         )}
         {activeTab === 'completed' && (

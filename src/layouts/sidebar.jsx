@@ -321,17 +321,8 @@ const Sidebar = () => {
 							<Link href={"/masters/email-integration"}>
 								<MenubarItem>Email Integration</MenubarItem>
 							</Link>
-							<Link href={"/"}>
-								<MenubarItem>Document Custom Template</MenubarItem>
-							</Link>
-							<Link href={"/"}>
-								<MenubarItem>User</MenubarItem>
-							</Link>
-							<Link href={"/"}>
-								<MenubarItem>User Role</MenubarItem>
-							</Link>
-							<Link href={"/"}>
-								<MenubarItem>User Group</MenubarItem>
+							<Link href={"/masters/workspace"}>
+								<MenubarItem>Workspace</MenubarItem>
 							</Link>
 						</MenubarContent>
 					</MenubarMenu>

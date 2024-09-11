@@ -40,10 +40,11 @@ const Dashboard = () => {
         axios.get("/dmsapi/dms/query/DashboardCountDms?userId=").then((res) => {
             console.log(res, " Table res");
             const tempCards = [...Cards]
-            tempCards[0].number = res.data.totalDocument;
-            tempCards[1].number = res.data.documentCountToday;
-            tempCards[2].number = res.data.documentCountWeekly;
-            tempCards[3].number = res.data.documentCountMonthly;
+            
+            tempCards[0].number = res.data?.totalDocument;
+            tempCards[1].number = res.data?.documentCountToday;
+            tempCards[2].number = res.data?.documentCountWeekly;
+            tempCards[3].number = res.data?.documentCountMonthly;
             // SetCounts(res);
             setCards(tempCards);
 
