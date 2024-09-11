@@ -15,8 +15,10 @@ const ViewPermissions = () => {
         if (id) {
             const fetchPermissions = async () => {
                 try {
-                    const response = await axios.get(`/dmsapi/dms/query/GetPermissionDetails`, {
-                        params: { noteId: id }
+                    const userId = '45bba746-3309-49b7-9c03-b5793369d73c';
+                    const portalName = 'DMS';
+                    const response = await axios.get(`/dmsapi/dms/query/GetPermissionOfWorkspace`, {
+                        params:  { userId: userId, portalName: portalName, noteId: id }
                     });
                     setPermissionsData(response.data);
                     setLoading(false);
