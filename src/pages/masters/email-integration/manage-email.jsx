@@ -74,6 +74,7 @@ export default function manage_email() {
 				</div>
 				<div key="dropdown" className="mt-3">
 					<Select
+						className="w-full"
 						options={{
 							data: [
 								{ name: "Smtp", value: "Smtp" },
@@ -85,6 +86,7 @@ export default function manage_email() {
 						}}
 						primary
 						text="Button"
+						variant="outline"
 					/>
 				</div>
 				<div key="apiUrl" className="mt-3">
