@@ -8,9 +8,10 @@ import {Toaster} from "~/ui/toaster";
 function DocsPage() {
 	
 	const resolvedOf = useOf('meta', ['meta']);
+	console.log(resolvedOf)
 	const component = resolvedOf.preparedMeta.component
 
-	const props = component.__docgenInfo.props? Object.entries(component.__docgenInfo.props).map((type, index) => {
+	const props = component.__docgenInfo?.props? Object.entries(component.__docgenInfo.props).map((type, index) => {
 		if (!type[1].type?.name) type[1].type = {name: "unknown"}
 		return {
 			name: type[0],
@@ -19,9 +20,9 @@ function DocsPage() {
 		}
 	}):null
 	return <div className={"px-4 -mt-4"}>
-		<Text variant={"h1"}>{component.__docgenInfo.displayName}</Text>
+		<Text variant={"h1"}>{component.__docgenInfo?.displayName}</Text>
 		<h4>
-			{component.__docgenInfo.description}
+			{component.__docgenInfo?.description}
 		</h4>
 		<Canvas className={""} />
 		
