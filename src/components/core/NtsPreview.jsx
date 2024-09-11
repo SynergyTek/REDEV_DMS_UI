@@ -40,7 +40,7 @@ const NtsPreview = forwardRef(({noteId, templateCode, onClick, ...props}, ref) =
 			<Button variant={"tertiary"}
 			        icon={"close"}
 			        onClick={() => {
-				        onClose && onClose()
+				        props.onClose && props.onClose()
 			        }}
 			></Button>
 		</div>

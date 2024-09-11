@@ -35,7 +35,8 @@ export default function Index() {
 						value: "label",
 						key: "value"
 					}}
-					className={"w-24"}
+					className={"w-36"}
+					variant={"outline"}
 					reset={false}
 					defaultValue={"all"}
 				/>

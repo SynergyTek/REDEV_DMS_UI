@@ -1,4 +1,4 @@
-import {Table} from "~";
+import Table from "~/ui/table";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
@@ -13,6 +13,10 @@ export default {
 // More on writing src with args: https://storybook.js.org/docs/writing-stories/args
 export const Data = {
 	args: {
-		primary: true, text: 'Button',
+		source: "https://jsonplaceholder.typicode.com/posts",
+		columns: [
+			{header: "User Id", field: "id"},
+			{header: "Title", field: "title"},
+		]
 	},
 };

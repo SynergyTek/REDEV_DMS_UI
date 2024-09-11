@@ -8,22 +8,24 @@ import {Toaster} from "~/ui/toaster";
 function DocsPage() {
 	
 	const resolvedOf = useOf('meta', ['meta']);
-	const component = resolvedOf.preparedMeta.moduleExport.component
-	console.log(resolvedOf, component)
-	const props = Object.entries(component.__docgenInfo.props).map((type, index) => {
+	const component = resolvedOf.preparedMeta.component
+
+	const props = component.__docgenInfo.props? Object.entries(component.__docgenInfo.props).map((type, index) => {
 		if (!type[1].type?.name) type[1].type = {name: "unknown"}
 		return {
 			name: type[0],
 			type: type[1],
 			default: type[1].defaultValue?.value
 		}
-	})
+	}):null
 	return <div className={"px-4 -mt-4"}>
 		<Text variant={"h1"}>{component.__docgenInfo.displayName}</Text>
 		<h4>
 			{component.__docgenInfo.description}
 		</h4>
-		<Canvas />
+		<Canvas className={""} />
+		
+		{props ?
 		<div className={"sb-unstyled"}>
 			<Table data={props}
 			       columns={[
@@ -38,7 +40,10 @@ function DocsPage() {
 				       {header: "Default", field: "default"},
 			       ]}
 			       pagination={false} />
-		</div>
+		</div>:<Text className={"font-italic"}>
+				Could not find any properties
+			</Text>
+		}
 		<Stories />
 		<Toaster />
 	</div>;

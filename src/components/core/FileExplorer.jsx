@@ -80,7 +80,7 @@ const Item = forwardRef(({scale, id, type, title, onClick, onDoubleClick, ...pro
 				       className={"border-1 radius text-center"}
 				       autoFocus={true} />
 				: <Text
-					wrap={true}
+					wrap={"break"}
 					className={cn(textScale[scale], widthScale[scale])}
 					skeleton={props.skeleton}
 				
