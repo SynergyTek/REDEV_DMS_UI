@@ -32,6 +32,8 @@ export default function SearchReport() {
 
 	const OnReset = () => {
 		setTableDataUrl("/dmsapi/dms/query/GetDPFUDocumentDataGrid");
+		setDocumentNo("");
+		setDocumentDescription("");
 	};
 
 	const openDetailGrid = (TemplateId, DocumentNo) => {
