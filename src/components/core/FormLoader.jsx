@@ -13,6 +13,7 @@ import {
 } from "~/ui/form";
 import { Input } from "~/ui/input";
 import {forwardRef} from "react";
+import {toast} from "sonner";
 
 const generateSchema = (components) => {
     const schema = {};
@@ -21,27 +22,33 @@ const generateSchema = (components) => {
         switch (component.type) {
             case "textfield":
                 schema[key] = z.string()
-                    .min(component.validate?.minLength, {
-                        message: `${component.label} must be at least ${component.validate?.minLength} characters.`,
-                    })
-                    .max(component.validate?.maxLength, {
-                        message: `${component.label} must be at most ${component.validate?.maxLength} characters.`,
-                    });
+                .min(component.validate?.minLength, {
+                    message: `${component.label} must be at least ${component.validate?.minLength} characters.`,
+                })
+                .max(component.validate?.maxLength, {
+                    message: `${component.label} must be at most ${component.validate?.maxLength} characters.`,
+                });
+                !component.validate.required && schema[key].optional();
                 break;
+
             case "email":
                 schema[key] = z.string().email({
                     message: "Invalid email address.",
                 });
+                !component.validate.required && schema[key].optional();
                 break;
+
             case "number":
                 schema[key] = z.coerce.number()
                     .min(component.validate?.min, {
-                        message: `${component.label} must be at least ${component.validate.min}.`,
+                        message: `${component.label} must be at least ${component.validate?.min}.`,
                     })
                     .max(component.validate?.max, {
-                        message: `${component.label} must be at most ${component.validate.max}.`,
-                    });
+                        message: `${component.label} must be at most ${component.validate?.max}.`,
+                    }).optional();
+                !component.validate.required && schema[key].optional();
                 break;
+
             default:
                 break;
         }
@@ -89,6 +96,7 @@ const FormLoader = forwardRef((
 
     const onSubmit = (data) => {
         console.log(data);
+        toast.info(JSON.stringify(data));
     };
 
     return (

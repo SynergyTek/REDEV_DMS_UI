@@ -125,7 +125,7 @@ export default function Component() {
                         >
                             <PieChart>
                                 <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-                                <Pie data={chartData} dataKey="visitors" label nameKey="browser" />
+                                <Pie data={chartData} dataKey="visitors" className={'bg-blue-700'} innerRadius={60} labelLine={false} label nameKey="browser" />
                                 <ChartLegend
                                     content={<ChartLegendContent nameKey="browser" />}
                                     className="flex-wrap gap-4 [&>*]:justify-center"
@@ -142,7 +142,7 @@ export default function Component() {
                     <CardContent>
                         <ul className="space-y-4">
                             {recentDocuments.map((doc, index) => (
-                                <li key={index} className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                                <li key={index} className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-secondary-800 hover:cursor-pointer transition-colors duration-200">
                                     <div className="flex items-center">
                                         <FileIcon className="h-4 w-4 mr-2 text-blue-500" />
                                         <span className="text-sm font-medium">{doc.name}</span>
@@ -168,8 +168,8 @@ export default function Component() {
                                         <Badge variant="outline">{activity.action}</Badge>
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-blue-500 dark:text-gray-300">{activity.user} {activity.action} {activity.document}</p>
-                                        <p className="text-xs text-muted-foreground">{activity.time}</p>
+                                        <p className="text-sm font-medium text-blue-500 dark:text-secondary-300">{activity.user} {activity.action} {activity.document}</p>
+                                        <p className="text-xs text-muted-foreground dark:text-secondary-500">{activity.time}</p>
                                     </div>
                                 </li>
                             ))}
@@ -184,7 +184,7 @@ export default function Component() {
                     <CardContent>
                         <ul className="space-y-4">
                             {favoriteFolders.map((folder, index) => (
-                                <li key={index} className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                                <li key={index} className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-secondary-800 hover:cursor-pointer transition-colors duration-200">
                                     <div className="flex items-center">
                                         <FolderIcon className="h-4 w-4 mr-2 text-yellow-500" />
                                         <span className="text-sm font-medium">{folder.name}</span>
@@ -203,7 +203,7 @@ export default function Component() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-wrap gap-4">
-                        <Button variant="ghost" className="flex items-center">
+                        <Button variant="tertiary" className="flex items-center">
                             <UploadIcon className="mr-2 h-4 w-4" /> Upload File
                         </Button>
                         <Button variant="outline" className="flex items-center">
@@ -219,7 +219,7 @@ export default function Component() {
                             <TrashIcon className="mr-2 h-4 w-4" /> Trash
                         </Button>
                     </div>
-                    <FormLoader jsonSchema={formio} />
+                    {/*<FormLoader jsonSchema={formio} />*/}
                     {/*<DatePicker />*/}
                     {/*<DatePickerWithRange />*/}
                 </CardContent>

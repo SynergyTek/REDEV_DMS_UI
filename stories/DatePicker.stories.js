@@ -15,7 +15,7 @@ const RangeTemplate = (args) => <DatePickerWithRange {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-
+    className: 'w-full'
 };
 
 export const DateRange = RangeTemplate.bind({});
