@@ -23,9 +23,8 @@ import {
     FormLabel,
     FormMessage,
 } from "~/ui/form";
-import { useState } from "react";
+import {forwardRef, useState} from "react";
 import {
-    Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
@@ -33,10 +32,15 @@ import {
 } from "~/ui/select";
 import { ScrollArea } from "~/ui/scroll-area";
 import { toast } from "sonner";
+import {Select} from "~";
 
+const DatePicker = forwardRef(({ className, value, onChange }, ref) => {
+    const [date, setDate] = React.useState(value);
 
-export function DatePicker({ className }, ref) {
-    const [date, setDate] = React.useState(undefined);
+    const handleDateChange = (newDate) => {
+        setDate(newDate);
+        onChange && onChange(newDate);
+    };
 
     return (
         <Popover>
@@ -44,10 +48,11 @@ export function DatePicker({ className }, ref) {
                 <Button
                     variant={"outline"}
                     className={cn(
-                        "w-[280px] justify-start text-left font-normal",
+                        "w-full justify-start text-left font-normal",
                         !date && "text-muted-foreground"
                     )}
-                    value={date && format(date, "yyyy-MM-dd")}
+                    value={date}
+                    ref={ref}
                 >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {date ? format(date, "PPP") : <span>Pick a date</span>}
@@ -57,15 +62,15 @@ export function DatePicker({ className }, ref) {
                 <Calendar
                     mode="single"
                     selected={date}
-                    onSelect={setDate}
+                    onSelect={handleDateChange}
                     initialFocus
                 />
             </PopoverContent>
         </Popover>
     );
-}
+});
 
-export function DatePickerWithRange({ className }, ref) {
+export function DatePickerWithRange({ className }) {
     const [date, setDate] = React.useState();
 
     return (
@@ -79,7 +84,6 @@ export function DatePickerWithRange({ className }, ref) {
                             "w-[300px] justify-start text-left font-normal",
                             !date && "text-muted-foreground"
                         )}
-                        value={date ? `${format(date.from, "yyyy-MM-dd")} - ${format(date.to, "yyyy-MM-dd")}` : ""}
                     >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {date?.from ? (
@@ -220,3 +224,5 @@ export function DatetimePicker() {
         </Form>
     );
 }
+
+export default DatePicker;

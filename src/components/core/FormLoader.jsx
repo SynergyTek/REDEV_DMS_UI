@@ -99,6 +99,4 @@ const FormLoader = forwardRef((
             </form>
         </Form>
     );
-})
-
-export default FormLoader;
+});
