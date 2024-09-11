@@ -1,10 +1,9 @@
 import { InputField, Table, Select, Text } from "~";
 import { Button } from "~/ui/button";
 import { useRef, useState } from "react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import {
 	faArrowTurnRight,
-	faCircleInfo,
 	faEye,
 } from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 import axios from "axios";
@@ -15,7 +14,7 @@ export default function SearchReport() {
 	const [documentNo, setDocumentNo] = useState("");
 	const [documentDescription, setDocumentDescription] = useState("");
 
-	const router = useRouter();
+	// const router = useRouter();
 
 	const [tableDataUrl, setTableDataUrl] = useState(
 		"/dmsapi/dms/query/GetDPFUDocumentDataGrid"
@@ -34,17 +33,19 @@ export default function SearchReport() {
 		setTableDataUrl("/dmsapi/dms/query/GetDPFUDocumentDataGrid");
 		setDocumentNo("");
 		setDocumentDescription("");
+		projectNoReference.current.clear();
+		documentTypeReference.current.clear();
 	};
 
-	const openDetailGrid = (TemplateId, DocumentNo) => {
-		router.push(
-			{
-				pathname: "/report/search-documents/view-document-details",
-				query: { TemplateId, DocumentNo },
-			},
-			"/report/search-documents/view-document-details"
-		);
-	};
+	// const openDetailGrid = (TemplateId, DocumentNo) => {
+	// 	router.push(
+	// 		{
+	// 			pathname: "/report/search-documents/view-document-details",
+	// 			query: { TemplateId, DocumentNo },
+	// 		},
+	// 		"/report/search-documents/view-document-details"
+	// 	);
+	// };
 
 	const downloadExcelFile = () => {
 		console.log("first");
@@ -60,11 +61,13 @@ export default function SearchReport() {
 		<div className="mt-5">
 			<div>
 				<div className="flex space-x-4 items-end flex-wrap">
-					<div className="lg:flex-1 min-w-0 flex-col">
-						<Text variant="span" className="ms-1">
+					<div className="lg:flex-1 min-w-0">
+						<Text variant="span" className="ms-1 text-xs">
 							Project No
 						</Text>
 						<Select
+							className="w-full"
+							variant="outline"
 							source={{
 								type: "lov",
 								parameter: "DPFU_ProjectNo",
@@ -79,11 +82,13 @@ export default function SearchReport() {
 							}
 						/>
 					</div>
-					<div className="lg:flex-1 min-w-0 flex-col">
-						<Text variant="span" className="ms-1">
+					<div className="lg:flex-1 min-w-0">
+						<Text variant="span" className="ms-1 text-xs">
 							Document Type
 						</Text>
 						<Select
+							className="w-full"
+							variant="outline"
 							source={"/dmsapi/dms/query/GetBulkUploadTemplateCodeNameList"}
 							map={{
 								key: "Id",
@@ -127,74 +132,71 @@ export default function SearchReport() {
 					</Button>
 				</div>
 			</div>
-			<div className="mt-8">
-				<Button
-					variant="outline"
-					className="flex items-center"
-					onClick={downloadExcelFile}
-				>
-					<Text variant="span">Export To Excel</Text>
-				</Button>
-			</div>
-			<div className="mt-1">
-				<Table
-					rowId={"TemplateId"}
-					rowName={"DocumentNo"}
-					actions={[
-						{
-							icon: faCircleInfo,
-							label: "Grid Details",
-							onClick: ({ id, name }) => openDetailGrid(id, name),
-						},
-						{
-							icon: faArrowTurnRight,
-							label: "Go To Location",
-							onClick: () => {},
-						},
-						{
-							icon: faEye,
-							label: "View Metadata",
-							onClick: () => {},
-						},
-					]}
-					columns={[
-						{
-							field: "ProjectNo",
-							header: "Project No",
-						},
-						{
-							field: "DocumentNo",
-							header: "Document No",
-						},
-						{
-							field: "DocumentDescription",
-							header: "Document Description",
-						},
-						{
-							field: "Revision",
-							header: "Revision",
-						},
-						{
-							field: "Descipline",
-							header: "Descipline",
-						},
-						{
-							field: "IssueCode",
-							header: "Issue Code",
-						},
-						{
-							field: "StageStatus",
-							header: "Stage Status",
-						},
-						{
-							field: "DocumentOwner",
-							header: "Document Owner",
-						},
-					]}
-					data={{
-						source: tableDataUrl,
-					}}
-				/>
+			<div className="my-8">
+				<div>
+					<Button
+						variant="outline"
+						className="flex items-center"
+						onClick={downloadExcelFile}
+					>
+						<Text variant="span">Export To Excel</Text>
+					</Button>
+				</div>
+				<div className="mt-1">
+					<Table
+						rowId={"TemplateId"}
+						rowName={"DocumentNo"}
+						actions={[
+							{
+								icon: faArrowTurnRight,
+								label: "Go To Location",
+								onClick: () => {},
+							},
+							{
+								icon: faEye,
+								label: "View Metadata",
+								onClick: () => {},
+							},
+						]}
+						columns={[
+							{
+								field: "ProjectNo",
+								header: "Project No",
+							},
+							{
+								field: "DocumentNo",
+								header: "Document No",
+							},
+							{
+								field: "DocumentDescription",
+								header: "Document Description",
+							},
+							{
+								field: "Revision",
+								header: "Revision",
+							},
+							{
+								field: "Descipline",
+								header: "Descipline",
+							},
+							{
+								field: "IssueCode",
+								header: "Issue Code",
+							},
+							{
+								field: "StageStatus",
+								header: "Stage Status",
+							},
+							{
+								field: "DocumentOwner",
+								header: "Document Owner",
+							},
+						]}
+						data={{
+							source: tableDataUrl,
+						}}
+					/>
+				</div>
 			</div>
 		</div>
 	);

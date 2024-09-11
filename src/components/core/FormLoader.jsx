@@ -12,6 +12,7 @@ import {
     FormMessage,
 } from "~/ui/form";
 import { Input } from "~/ui/input";
+import {forwardRef} from "react";
 
 const generateSchema = (components) => {
     const schema = {};
@@ -19,9 +20,13 @@ const generateSchema = (components) => {
         const key = component.key.toLowerCase();
         switch (component.type) {
             case "textfield":
-                schema[key] = z.string().min(2, {
-                    message: `${component.label} must be at least 2 characters.`,
-                });
+                schema[key] = z.string()
+                    .min(component.validate?.minLength, {
+                        message: `${component.label} must be at least ${component.validate?.minLength} characters.`,
+                    })
+                    .max(component.validate?.maxLength, {
+                        message: `${component.label} must be at most ${component.validate?.maxLength} characters.`,
+                    });
                 break;
             case "email":
                 schema[key] = z.string().email({
@@ -30,10 +35,10 @@ const generateSchema = (components) => {
                 break;
             case "number":
                 schema[key] = z.coerce.number()
-                    .min(component.validate.min, {
+                    .min(component.validate?.min, {
                         message: `${component.label} must be at least ${component.validate.min}.`,
                     })
-                    .max(component.validate.max, {
+                    .max(component.validate?.max, {
                         message: `${component.label} must be at most ${component.validate.max}.`,
                     });
                 break;
@@ -47,39 +52,7 @@ const generateSchema = (components) => {
 const renderComponent = (component) => {
     switch (component.type) {
         case "textfield":
-            return (
-                <FormField
-                    key={component.key}
-                    name={component.key.toLowerCase()}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{component.label}</FormLabel>
-                            <FormControl>
-                                <Input placeholder={component.label} {...field} />
-                            </FormControl>
-                            <FormDescription>{component.description}</FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            );
         case "email":
-            return (
-                <FormField
-                    key={component.key}
-                    name={component.key.toLowerCase()}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{component.label}</FormLabel>
-                            <FormControl>
-                                <Input type="email" placeholder={component.label} {...field} />
-                            </FormControl>
-                            <FormDescription>{component.description}</FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            );
         case "number":
             return (
                 <FormField
@@ -97,12 +70,18 @@ const renderComponent = (component) => {
                     )}
                 />
             );
+
         default:
             return null;
     }
 };
 
-export default function FormLoader({ jsonSchema, ...props }) {
+const FormLoader = forwardRef((
+    {
+        jsonSchema,
+        ...props
+    }, ref
+) => {
     const formSchema = generateSchema(jsonSchema.components);
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -120,4 +99,6 @@ export default function FormLoader({ jsonSchema, ...props }) {
             </form>
         </Form>
     );
-}
+})
+
+export default FormLoader;
