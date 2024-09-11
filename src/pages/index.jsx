@@ -220,8 +220,8 @@ export default function Component() {
                         </Button>
                     </div>
                     {/*<FormLoader jsonSchema={formio} />*/}
-                    {/*<DatePicker />*/}
-                    {/*<DatePickerWithRange />*/}
+                    <DatePicker />
+                    <DatePickerWithRange />
                 </CardContent>
             </Card>
         </div>
