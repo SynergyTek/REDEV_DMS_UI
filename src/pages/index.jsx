@@ -8,6 +8,7 @@ import {
     PieChart,
 } from "recharts"
 import {ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent} from "~/ui/chart";
+import {DatePicker, DatePickerWithRange} from "~/ui/date-picker";
 
 export default function Component() {
     const recentDocuments = [
@@ -216,6 +217,9 @@ export default function Component() {
                             <TrashIcon className="mr-2 h-4 w-4" /> Trash
                         </Button>
                     </div>
+                    {/*<FormLoader jsonSchema={formio} />*/}
+                    <DatePicker />
+                    <DatePickerWithRange />
                 </CardContent>
             </Card>
         </div>

@@ -1,4 +1,5 @@
 import {Select} from '~'
+import {useRef} from "react";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
@@ -19,6 +20,9 @@ export const Primary = {
 		
 	},
 };
+/**
+ * You can also set the source type as an LOV by passing the type as "lov" and the parameter as the LOV type
+ */
 export const DataFromLOV = {
 	args: {
 		source: {
@@ -29,5 +33,17 @@ export const DataFromLOV = {
 			key: "Id",
 			value: "Name"
 		}
+	},
+};
+export const Small = {
+	args: {
+		source: "https://jsonplaceholder.typicode.com/users",
+		size: "sm"
+	},
+};
+export const Large = {
+	args: {
+		source: "https://jsonplaceholder.typicode.com/users",
+		size: "lg"
 	},
 };

@@ -3,7 +3,7 @@ const primary = colors.indigo,
 	secondary = colors.gray,
 	info = colors.blue,
 	danger = colors.red,
-	success = colors.green;
+	success = colors.green
 
 module.exports = {
 	app: {
@@ -26,7 +26,7 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				primary, secondary, info
+				primary, secondary, info, danger,  success
 			},
 			
 			animation: {
