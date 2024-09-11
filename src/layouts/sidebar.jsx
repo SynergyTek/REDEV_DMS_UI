@@ -166,10 +166,10 @@ const Sidebar = () => {
 							<Link href={"/admin/dashboard"}>
 								<MenubarItem>Admin Dashboard</MenubarItem>
 							</Link>
-							<Link href={"/"}>
+							<Link href={"/admin/document-template/"}>
 								<MenubarItem>Document Custom Template</MenubarItem>
 							</Link>
-							<Link href={"/"}>
+							<Link href={"/admin/user/"}>
 								<MenubarItem>User</MenubarItem>
 							</Link>
 							<Link href={"/"}>
