@@ -44,7 +44,10 @@ export const ProfileFormStory = () => {
             required_error: "You need to select gender.",
         }),
         appointmentDate: z.date({
-            required_error: "A date of birth is required.",
+            required_error: "Appointment date is required.",
+        }),
+        terms: z.boolean().refine((val) => val === true, {
+            message: "You must accept the terms and conditions",
         }),
     });
 
