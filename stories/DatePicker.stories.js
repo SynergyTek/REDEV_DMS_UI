@@ -4,6 +4,9 @@ import React from "react";
 export default {
     title: 'Components/DatePicker',
     component: DatePicker,
+    parameters: {
+        layout: 'centered',
+    },
 };
 
 const Template = (args) => <DatePicker {...args} />;
@@ -17,4 +20,13 @@ Default.args = {
 export const DateRange = RangeTemplate.bind({});
 DateRange.args = {
     // Add range args here if needed
+};
+export const Data = {
+    args: {
+        source: "https://jsonplaceholder.typicode.com/posts",
+        columns: [
+            {header: "User Id", field: "id"},
+            {header: "Title", field: "title"},
+        ]
+    },
 };

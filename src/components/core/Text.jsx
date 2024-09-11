@@ -3,7 +3,7 @@ import {cva} from "class-variance-authority";
 import Skeleton from "~/ui/skeleton";
 
 const textVariants = cva(
-	"text-primary-950 dark:text-primary-100 text-ellipsis overflow-hidden",
+	"text-primary-950 dark:text-primary-100 overflow-hidden",
 	{
 		variants: {
 			size: {
@@ -26,8 +26,9 @@ const textVariants = cva(
 					end: "text-end",
 				},
 			wrap: {
-				true: "break-words",
-				false: ""
+				true: "text-wrap",
+				break: "text-wrap break-all",
+				false: "text-ellipsis text-nowrap"
 			},
 			
 		},
@@ -35,6 +36,7 @@ const textVariants = cva(
 			size: "md",
 			width: "default",
 			align: "start",
+			wrap: false,
 			
 		},
 	}
@@ -51,13 +53,13 @@ const variantMap = {
 	h6: "text-base",
 }
 
-function Text({variant,size, type, truncate = true, className, wrap, align, ...props}) {
+function Text({variant, size, type, truncate = true, className, wrap, align, ...props}) {
 	if (props.skeleton) {
 		return <Skeleton className={cn(`h-4`, className)} />
 	}
-	const Comp = variant || "p"
+	const Comp =  "p"
 	return <Comp title={props.children}
-	             className={cn(textVariants({align, type, className, wrap,size}))}>{props.children}</Comp>
+	             className={cn(textVariants({align, type, className, wrap, size}))}>{props.children}</Comp>
 }
 
 export default Text;

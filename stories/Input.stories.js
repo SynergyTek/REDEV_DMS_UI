@@ -7,6 +7,9 @@ import {Textarea} from "~/ui/textarea";
 export default {
   title: 'Components/Input',
   component: Input,
+    parameters: {
+        layout: 'centered',
+    },
 };
 
 const Template = (args) => <Input {...args} />;

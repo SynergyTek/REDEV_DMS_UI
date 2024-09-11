@@ -1,19 +1,23 @@
-import {CheckBox, ContextMenu, Loader, Pagination, Template, Text} from "~";
+import {CheckBox, ContextMenu, InputField, Loader, Pagination, Select, Template, Text} from "~";
 import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "~/ui/resizable";
-const columnWidthMap ={
-	1:"w-1/12",
-	2:"w-2/12",
-	3:"w-3/12",
-	4:"w-4/12",
-	5:"w-5/12",
-		
+import {Button} from "~/ui/button";
+import {Input} from "~/ui/input";
+
+const columnWidthMap = {
+	1: "w-1/12",
+	2: "w-2/12",
+	3: "w-3/12",
+	4: "w-4/12",
+	5: "w-5/12",
+	
 	
 }
+
 function ColumnHeader({context, onClick, onContextMenu, ...props}) {
 	return <div
-		className={`h-16 border-b  pl-4 items-center flex bg-primary-800 text-primary-50 dark:bg-secondary-900 dark:border-gray-700 hover:bg-primary-800/80 dark:hover:bg-gray-600 transition-all
+		className={`min-h-12  pl-4 items-center flex bg-primary-900 text-primary-50 dark:bg-secondary-900 dark:border-gray-700 hover:bg-primary-800/80 dark:hover:bg-gray-600 transition-all
 	 ease-linear cursor-pointer`}
 		onClick={onClick}
 		onContextMenu={onContextMenu}
@@ -25,54 +29,33 @@ function ColumnHeader({context, onClick, onContextMenu, ...props}) {
 
 function Cell({data, context, onClick, onContextMenu, ...props}) {
 	return <div
-		className={`h-16 border-b  px-4 p-2 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all
+		className={`h-12 border-b  px-4 p-2 dark:border-secondary-800 [&.hover]:bg-primary-200 dark:[&.hover]:bg-primary-800/50 [data-row-hover]:bg-primary-200 dark:[data-row-hover]:bg-primary-800/50 transition-all
 	 ease-linear cursor-pointer overflow-clip`}
 		onClick={onClick}
+		onMouseEnter={props.onHover}
+		onMouseLeave={props.onHover}
 		onContextMenu={onContextMenu}
-	> <span className={""}>
+	>
 		{data &&
 		context.template ? (<Template context={data[context.field]}>{context.template}</Template>) : (
-			<Text>{data[context.field]}</Text>)}
-	</span>
-		{/*<span className={"sm:hidden"}>...</span>*/}
+			<Text truncate={true}
+			      wrap={false}>{data[context.field]}</Text>)}
+	
 	
 	</div>
 }
 
-function TableColumn({data, context, onClick, onContextMenu, ...props}) {
-	
-	return (
-		
-		<div>
-			{data ? data.map((r, rIndex) => {
-				return <Cell data={r}
-				             context={context}></Cell>
-			}) : <Loader />}
-		</div>
-	);
-}
 
 function Table({
-	               data = {
-		               source: "https://jsonplaceholder.org/users",
-	               },
-	               columns = [
-		               {
-			               header: "First Name",
-			               field: "firstname",
-		               },
-		               {
-			               header: "Last Name",
-			               field: "lastname",
-		               },
-	               ],
+	               source,
+	               columns = ["Id", "Name"],
 	               pageLimit = 10,
 	               actions,
 	               pagination = true,
 	               ...props
                }) {
 	const [allData, setAllData] = useState([]);
-	const [fetchedData, setFetchedData] = useState(data);
+	const [data, setData] = useState(null);
 	const [fetchedColumns, setFetchedColumns] = useState(columns);
 	const [pageData, setPageData] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -96,16 +79,16 @@ function Table({
 		document.addEventListener("blur", (event) => {
 			hideContextMenu();
 		});
-		if (!data || !columns) {
-			setFetchedData(null);
+		if (!source || !columns) {
+			setData(null);
 			setFetchedColumns(null);
 			setAllData([]);
 			setLoading(false);
 			return;
 		}
-		if (typeof data === "function") {
+		if (typeof source === "function") {
 			data().then((res) => {
-				setFetchedData(res);
+				setData(res);
 				setLoading(false);
 			});
 		}
@@ -115,22 +98,21 @@ function Table({
 				setLoading(false);
 			});
 		}
-		if (Array.isArray(data)) {
-			data.length ? setFetchedData(data) : setFetchedData(null);
+		if (Array.isArray(source)) {
+			source.length ? setData(data) : setData(null);
 			setLoading(false);
 		}
-		if (typeof data.source === "string") {
+		if (typeof source === "string") {
 			axios
-				.get(data.source)
+				.get(source)
 				.then((res) => {
 					if (Array.isArray(res.data)) {
-						setFetchedData(res.data);
-						setAllData(res.data);
+						setData(res.data);
 						setLoading(false);
 					}
 				})
 				.catch((e) => {
-					setFetchedData(null);
+					setData(null);
 					console.log(e);
 				});
 			
@@ -144,30 +126,28 @@ function Table({
 				});
 				const tempData = {...colFilter};
 				tempData.data = [...cols];
-				
-				//console.log(tempData, "my cols")
 				selColFilter(tempData);
 			}
 		}
 	}, []);
 	
 	useEffect(() => {
-		if (Array.isArray(fetchedData)) {
+		if (Array.isArray(data) && data.length) {
 			let _data = [],
 				lowerLimit = (currentPage - 1) * pageLimit,
 				upperLimit = pagination ? Math.min(
-					fetchedData.length,
+					data.length,
 					pageLimit + (currentPage - 1) * pageLimit
-				) : fetchedData.length;
+				) : data.length;
 			for (let i = lowerLimit; i < upperLimit; i++) {
-				if (fetchedData[i]) {
-					_data.push(fetchedData[i]);
+				if (data[i]) {
+					_data.push(data[i]);
 				}
 			}
 			setPageData(_data);
 		}
 		
-	}, [fetchedData, currentPage]);
+	}, [data, currentPage]);
 	
 	function hideContextMenu() {
 		const menu = contextMenu.current;
@@ -183,12 +163,6 @@ function Table({
 		}
 	}
 	
-	function refresh(event) {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
-	}
 	
 	const selectRow = (event) => {
 		setSelection(true);
@@ -204,7 +178,7 @@ function Table({
 		// console.log(inputVal, "input from textField")
 	};
 	const handleFilter = (inputText, selectText) => {
-		if (!fetchedData.length > 0) {
+		if (!data || !data.length > 0) {
 			return;
 		}
 		console.log(colFilter, " col data");
@@ -251,7 +225,7 @@ function Table({
 			" new f"
 		);
 		if (Array.isArray(newFilteredData)) {
-			setFetchedData(newFilteredData);
+			setData(newFilteredData);
 		}
 	};
 	const handleContextMenu = (event) => {
@@ -286,11 +260,22 @@ function Table({
 		};
 		showContextMenu();
 	};
+	const handleRowHover = (event) => {
+		switch (event.type) {
+			case "mouseleave":
+				event.currentTarget.classList.remove("hover");
+				break;
+			case "mouseenter":
+				event.currentTarget.classList.add("hover");
+				break;
+		}
+		
+	}
 	return (
 		<div
 			id={"table-wrapper"}
 			className={
-				"rounded-md overflow-clip flex flex-col border dark:border-secondary-800"
+				"rounded-md overflow-clip w-full flex flex-col border border-primary-900/30 dark:border-secondary-800"
 			}
 		>
 			{actions && (
@@ -298,31 +283,37 @@ function Table({
 				             options={actions}></ContextMenu>
 			)}
 			<div className="overflow-x-auto shadow-md ">
-				{/*<div*/}
-				{/*	className={"p-4 bg-primary-300 shadow-md border-l-4 text-primary-100 dark:bg-primary-950 dark:text-primary-300"}*/}
-				{/*>*/}
-				{/*	{selection ? (*/}
-				{/*		*/}
-				{/*		<Button*/}
-				{/*			icon={faClose}*/}
-				{/*			onClick={() => {*/}
-				{/*				setSelection(false);*/}
-				{/*			}}*/}
-				{/*		></Button>) : null}*/}
-				{/*	{columns.length > 0 ? < >*/}
-				{/*		<InputField*/}
-				{/*			type="text"*/}
-				{/*			placeholder="Search Here"*/}
-				{/*			required={false}*/}
-				{/*			id="Search-filter"*/}
-				{/*			onChange={onChange}*/}
-				{/*		/>*/}
-				{/*		<Select*/}
-				{/*			options={colFilter}*/}
-				{/*			onSelect={onSelect}*/}
-				{/*		/>*/}
-				{/*	</> : null}*/}
-				{/*</div>*/}
+				<div
+					className={"flex gap-2 p-4 items-center bg-primary-900/90 shadow-md text-primary-100 dark:bg-secondary-800 dark:text-primary-300"}
+				>
+					{selection ? (
+						
+						<Button
+							icon={"close"}
+							onClick={() => {
+								setSelection(false);
+							}}
+						></Button>) : null}
+					{columns.length > 0 ? < >
+						<Input
+							type="text"
+							placeholder="Search Here"
+							required={false}
+							id="Search-filter"
+							className={"w-48 bg-secondary-900 text-sm h-8 p-2 px-2"}
+							onChange={onChange}
+						/>
+						
+						<Select
+							source={[{
+								"id": "1",
+								"name": "All",
+							}]}
+							size={"sm"}
+							// onSelect={onSelect}
+						/>
+					</> : null}
+				</div>
 			</div>
 			<div className={""}>
 				{loading ? (
@@ -350,13 +341,16 @@ function Table({
 										                className={column.width && columnWidthMap[column.width]}
 										>
 											<ColumnHeader context={column} />
-											<TableColumn
-												key={colIndex}
-												data={pageData}
-												context={column}
-												onClick={selectRow}
-												onContextMenu={handleContextMenu}
-											/>
+											{pageData ? pageData.map((r, rIndex) => {
+												return <Cell data={r}
+												             key={rIndex}
+												             context={column}
+												             onClick={selectRow}
+												             onContextMenu={handleContextMenu}
+												             onHover={handleRowHover}
+												             {...props}></Cell>
+											}) : <Loader />}
+										
 										</ResizablePanel>
 										{colIndex !== columns.length - 1 &&
 											<ResizableHandle className={"bg-transparent w-0"} />}
@@ -377,31 +371,31 @@ function Table({
 					
 					)}
 			</div>
-			{pagination && (fetchedData||pageData) && (
-				<nav
-					className={
-						"w-full flex items-center justify-between p-4 dark:bg-primary-950 dark:bg-opacity-50 text-primary-50"
-					}
-				>
-					<p className={"text-sm"}>
-						Showing{" "}
-						<span className={"font-bold"}>
-							{pageLimit * (currentPage - 1)}
-							{" - "}
-							{pageLimit + pageLimit * (currentPage - 1)}
-						</span>{" "}
-						out of <span className={"font-bold"}>{fetchedData.length}</span>
-					</p>
-					{fetchedData.length ? (
-						<Pagination
-							pages={Math.ceil(fetchedData.length / pageLimit)}
-							onChange={setCurrentPage}
-						/>
-					) : (
-						<Loader />
-					)}
-				</nav>
-			)}
+			{/*{pagination && (data || pageData) && (*/}
+			{/*	<nav*/}
+			{/*		className={*/}
+			{/*			"w-full flex items-center justify-between p-4 dark:bg-primary-950 dark:bg-opacity-50 text-primary-50"*/}
+			{/*		}*/}
+			{/*	>*/}
+			{/*		<p className={"text-sm"}>*/}
+			{/*			Showing{" "}*/}
+			{/*			<span className={"font-bold"}>*/}
+			{/*				{pageLimit * (currentPage - 1)}*/}
+			{/*				{" - "}*/}
+			{/*				{pageLimit + pageLimit * (currentPage - 1)}*/}
+			{/*			</span>{" "}*/}
+			{/*			out of <span className={"font-bold"}>{data.length}</span>*/}
+			{/*		</p>*/}
+			{/*		{data.length ? (*/}
+			{/*			<Pagination*/}
+			{/*				pages={Math.ceil(data.length / pageLimit)}*/}
+			{/*				onChange={setCurrentPage}*/}
+			{/*			/>*/}
+			{/*		) : (*/}
+			{/*			<Loader />*/}
+			{/*		)}*/}
+			{/*	</nav>*/}
+			{/*)}*/}
 		</div>
 	);
 }

@@ -25,13 +25,13 @@ const buttonVariants = cva(
 			size: {
 				xs: "h-6 rounded px-2",
 				sm: "h-9 rounded-md px-3",
-				default: "h-10 px-4 py-2",
+				md: "h-10 px-4 py-2",
 				lg: "h-11 rounded-md px-8",
 			},
 		},
 		defaultVariants: {
 			variant: "primary",
-			size: "default",
+			size: "md",
 		},
 	}
 )
@@ -41,6 +41,16 @@ const Button = forwardRef(({className, icon, variant, size, asChild = false, ...
 		ref = useRef()
 	}
 	const handleClick = () => {}
+	const childrenWithProps = React.Children.map(props.children, child => {
+		// Checking isValidElement is the safe way and avoids a
+		// typescript error too.
+		console.log(child, React.isValidElement(child))
+		
+		if (React.isValidElement(child)) {
+			return React.cloneElement(child, { size,variant, ...child.props });
+		}
+		return child;
+	});
 	return (
 		(<button
 			className={cn(buttonVariants({variant, size, className}))}
@@ -50,7 +60,7 @@ const Button = forwardRef(({className, icon, variant, size, asChild = false, ...
 		
 		>
 			{icon && <Icon size={size} icon={icon} hover={{container: ref}}></Icon> }
-			{props.children}
+			{childrenWithProps}
 		</button>)
 	);
 })

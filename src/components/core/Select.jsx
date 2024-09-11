@@ -34,11 +34,13 @@ const Select = forwardRef(
 	(
 		{
 			className,
-			size = "md", source, map = {key: "id", value: "name"},
+			size = "md", 
+			source, 
+			map = {key: "id", value: "name"},
 			defaultValue,
 			onSelect,
 			search = true,
-			variant = "tertiary",
+			variant = "outline",
 			reset = true,
 			...props
 		},
@@ -144,7 +146,7 @@ const Select = forwardRef(
 					<Button variant={variant}
 					        className={cn("justify-between gap-2", className)}
 					        value={selected?.[map.value]}
-					        ref={ref}>
+					        ref={ref} size={size}>
 						<Text truncate={10}
 						      className={"opacity-80"}>
 							{selected?.[map.value] || "Select"}
@@ -186,7 +188,7 @@ const Select = forwardRef(
 					<Button variant={variant}
 					        className={cn("justify-between gap-2", className)}
 					        value={selected?.[map.value]}
-					        ref={ref}>
+					        ref={ref} size={size}>
 						<Text truncate={10}
 						      className={"opacity-80"}>
 							{selected?.[map.value] || "Select"}
