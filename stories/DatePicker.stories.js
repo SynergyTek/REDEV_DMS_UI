@@ -1,4 +1,4 @@
-import { DatePicker, DatePickerWithRange } from "~/ui/date-picker";
+import DatePicker ,{ DatePickerWithRange } from "~/ui/date-picker";
 import React from "react";
 import {date} from "zod";
 
@@ -15,7 +15,7 @@ const RangeTemplate = (args) => <DatePickerWithRange {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-    field: date
+
 };
 
 export const DateRange = RangeTemplate.bind({});

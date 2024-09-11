@@ -62,7 +62,7 @@ const renderComponent = (component) => {
                         <FormItem>
                             <FormLabel>{component.label}</FormLabel>
                             <FormControl>
-                                <Input type="number" placeholder={component.label} {...field} />
+                                <Input type={component.type==='number' ? 'number' : 'text'} placeholder={component.label} {...field} />
                             </FormControl>
                             <FormDescription>{component.description}</FormDescription>
                             <FormMessage />
@@ -100,3 +100,5 @@ const FormLoader = forwardRef((
         </Form>
     );
 });
+
+export default FormLoader

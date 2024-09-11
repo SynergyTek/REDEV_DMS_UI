@@ -8,7 +8,7 @@ import {
     PieChart,
 } from "recharts"
 import {ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent} from "~/ui/chart";
-import {DatePicker, DatePickerWithRange} from "~/ui/date-picker";
+import DatePicker , {DatePickerWithRange} from "~/ui/date-picker";
 import FormLoader from "~/core/FormLoader";
 import formio from '~/core/formio.json'
 
@@ -220,7 +220,7 @@ export default function Component() {
                         </Button>
                     </div>
                     <FormLoader jsonSchema={formio} />
-                    <DatePicker />
+                    {/*<DatePicker />*/}
                     {/*<DatePickerWithRange />*/}
                 </CardContent>
             </Card>

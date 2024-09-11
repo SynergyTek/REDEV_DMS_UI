@@ -23,7 +23,7 @@ import {
     FormLabel,
     FormMessage,
 } from "~/ui/form";
-import {forwardRef, useState} from "react";
+import {forwardRef, useRef, useState} from "react";
 import {
     SelectContent,
     SelectItem,
@@ -41,14 +41,17 @@ const DatePicker = forwardRef(({ className, value, onChange }, ref) => {
         setDate(newDate);
         onChange && onChange(newDate);
     };
-
+    ref = ref ||  useRef()
+    if (ref.current)  ref.current.clear = () => {
+        setDate(null);
+    }
     return (
         <Popover>
             <PopoverTrigger asChild>
                 <Button
                     variant={"outline"}
                     className={cn(
-                        "w-full justify-start text-left font-normal",
+                        "w-full justify-start text-left font-normal" + className,
                         !date && "text-muted-foreground"
                     )}
                     value={date}
