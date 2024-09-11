@@ -2,7 +2,6 @@ import {cloneElement, useEffect, useState} from "react";
 import {flattenObject} from "@/lib/utils";
 
 function Template({context, children, ...props}) {
-
 	const checkForCode = (child) => {
 		
 		if (child.props && child.props.children) {

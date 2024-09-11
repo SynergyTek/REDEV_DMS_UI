@@ -253,17 +253,8 @@ const Sidebar = () => {
 							<Link href={"/report/search-documents"}>
 								<MenubarItem>Search Documents</MenubarItem>
 							</Link>
-							<Link href={"/"}>
-								<MenubarItem>Document Custom Template</MenubarItem>
-							</Link>
-							<Link href={"/"}>
-								<MenubarItem>User</MenubarItem>
-							</Link>
-							<Link href={"/"}>
-								<MenubarItem>User Role</MenubarItem>
-							</Link>
-							<Link href={"/"}>
-								<MenubarItem>User Group</MenubarItem>
+							<Link href={"/report/user-audit-report"}>
+								<MenubarItem>User Audit Report</MenubarItem>
 							</Link>
 						</MenubarContent>
 					</MenubarMenu>
@@ -341,8 +332,7 @@ const Sidebar = () => {
 									className={"w-4 mr-1"}
 								/>
 								<span className="text-sm font-medium hidden md:block">
-									{" "}
-									Support{" "}
+									Support
 								</span>
 							</Link>
 						</li>
@@ -355,8 +345,7 @@ const Sidebar = () => {
 							>
 								<FontAwesomeIcon icon={faGears} className={"w-4 mr-1"} />
 								<span className="text-sm font-medium hidden md:block">
-									{" "}
-									Settings{" "}
+									Settings
 								</span>
 							</Link>
 						</li>

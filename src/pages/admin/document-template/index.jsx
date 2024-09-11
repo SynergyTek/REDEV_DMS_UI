@@ -30,25 +30,25 @@ export default () => {
             rowId={"Id"}
             rowName={"DisplayName"}
             data={{
-              source: "https://jsonplaceholder.typicode.com/posts",
+              source: "https://demodms.aitalkx.com/cms/documentTemplate/ReadTemplateListByCategoryCodes?categoryCodes=GENERAL_DOCUMENT",
             }}
             columns={[
               {
-                header: "user Id",
-                field: "userId",
+                header: "Template Name",
+                field: "DisplayName",
               },
               {
-                header: "id",
-                field: "id",
+                header: "Code",
+                field: "Code",
               },
               {
-                header: "title",
-                field: "title",
+                header: "Description",
+                field: "Description",
               },
-              {
-                header: "Content",
-                field: "body",
-              },
+              // {
+              //   header: "Content",
+              //   field: "body",
+              // },
             ]}
             actions={[
               {

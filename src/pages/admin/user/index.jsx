@@ -1,242 +1,172 @@
 
-import { Table, Button} from "../../../components/";
+import { useReducer, useState } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import axios from "axios";
+import { Table, Button, Notification } from "@/components/";
+import {
+  faPencil,
+  faTrash,
+  faKey,
+} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
+import Modal from "~/core/AlertModal";
+
+const initialState = {
+  userId: null,
+  isModalOpen: false,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_USER_ID':
+      return { ...state, userId: action.payload };
+    case 'OPEN_MODAL':
+      return { ...state, isModalOpen: true };
+    case 'CLOSE_MODAL':
+      return { ...state, isModalOpen: false, userId: null };
+    default:
+      return state;
+  }
+};
 
 const User = () => {
-    return (
-        <div>
-            <Button className="mb-3"
-                onClick={() => { alert("To be Added...")}}
-                primary
-                text="Create"
-            />
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-            <Table
-                actions={[
-                    {
-                      label: "View",
-                      //icon: faEye,
-                      onClick: (active) => {
-                        router.push(
-                          {
-                            pathname: `/form/${active.name}`,
-                            query: {
-                              templateId: active.id,
-                            },
-                          },
-                          `/form/${active.name}`,
-                        );
-                      },
-                    },
-                    {
-                      label: "Edit",
-                      // icon: faPencil,
-                      onClick: (active) => {
-                        router.push(`/template/manage/${active.id}`);
-                      },
-                    },
-                    {
-                      label: "Delete",
-                      // icon: faTrash,
-                      onClick: (active) => {
-                        console.log("Delete");
-                      },
-                    },
-                  ]}
-                columns={[
-                    {
-                        field: 'id',
-                        header: 'Actions'
-                    },
-                    {
-                        field: 'Name',
-                        header: 'Name'
-                    },
-                    {
-                        field: 'Email',
-                        header: 'Email'
-                    },
-                    {
-                        field: 'JobTitle',
-                        header: 'Job Title'
-                    },
-                    {
-                        field: 'DepartmentName',
-                        header: 'Department Name'
-                    },
-                    {
-                        field: 'Status',
-                        header: 'Status'
-                    }
-                ]}
-                
-                data={[
-                    {
-                        id: '1',
-                        Name: 'John Doe',
-                        Email: 'john.doe@example.com',
-                        JobTitle: 'IT',
-                        DepartmentName: 'Technology',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '2',
-                        Name: 'Jane Smith',
-                        Email: 'jane.smith@example.com',
-                        JobTitle: 'Civil Engineer',
-                        DepartmentName: 'Construction',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '3',
-                        Name: 'Mike Johnson',
-                        Email: 'mike.johnson@example.com',
-                        JobTitle: 'HR Manager',
-                        DepartmentName: 'Human Resources',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '4',
-                        Name: 'Emily Davis',
-                        Email: 'emily.davis@example.com',
-                        JobTitle: 'Sales Executive',
-                        DepartmentName: 'Sales',
-                        Status: 'Pending'
-                    },
-                    {
-                        id: '5',
-                        Name: 'William Brown',
-                        Email: 'william.brown@example.com',
-                        JobTitle: 'Mechanical Engineer',
-                        DepartmentName: 'Engineering',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '6',
-                        Name: 'Olivia Miller',
-                        Email: 'olivia.miller@example.com',
-                        JobTitle: 'Software Developer',
-                        DepartmentName: 'IT',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '7',
-                        Name: 'David Wilson',
-                        Email: 'david.wilson@example.com',
-                        JobTitle: 'Data Analyst',
-                        DepartmentName: 'Data Science',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '8',
-                        Name: 'Sophia Moore',
-                        Email: 'sophia.moore@example.com',
-                        JobTitle: 'Project Manager',
-                        DepartmentName: 'Operations',
-                        Status: 'Pending'
-                    },
-                    {
-                        id: '9',
-                        Name: 'James Taylor',
-                        Email: 'james.taylor@example.com',
-                        JobTitle: 'Network Engineer',
-                        DepartmentName: 'Networking',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '10',
-                        Name: 'Isabella Anderson',
-                        Email: 'isabella.anderson@example.com',
-                        JobTitle: 'Financial Analyst',
-                        DepartmentName: 'Finance',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '11',
-                        Name: 'Michael Thomas',
-                        Email: 'michael.thomas@example.com',
-                        JobTitle: 'Bank Manager',
-                        DepartmentName: 'Banking',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '12',
-                        Name: 'Emma Jackson',
-                        Email: 'emma.jackson@example.com',
-                        JobTitle: 'Consultant',
-                        DepartmentName: 'Consulting',
-                        Status: 'Pending'
-                    },
-                    {
-                        id: '13',
-                        Name: 'Alexander White',
-                        Email: 'alexander.white@example.com',
-                        JobTitle: 'Logistics Manager',
-                        DepartmentName: 'Logistics',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '14',
-                        Name: 'Mia Harris',
-                        Email: 'mia.harris@example.com',
-                        JobTitle: 'Trader',
-                        DepartmentName: 'Trading',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '15',
-                        Name: 'Daniel Clark',
-                        Email: 'daniel.clark@example.com',
-                        JobTitle: 'Customer Service',
-                        DepartmentName: 'Support',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '16',
-                        Name: 'Amelia Lewis',
-                        Email: 'amelia.lewis@example.com',
-                        JobTitle: 'Cloud Architect',
-                        DepartmentName: 'Cloud',
-                        Status: 'Pending'
-                    },
-                    {
-                        id: '17',
-                        Name: 'Lucas Young',
-                        Email: 'lucas.young@example.com',
-                        JobTitle: 'Inventory Manager',
-                        DepartmentName: 'Warehouse',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '18',
-                        Name: 'Charlotte King',
-                        Email: 'charlotte.king@example.com',
-                        JobTitle: 'Marketing Head',
-                        DepartmentName: 'Marketing',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '19',
-                        Name: 'Henry Scott',
-                        Email: 'henry.scott@example.com',
-                        JobTitle: 'Product Designer',
-                        DepartmentName: 'Design',
-                        Status: 'Active'
-                    },
-                    {
-                        id: '20',
-                        Name: 'Ava Green',
-                        Email: 'ava.green@example.com',
-                        JobTitle: 'Actuary',
-                        DepartmentName: 'Insurance',
-                        Status: 'Pending'
-                    }
-                ]}
-                
-                primary
-                text="Button"
-            />
-        </div>
-    )
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleConfirm = async () => {
+    console.log(state.userId, "to be deleted id");
+    try {
+      const url = `/dmsapi/PortalAdmin/User/DeleteUser?Id=${state.userId}`
+      console.log(url, "delete api")
+      const response = await axios.get(`/dmsapi/PortalAdmin/User/DeleteUser?Id=${state.userId}`);
+
+      response.data?.success ?
+        console.log("Done")
+        :
+        console.log("Something went wrong!")
+    } catch (error) {
+      console.error('Error posting data:', error);
+
+    }
+
+    dispatch({ type: 'CLOSE_MODAL' });
+  };
+
+  const handleCancel = () => {
+
+    dispatch({ type: 'CLOSE_MODAL' });
+  };
+
+  const edit = (id, name) => {
+    console.log(id, name, " from context")
+    router.push(
+      {
+        pathname: "/admin/user/manage",
+        query: { id, name },
+      },
+      "/admin/user/manage"
+    );
+  };
+
+  const ChangePassword = (id, name) => {
+    console.log(id, name, " from context")
+    router.push(
+      {
+        pathname: "/admin/user/change-password",
+        query: { id, name },
+      },
+      "/admin/user/change-password"
+    );
+  };
+
+  return (
+    <div >
+      <Head>
+        <title>User</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      {state.isModalOpen && (
+        <Modal
+          message="Are you sure you want to proceed?"
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          confirmText="Yes"
+          cancelText="No"
+        />
+      )}
+
+      <h2 className={"text-2xl mb-4 font-semibold text-primary-900 dark:text-primary-300"}>
+        User
+      </h2>
+
+      <Button className="mb-3"
+        onClick={() => {
+          router.push("/admin/user/manage")
+        }}
+        primary
+        text="Create"
+      />
+
+      <Table
+        rowId={"Id"}
+        rowName={"Password"}
+        actions={[
+
+          {
+            icon: faPencil,
+            label: "Edit",
+            onClick: ({ id, name }) => edit(id, name),
+          },
+          {
+            label: "Delete",
+             icon: faTrash,
+            onClick: ({ id, name }) => {
+              console.log(id, " context user")
+              dispatch({ type: 'SET_USER_ID', payload: id });
+              dispatch({ type: 'OPEN_MODAL' });
+            },
+          },
+          {
+            label: "Change Password",
+            icon: faKey,
+            onClick: ({ id, name }) => ChangePassword(id, name),
+
+          },
+        ]}
+        columns={[
+
+          {
+            field: 'Name',
+            header: 'Name'
+          },
+          {
+            field: 'Email',
+            header: 'Email'
+          },
+          {
+            field: 'JobTitle',
+            header: 'Job Title'
+          },
+          {
+            field: 'DepartmentName',
+            header: 'Department Name'
+          },
+          {
+            field: 'Status',
+            header: 'Status'
+          }
+        ]}
+
+        data={{ source: "/dmsapi/portalAdmin/User/ReadData?portalName=DMS&userId=45bba746-3309-49b7-9c03-b5793369d73c" }}
+
+        primary
+        text="Button"
+      />
+    </div>
+  )
 }
 
 export default User;
