@@ -1,53 +1,48 @@
-import {fn} from '@storybook/test';
-import {InputField} from "~";
+// Input.stories.jsx
 
-// More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
+import React from 'react';
+import { Input } from '~/ui/input';
+import {Textarea} from "~/ui/textarea";
+
 export default {
-  title: 'Form/Input',
-  component: InputField,
-  parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: 'centered',
-  },
-
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { onClick: fn() },
+  title: 'Components/Input',
+  component: Input,
 };
 
-// More on writing src with args: https://storybook.js.org/docs/writing-stories/args
-export const Input = {
-  args: {
-    primary: true,
-    label:"Input",
-    id:"id1",
-    required:true
-  },
+const Template = (args) => <Input {...args} />;
+const TextareaTemplate = (args) => <Textarea {...args} />;
+
+export const Default = Template.bind({});
+Default.args = {
+  type: 'text',
+  placeholder: 'Enter text...',
 };
 
-export const TextArea = {
-  args: {
-    label:"Text Area",
-    type:"textarea",
-    id:"id2",
-    pattern:"[A-Za-z]{"
-  },
+export const TextArea = TextareaTemplate.bind({});
+TextArea.args = {
+  placeholder: 'Type your message here.',
 };
 
-export const Number = {
-  args: {
-    label:"Number",
-    type:"number",
-    id:"id3"
-  },
+export const Email = Template.bind({});
+Email.args = {
+  type: 'email',
+  placeholder: 'Enter email...',
 };
 
-export const Email = {
-  args: {
-    label:"Email",
-    type:"email"
-  },
+export const Number = Template.bind({});
+Number.args = {
+  type: 'number',
+  placeholder: 'Enter number...',
+};
+
+export const File = Template.bind({});
+File.args = {
+  type: 'file',
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  type: 'text',
+  placeholder: 'Disabled input',
+  disabled: true,
 };

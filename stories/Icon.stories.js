@@ -12,7 +12,7 @@ export default {
 };
 
 export const Hover = {
-	description:"You can hover over the icon to see the effect",
+	description:"Form component",
 	args: {
 		icon: "house"
 	},

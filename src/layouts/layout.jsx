@@ -6,7 +6,7 @@ import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "~/ui/resizab
 import {useMediaQuery} from "usehooks-ts";
 import {config} from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import {Toaster} from "~";
+import {Toaster} from "~/ui/toaster";
 
 config.autoAddCss = false
 export default function RootLayout({ children }) {
@@ -33,6 +33,7 @@ export default function RootLayout({ children }) {
 
                 </ResizablePanel>
             </ResizablePanelGroup>
+            <Toaster />
         </>
     )
 }

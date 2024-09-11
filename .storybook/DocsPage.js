@@ -3,6 +3,7 @@ import {Table, Text} from "~";
 import {useState} from "react";
 import PropTypes from "prop-types";
 import {Badge} from "~/ui/badge";
+import {Toaster} from "~/ui/toaster";
 
 function DocsPage() {
 	
@@ -36,6 +37,7 @@ function DocsPage() {
 			       pagination={false} />
 		</div>
 		<Stories />
+		<Toaster />
 	</div>;
 }
 
