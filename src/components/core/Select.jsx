@@ -1,4 +1,4 @@
-import {forwardRef, useEffect, useMemo, useState} from "react";
+import {forwardRef, useEffect, useMemo, useRef, useState} from "react";
 import {cn, type} from "@/lib/utils";
 import {toast} from "sonner";
 import axios from "axios";
@@ -50,7 +50,10 @@ const Select = forwardRef(
 		const [selected, setSelected] = useState(null);
 		const [open, setOpen] = useState(false);
 		const [value, setValue] = useState("");
-		
+		ref = ref ||  useRef()
+		if (ref.current)  ref.current.clear = () => {
+			setSelected(null);
+		}
 		useMemo(() => {
 			switch (type(source)) {
 				case "array":
@@ -139,7 +142,7 @@ const Select = forwardRef(
 				<PopoverTrigger asChild
 				                className={selected && "pr-2"}>
 					<Button variant={variant}
-					        className={cn("justify-between gap-2",className)}
+					        className={cn("justify-between gap-2", className)}
 					        value={selected?.[map.value]}
 					        ref={ref}>
 						<Text truncate={10}
@@ -181,7 +184,7 @@ const Select = forwardRef(
 			        onOpenChange={setOpen}>
 				<DrawerTrigger asChild>
 					<Button variant={variant}
-					        className={cn("justify-between gap-2",className)}
+					        className={cn("justify-between gap-2", className)}
 					        value={selected?.[map.value]}
 					        ref={ref}>
 						<Text truncate={10}
