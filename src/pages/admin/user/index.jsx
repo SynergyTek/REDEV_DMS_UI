@@ -9,7 +9,7 @@ import {
   faTrash,
   faKey,
 } from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
-import Modal from "@/components/info/AlertModal";
+import Modal from "~/core/AlertModal";
 
 const initialState = {
   userId: null,

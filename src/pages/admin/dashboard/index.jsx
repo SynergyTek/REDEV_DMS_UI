@@ -87,9 +87,6 @@ const Dashboard = () => {
             </div>
 
             <Table
-                actions={[
-
-                ]}
                 columns={[
                     {
                         field: 'OwnerUserName',

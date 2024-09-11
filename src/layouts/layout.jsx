@@ -2,11 +2,11 @@ import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 import Head from "next/head";
 import React, {useState} from "react";
-import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "~/ui/resizable";
+import {ResizablePanel, ResizablePanelGroup} from "~/ui/resizable";
 import {useMediaQuery} from "usehooks-ts";
 import {config} from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import {Toaster} from "~/ui/toaster";
+import {Toaster} from "~";
 
 config.autoAddCss = false
 export default function RootLayout({ children }) {
@@ -28,12 +28,12 @@ export default function RootLayout({ children }) {
                         <Navbar setTheme={setTheme}/>
                         <div className={'md:px-4'}>
                             {React.createElement(children.type, {theme})}
+                            <Toaster richColors theme={theme}/>   
                         </div>
                     </div>
 
                 </ResizablePanel>
             </ResizablePanelGroup>
-            <Toaster />
         </>
     )
 }

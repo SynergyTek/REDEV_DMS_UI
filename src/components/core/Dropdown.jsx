@@ -1,5 +1,5 @@
-import {forwardRef, useEffect, useMemo, useState} from "react";
-import {cn, type} from "@/lib/utils";
+import {forwardRef, useEffect, useMemo, useRef, useState} from "react";
+import {type} from "@/lib/utils";
 import {toast} from "sonner";
 import axios from "axios";
 import {useMediaQuery} from "usehooks-ts";
@@ -30,7 +30,7 @@ const sizeMap = {
 	
 }
 const selectVariants = cva({})
-const Select = forwardRef(
+const Dropdown = forwardRef(
 	(
 		{
 			className,
@@ -111,15 +111,14 @@ const Select = forwardRef(
 		}, [source]);
 		useMemo(() => {
 			if (defaultValue) {
-				let defaultKey = data.find(
-					(d) => {
-						if (type(defaultValue) === "object") {
+				let defaultKey = defaultValue;
+				if (type(defaultValue) === "object") {
+					defaultKey = data.find(
+						(d) => {
 							return d[defaultKey.key] === defaultValue[defaultKey.key]
-						} else {
-							return d[map.key] === defaultValue
 						}
-					}
-				);
+					);
+				}
 				setSelected(defaultKey);
 			}
 		}, [data]);
@@ -128,7 +127,8 @@ const Select = forwardRef(
 		}, []);
 		
 		useEffect(() => {
-			onSelect && onSelect(selected);
+			
+			selected && onSelect && onSelect(selected);
 		}, [selected]);
 		
 		return loading ? (
@@ -137,32 +137,13 @@ const Select = forwardRef(
 			<Popover open={open}
 			         onOpenChange={setOpen}>
 				<PopoverTrigger asChild
-				                className={selected && "pr-2"}>
-					<Button variant={variant}
-					        className={cn("justify-between gap-2",className)}
-					        value={selected?.[map.value]}
-					        ref={ref}>
-						<Text truncate={10}
-						      className={"opacity-80"}>
-							{selected?.[map.value] || "Select"}
-						</Text>
-						<Icon
-							icon="chevron-down"
-							className={`ml-auto shrink-0 hover:translate-y-0.5 ${open ? "rotate-180" : "rotate-0"}`}
-						/>
-						{reset &&
-							<Icon
-								className={`ml-2 ${selected ? "block" : "hidden"} hover:text-danger-400`}
-								icon={"close"}
-								onClick={(e) => {
-									e.preventDefault()
-									setSelected(null)
-								}} />
-						}
-					</Button>
+				                ref={ref}>
+					
+					{props.children}
+				
 				</PopoverTrigger>
 				<PopoverContent className="w-full p-0"
-				                align="start">
+				                align={props.align || "start"}>
 					{loading ? (
 						<Loader />
 					) : (
@@ -179,29 +160,9 @@ const Select = forwardRef(
 		) : (
 			<Drawer open={open}
 			        onOpenChange={setOpen}>
-				<DrawerTrigger asChild>
-					<Button variant={variant}
-					        className={cn("justify-between gap-2",className)}
-					        value={selected?.[map.value]}
-					        ref={ref}>
-						<Text truncate={10}
-						      className={"opacity-80"}>
-							{selected?.[map.value] || "Select"}
-						</Text>
-						<Icon
-							icon="chevron-down"
-							className={`ml-auto shrink-0 hover:translate-y-0.5 ${open ? "rotate-180" : "rotate-0"}`}
-						/>
-						{reset &&
-							<Icon
-								className={`ml-2 ${selected ? "block" : "hidden"} hover:text-danger-400`}
-								icon={"close"}
-								onClick={(e) => {
-									e.preventDefault()
-									setSelected(null)
-								}} />
-						}
-					</Button>
+				<DrawerTrigger asChild
+				               ref={ref}>
+					{props.children}
 				</DrawerTrigger>
 				<DrawerContent>
 					{loading ? (
@@ -224,33 +185,39 @@ const Select = forwardRef(
 );
 
 function ContentList({setOpen, search, setSelected, data, map}) {
-	console.log(data);
+	
 	return (
 		<Command>
-			{search && <CommandInput placeholder="Search ..." />}
 			<CommandList>
 				<CommandEmpty>No results found.</CommandEmpty>
 				<CommandGroup>
-					{data.map((item) => (
-						<CommandItem
-							key={item[map.key]}
-							value={item[map.value]}
-							onSelect={(value) => {
-								const selectedVal = data.find((d) => d[map.value] === value);
-								setSelected(selectedVal);
-								setOpen(false);
-							}}
-						>
-							{item[map.value]}
-						</CommandItem>
-					))}
+					{data.map((item) => {
+							const itemRef = useRef(null);
+							return <CommandItem
+								ref={itemRef}
+								key={item[map.key]}
+								value={item[map.value]}
+								onSelect={(value) => {
+									const selectedVal = data.find((d) => d[map.value] === value);
+									setSelected(selectedVal);
+									setOpen(false);
+								}}
+							>
+								{item.icon && <Icon icon={item.icon}
+								                    hover={{container: itemRef}}
+								                    className={"mr-2"} />}
+								{item[map.value]}
+							</CommandItem>
+						}
+					)
+					}
 				</CommandGroup>
 			</CommandList>
 		</Command>
 	);
 }
 
-Select.propTypes = {
+Dropdown.propTypes = {
 	/**
 	 * The source of the data. Can be an array, object or a string
 	 */
@@ -264,4 +231,4 @@ Select.propTypes = {
 	}),
 };
 
-export default Select;
+export default Dropdown;
