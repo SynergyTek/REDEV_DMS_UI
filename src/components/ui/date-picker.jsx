@@ -16,7 +16,6 @@ const DatePicker = forwardRef(({ className, value, onChange }, ref) => {
 
 	const handleDateChange = (newDate) => {
 		setDate(newDate);
-		onChange && onChange(date);
 	};
 
 	React.useEffect(() => {
