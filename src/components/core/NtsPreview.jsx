@@ -1,18 +1,27 @@
 import {Separator, Text} from "~";
 import {Button} from "~/ui/button";
 import React, {forwardRef, useEffect, useState} from "react";
+import {type} from "@/lib/utils";
 
-const NtsPreview = forwardRef(({noteId, templateCode, onClick, ...props}, ref) => {
+const NtsPreview = forwardRef(({pageType, parameter, onClick, ...props}, ref) => {
 	const [currentFile, setCurrentFile] = useState(null)
 	const [currentFileData, setCurrentFileData] = useState(null)
+	const [data, setData] = useState(null)
 	useEffect(() => {
-		if (noteId) {
-			fetch(`/api/note/${noteId}/file`).then(res => res.json()).then(data => {
-				setCurrentFile(data)
-			})
+		if (!parameter || type(parameter) !== "object") return
+		let [parameterType, parameterValue] = Object.entries(parameter)[0]
+		let fetchedData = {}
+		switch (pageType) {
+			case "note":
+				break;
+			case "service":
+				break;
+			case "task":
+				break;
 		}
+		setData(fetchedData)
 		
-	}, [noteId,templateCode]);
+	}, [pageType, parameter]);
 	useEffect(() => {
 		if (currentFile) {
 			fetch(`/api/note/${noteId}/file/${currentFile["FileId"]}`).then(res => res.json()).then(data => {
@@ -84,3 +93,6 @@ const NtsPreview = forwardRef(({noteId, templateCode, onClick, ...props}, ref) =
 })
 
 export default NtsPreview
+
+export class cmHandler {
+}

@@ -2,21 +2,21 @@ import Table from "~/ui/table";
 
 // More on how to set up src at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
-	title: 'Data/Table', component: Table, parameters: {
-		// Optional parameter to center the component in the Canvas. More info:
-		// https://storybook.js.org/docs/configure/story-layout
-		layout: 'centered',
-	},
+	title: 'Data/Table', component: Table,
 	
 };
 
 // More on writing src with args: https://storybook.js.org/docs/writing-stories/args
 export const Data = {
 	args: {
-		source: "https://jsonplaceholder.typicode.com/posts",
+		source: "https://jsonplaceholder.org/users",
 		columns: [
 			{header: "User Id", field: "id"},
-			{header: "Title", field: "title"},
+			{header: "First Name", field: "firstname"},
+			{header: "Last Name", field: "lastname"},
+			{header: "Email", field: "email"},
+			{header: "DOB", field: "birthDate"},
+			{header: "Username", field: "login.username"},
 		]
 	},
 };

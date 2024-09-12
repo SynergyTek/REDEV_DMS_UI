@@ -1,10 +1,11 @@
-import {CheckBox, ContextMenu, InputField, Loader, Pagination, Select, Template, Text} from "~";
+import {CheckBox, ContextMenu, Dropdown, InputField, Loader, Pagination, Select, Template, Text} from "~";
 import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "~/ui/resizable";
 import {Button} from "~/ui/button";
 import {Input} from "~/ui/input";
-
+import {flattenObject} from "@/lib/utils";
+import {cmHandler} from "~/core/ContextMenu";
 const columnWidthMap = {
 	1: "w-1/12",
 	2: "w-2/12",
@@ -15,31 +16,103 @@ const columnWidthMap = {
 	
 }
 
-function ColumnHeader({context, onClick, onContextMenu, ...props}) {
+function Toolbar({
+	                 onSearch,
+	                 columns,
+	                 onFilter,
+	                 onRefresh,
+	                 onExport,
+	                 onPrint,
+	                 onAdd,
+	                 onEdit,
+	                 onDelete,
+	                 onSettings,
+	                 ...props
+                 }) {
+	const [selection, setSelection] = useState(false);
+	const handleExport = (selected) => {
+		console.log(selected, " selected");
+		onExport(selected);
+	}
+	return (
+		<div
+			className={"flex gap-2 p-4 items-center bg-primary-900 shadow-md text-primary-100 dark:bg-secondary-800 dark:text-primary-300"}
+		>
+			{selection ? (
+				
+				<Button
+					icon={"close"}
+					onClick={() => {
+						setSelection(false);
+					}}
+				></Button>) : null}
+			{columns?.length > 0 ? < >
+				<Select
+					source={columns}
+					map={{"key": "field", "value": "header"}}
+					size={"sm"}
+					defaultValue={"1"}
+					reset={false}
+					// onSelect={onSelect}
+				/>
+				<Input
+					type="text"
+					placeholder="Search Here"
+					required={false}
+					id="Search-filter"
+					className={"w-48 rounded bg-transparent text-sm h-8 p-2 px-2"}
+					// onChange={onChange}
+				/>
+				
+				
+				<Dropdown source={[
+					{id: "excel", name: "Excel", icon: "file-excel"},
+					{id: "word", name: "Word", icon: "file-word"},
+					{id: "pdf", name: "PDF", icon: "file-pdf"},
+				
+				]}
+				          onSelect={handleExport}
+				>
+					<Button size={"sm"}
+					        icon={"download"}
+					        variant={"outline"}></Button>
+				</Dropdown>
+			</> : null}
+		</div>
+	)
+}
+
+function Header({context, index, onClick, onContextMenu, ...props}) {
 	return <div
-		className={`min-h-12  pl-4 items-center flex bg-primary-900 text-primary-50 dark:bg-secondary-900 dark:border-gray-700 hover:bg-primary-800/80 dark:hover:bg-gray-600 transition-all
+		className={`min-h-12  items-center flex bg-primary-300/70 text-primary-950 dark:text-primary-50 dark:bg-secondary-900 dark:border-gray-700 hover:text-primary-50 hover:bg-primary-500/80 dark:hover:bg-gray-600 transition-all
 	 ease-linear cursor-pointer`}
 		onClick={onClick}
 		onContextMenu={onContextMenu}
-	><Text style={["bold"]}
-	       className={"text-inherit w-full border-r-2 border-r-primary-400 dark:border-r-primary-950"}>{context.header}</Text>
+	><Text  
+		color={"inherit"}
+		size={"xs"}
+	       className={`font-bold uppercase pl-4 w-full ${!props.isFirst && "border-l"} ${!props.isLast && "border-r"} border-primary-400 dark:border-primary-300/30`}>{context.header}</Text>
 	
 	</div>
 }
 
 function Cell({data, context, onClick, onContextMenu, ...props}) {
 	return <div
-		className={`h-12 border-b  px-4 p-2 dark:border-secondary-800 [&.hover]:bg-primary-200 dark:[&.hover]:bg-primary-800/50 [data-row-hover]:bg-primary-200 dark:[data-row-hover]:bg-primary-800/50 transition-all
+		className={`h-12 border-b text-primary-950 dark:text-primary-100 px-4 p-2 dark:border-secondary-800 [&.hover]:text-primary-50 [&.hover]:bg-primary-500 dark:[&.hover]:bg-primary-800/60 data-[row-hover]:bg-primary-400/50 dark:data-[row-hover]:bg-primary-800/40 transition-all
 	 ease-linear cursor-pointer overflow-clip`}
 		onClick={onClick}
 		onMouseEnter={props.onHover}
 		onMouseLeave={props.onHover}
 		onContextMenu={onContextMenu}
+		data-index={props.index}
 	>
 		{data &&
 		context.template ? (<Template context={data[context.field]}>{context.template}</Template>) : (
 			<Text truncate={true}
-			      wrap={false}>{data[context.field]}</Text>)}
+			      color={"inherit"}
+			      wrap={false}>{data[context.field]}</Text>
+		
+		)}
 	
 	
 	</div>
@@ -71,14 +144,8 @@ function Table({
 		display: "",
 		value: "",
 	});
-	const contextMenu = useRef();
 	useEffect(() => {
-		document.addEventListener("click", (event) => {
-			hideContextMenu();
-		});
-		document.addEventListener("blur", (event) => {
-			hideContextMenu();
-		});
+
 		if (!source || !columns) {
 			setData(null);
 			setFetchedColumns(null);
@@ -149,19 +216,6 @@ function Table({
 		
 	}, [data, currentPage]);
 	
-	function hideContextMenu() {
-		const menu = contextMenu.current;
-		if (menu) {
-			menu.classList.add("hidden");
-		}
-	}
-	
-	function showContextMenu() {
-		const menu = contextMenu.current;
-		if (menu) {
-			menu.classList.remove("hidden");
-		}
-	}
 	
 	
 	const selectRow = (event) => {
@@ -228,92 +282,53 @@ function Table({
 			setData(newFilteredData);
 		}
 	};
-	const handleContextMenu = (event) => {
-		event.preventDefault();
-		hideContextMenu();
-		const menu = contextMenu.current;
-		event.currentTarget.classList.add("active");
-		const offsetBox = event.currentTarget.offsetParent;
-		
-		menu.style.display = "block";
-		const menuWidth = menu.offsetWidth;
-		const menuHeight = menu.offsetHeight;
-		menu.style.display = "";
-		// Determine position for the menu
-		let posX = event.pageX;
-		let posY = event.pageY;
-		// Check if the menu goes beyond the right edge of the window
-		if (posX + menuWidth > offsetBox.offsetLeft + offsetBox.clientWidth) {
-			posX = offsetBox.offsetLeft + offsetBox.clientWidth - menuWidth;
-		}
-		
-		// Check if the menu goes beyond the bottom edge of the window
-		if (posY + menuHeight > offsetBox.offsetTop + offsetBox.clientHeight) {
-			posY = offsetBox.offsetTop + offsetBox.clientHeight - menuHeight;
-		}
-		
-		menu.style.left = posX + "px";
-		menu.style.top = posY + "px";
-		menu.contextData = {
-			id: event.currentTarget.id,
-			name: event.currentTarget.dataset.name,
-		};
-		showContextMenu();
+	
+	const getRowSiblings = (element) => {
+		const siblings = [];
+		const table = element.parentElement.parentElement
+		const elementIndex = element.dataset.index;
+		table.querySelectorAll("[data-panel]").forEach((panel) => {
+			Array.from(panel.children).forEach((child)=>{
+				child.removeAttribute("data-row-hover")
+				if (elementIndex===child.dataset.index &&child!==element) siblings.push(child)
+			})
+		})
+		return siblings;
 	};
 	const handleRowHover = (event) => {
+		
+		getRowSiblings(event.currentTarget)
 		switch (event.type) {
 			case "mouseleave":
 				event.currentTarget.classList.remove("hover");
+				getRowSiblings(event.currentTarget).forEach((sibling)=>{
+					sibling.removeAttribute("data-row-hover")
+				})
 				break;
 			case "mouseenter":
 				event.currentTarget.classList.add("hover");
+				getRowSiblings(event.currentTarget).forEach((sibling)=>{
+					sibling.dataset.rowHover = true
+				})
 				break;
 		}
 		
+	}
+	const handleContextMenu = (event) => {
+		console.log(event)
+		cmHandler.show(event)
 	}
 	return (
 		<div
 			id={"table-wrapper"}
 			className={
-				"rounded-md overflow-clip w-full flex flex-col border border-primary-900/30 dark:border-secondary-800"
+				"rounded-md overflow-clip flex flex-col border border-primary-900/30 dark:border-secondary-800"
 			}
 		>
-			{actions && (
-				<ContextMenu innerRef={contextMenu}
-				             options={actions}></ContextMenu>
-			)}
+			
 			<div className="overflow-x-auto shadow-md ">
-				<div
-					className={"flex gap-2 p-4 items-center bg-primary-900/90 shadow-md text-primary-100 dark:bg-secondary-800 dark:text-primary-300"}
-				>
-					{selection ? (
-						
-						<Button
-							icon={"close"}
-							onClick={() => {
-								setSelection(false);
-							}}
-						></Button>) : null}
-					{columns.length > 0 ? < >
-						<Input
-							type="text"
-							placeholder="Search Here"
-							required={false}
-							id="Search-filter"
-							className={"w-48 bg-secondary-900 text-sm h-8 p-2 px-2"}
-							onChange={onChange}
-						/>
-						
-						<Select
-							source={[{
-								"id": "1",
-								"name": "All",
-							}]}
-							size={"sm"}
-							// onSelect={onSelect}
-						/>
-					</> : null}
-				</div>
+				<Toolbar columns={columns}
+				         setSelection={setSelection}></Toolbar>
 			</div>
 			<div className={""}>
 				{loading ? (
@@ -326,7 +341,7 @@ function Table({
 					</div>
 				
 				) : pageData ? (
-						<ResizablePanelGroup direction={"horizontal"}>
+						<ResizablePanelGroup direction={"horizontal"} className={"w-full"}>
 							
 							
 							{columns.map((column, colIndex) => {
@@ -340,20 +355,24 @@ function Table({
 										                }}
 										                className={column.width && columnWidthMap[column.width]}
 										>
-											<ColumnHeader context={column} />
+											<Header context={column}
+											        index={colIndex}
+											        isFirst={colIndex === 0}
+											        isLast={colIndex === columns.length - 1} />
 											{pageData ? pageData.map((r, rIndex) => {
-												return <Cell data={r}
+												return <Cell data={flattenObject(r)}
 												             key={rIndex}
 												             context={column}
 												             onClick={selectRow}
 												             onContextMenu={handleContextMenu}
 												             onHover={handleRowHover}
+												             index={rIndex}
 												             {...props}></Cell>
 											}) : <Loader />}
 										
 										</ResizablePanel>
 										{colIndex !== columns.length - 1 &&
-											<ResizableHandle className={"bg-transparent w-0"} />}
+											<ResizableHandle className={"transition-all w-0 bg-transparent hover:bg-primary-300/20"} />}
 									</>
 								);
 							})}
@@ -371,31 +390,31 @@ function Table({
 					
 					)}
 			</div>
-			{/*{pagination && (data || pageData) && (*/}
-			{/*	<nav*/}
-			{/*		className={*/}
-			{/*			"w-full flex items-center justify-between p-4 dark:bg-primary-950 dark:bg-opacity-50 text-primary-50"*/}
-			{/*		}*/}
-			{/*	>*/}
-			{/*		<p className={"text-sm"}>*/}
-			{/*			Showing{" "}*/}
-			{/*			<span className={"font-bold"}>*/}
-			{/*				{pageLimit * (currentPage - 1)}*/}
-			{/*				{" - "}*/}
-			{/*				{pageLimit + pageLimit * (currentPage - 1)}*/}
-			{/*			</span>{" "}*/}
-			{/*			out of <span className={"font-bold"}>{data.length}</span>*/}
-			{/*		</p>*/}
-			{/*		{data.length ? (*/}
-			{/*			<Pagination*/}
-			{/*				pages={Math.ceil(data.length / pageLimit)}*/}
-			{/*				onChange={setCurrentPage}*/}
-			{/*			/>*/}
-			{/*		) : (*/}
-			{/*			<Loader />*/}
-			{/*		)}*/}
-			{/*	</nav>*/}
-			{/*)}*/}
+			{pagination && (data || pageData) && (
+				<nav
+					className={
+						"w-full border-t border-primary-200/40 flex items-center justify-between p-4"
+					}
+				>
+					<Text size={"sm"} color={"primary"}> 
+						Showing{" "}
+						<span className={"font-bold"}>
+							{pageLimit * (currentPage - 1)}
+							{" - "}
+							{pageLimit + pageLimit * (currentPage - 1)}
+						</span>{" "}
+						out of <span className={"font-bold"}>{data?.length}</span>
+					</Text>
+					{data && data.length ? (
+						<Pagination
+							pages={Math.ceil(data.length / pageLimit)}
+							onChange={setCurrentPage}
+						/>
+					) : (
+						<Loader />
+					)}
+				</nav>
+			)}
 		</div>
 	);
 }
