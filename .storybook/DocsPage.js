@@ -1,16 +1,16 @@
 import {Canvas, Stories, useOf} from "@storybook/blocks";
 import {Table, Text} from "~";
-import {useState} from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {Badge} from "~/ui/badge";
 import {Toaster} from "~";
 
 function DocsPage() {
-	
 	const resolvedOf = useOf('meta', ['meta']);
+	console.log(resolvedOf)
 	const component = resolvedOf.preparedMeta.component
 	
-	const props = component.__docgenInfo.props ? Object.entries(component.__docgenInfo.props).map((type, index) => {
+	const props = component.__docgenInfo?.props ? Object.entries(component.__docgenInfo.props).map((type, index) => {
 		if (!type[1].type?.name) type[1].type = {name: "unknown"}
 		return {
 			name: type[0],
@@ -20,8 +20,8 @@ function DocsPage() {
 	}) : null
 	return <div className={"px-4 -mt-4"}>
 		<div className={"sb-unstyled"}>
-			<Text size={"2xl"}>{component.__docgenInfo.displayName}</Text>
-			<Text size={"lg"}>{component.__docgenInfo.description}</Text>
+			<Text size={"2xl"}>{component.__docgenInfo?.displayName}</Text>
+			<Text size={"lg"}>{component.__docgenInfo?.description}</Text>
 		</div>
 		<Canvas className={""} />
 		

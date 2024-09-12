@@ -13,6 +13,8 @@ import {
 } from "~/ui/form";
 import { Input } from "~/ui/input";
 import {forwardRef} from "react";
+import {toast} from "sonner";
+import {Textarea} from "~/ui/textarea";
 
 const generateSchema = (components) => {
     const schema = {};
@@ -21,27 +23,40 @@ const generateSchema = (components) => {
         switch (component.type) {
             case "textfield":
                 schema[key] = z.string()
-                    .min(component.validate?.minLength, {
-                        message: `${component.label} must be at least ${component.validate?.minLength} characters.`,
-                    })
-                    .max(component.validate?.maxLength, {
-                        message: `${component.label} must be at most ${component.validate?.maxLength} characters.`,
-                    });
+                .min(component.validate?.minLength, {
+                    message: `${component.label} must be at least ${component.validate?.minLength} characters.`,
+                })
+                .max(component.validate?.maxLength, {
+                    message: `${component.label} must be at most ${component.validate?.maxLength} characters.`,
+                })
                 break;
+
             case "email":
                 schema[key] = z.string().email({
                     message: "Invalid email address.",
                 });
                 break;
+
             case "number":
                 schema[key] = z.coerce.number()
                     .min(component.validate?.min, {
-                        message: `${component.label} must be at least ${component.validate.min}.`,
+                        message: `${component.label} must be at least ${component.validate?.min}.`,
                     })
                     .max(component.validate?.max, {
-                        message: `${component.label} must be at most ${component.validate.max}.`,
-                    });
+                        message: `${component.label} must be at most ${component.validate?.max}.`,
+                    }).optional();
                 break;
+
+            case "textarea":
+                schema[key] = z.string()
+                .min(component.validate?.minLength, {
+                    message: `${component.label} must be at least ${component.validate?.minLength} characters.`,
+                })
+                .max(component.validate?.maxLength, {
+                    message: `${component.label} must be at most ${component.validate?.maxLength} characters.`,
+                });
+                break;
+
             default:
                 break;
         }
@@ -62,7 +77,24 @@ const renderComponent = (component) => {
                         <FormItem>
                             <FormLabel>{component.label}</FormLabel>
                             <FormControl>
-                                <Input type="number" placeholder={component.label} {...field} />
+                                <Input type={component.type==='number' ? 'number' : 'text'} placeholder={component.label} {...field} />
+                            </FormControl>
+                            <FormDescription>{component.description}</FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            );
+        case "textarea":
+            return (
+                <FormField
+                    key={component.key}
+                    name={component.key.toLowerCase()}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>{component.label}</FormLabel>
+                            <FormControl>
+                                <Textarea placeholder={component.label} {...field} />
                             </FormControl>
                             <FormDescription>{component.description}</FormDescription>
                             <FormMessage />
@@ -89,16 +121,17 @@ const FormLoader = forwardRef((
 
     const onSubmit = (data) => {
         console.log(data);
+        toast.info({message:JSON.stringify(data)});
     };
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                {jsonSchema.components?.map((component) => renderComponent(component))}
+                    {jsonSchema.components?.map((component) => renderComponent(component))}
                 <Button variant="primary" type="submit">Submit</Button>
             </form>
         </Form>
     );
-})
+});
 
-export default FormLoader;
+export default FormLoader

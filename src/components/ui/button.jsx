@@ -45,6 +45,8 @@ const Button = forwardRef(({className, icon, variant, size, asChild = false, ...
 	const childrenWithProps = React.Children.map(props.children, child => {
 		// Checking isValidElement is the safe way and avoids a
 		// typescript error too.
+		//console.log(child, React.isValidElement(child))
+		
 		if (React.isValidElement(child)) {
 			let color;
 			if (child.type === Text) {
