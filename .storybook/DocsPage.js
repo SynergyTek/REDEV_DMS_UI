@@ -1,5 +1,6 @@
 import {Canvas, Stories, useOf} from "@storybook/blocks";
-import {Table, Text} from "~";
+import {Text} from "~";
+import Table from "~/ui/table";
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {Badge} from "~/ui/badge";
@@ -7,11 +8,12 @@ import {Toaster} from "~";
 
 function DocsPage() {
 	const resolvedOf = useOf('meta', ['meta']);
-	console.log(resolvedOf)
+	// console.log(resolvedOf)
 	const component = resolvedOf.preparedMeta.component
 	
 	const props = component.__docgenInfo?.props ? Object.entries(component.__docgenInfo.props).map((type, index) => {
 		if (!type[1].type?.name) type[1].type = {name: "unknown"}
+		// console.log(type[1])
 		return {
 			name: type[0],
 			type: type[1],
@@ -27,15 +29,16 @@ function DocsPage() {
 		
 		{props ?
 			<div className={"sb-unstyled"}>
-				<Table data={props}
+				<Table source={props}
+				       toolbar={false}
 				       columns={[
 					       {header: "Name", field: "name"},
 					       {
 						       header: "Description", field: "type", template:
 							       <span className={"flex flex-col gap-1 justify-start align-start w-fit"}> 
-							       <Text truncate={10}
-							             variant={"span"}>_description_</Text>
-							   <Badge variant={"secondary"}>_type.name_</Badge>
+							       <Text size={"xs"}>_description_</Text>
+							   <Badge size={"xs"}
+							          variant={"secondary"}>_type.name_</Badge>
 							   </span>
 					       },
 					       {header: "Default", field: "default"},

@@ -1,11 +1,13 @@
-import {CheckBox, ContextMenu, Dropdown, InputField, Loader, Pagination, Select, Template, Text} from "~";
-import React, {useEffect, useRef, useState} from "react";
+import {CheckBox, ContextMenu, Dropdown, Icon, InputField, Loader, Pagination, Select, Template, Text} from "~";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import axios from "axios";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "~/ui/resizable";
 import {Button} from "~/ui/button";
 import {Input} from "~/ui/input";
-import {flattenObject} from "@/lib/utils";
-import {cmHandler} from "~/core/ContextMenu";
+import {flattenObject, type} from "@/lib/utils";
+import {cmHandler, ContextMenuTrigger} from "~/core/ContextMenu";
+import PropTypes from "prop-types";
+
 const columnWidthMap = {
 	1: "w-1/12",
 	2: "w-2/12",
@@ -34,6 +36,15 @@ function Toolbar({
 		console.log(selected, " selected");
 		onExport(selected);
 	}
+	const [fInput, setFInput] = useState("");
+	const [fSelect, SetFSelect] = useState(null)
+	useEffect(() => {
+		if (fInput || fSelect) {
+			console.log(fInput, fSelect)
+			onFilter && onFilter(fInput, fSelect);
+		}
+	}, [fInput, fSelect]);
+	
 	return (
 		<div
 			className={"flex gap-2 p-4 items-center bg-primary-900 shadow-md text-primary-100 dark:bg-secondary-800 dark:text-primary-300"}
@@ -52,8 +63,10 @@ function Toolbar({
 					map={{"key": "field", "value": "header"}}
 					size={"sm"}
 					defaultValue={"1"}
-					reset={false}
-					// onSelect={onSelect}
+					onSelect={(selection) => {
+						SetFSelect(selection)
+					}}
+					unselectedText={"All"}
 				/>
 				<Input
 					type="text"
@@ -61,7 +74,10 @@ function Toolbar({
 					required={false}
 					id="Search-filter"
 					className={"w-48 rounded bg-transparent text-sm h-8 p-2 px-2"}
-					// onChange={onChange}
+					onChange={(event) => {
+						console.log(event.currentTarget.value)
+						setFInput(event.currentTarget.value)
+					}}
 				/>
 				
 				
@@ -82,24 +98,31 @@ function Toolbar({
 	)
 }
 
-function Header({context, index, onClick, onContextMenu, ...props}) {
+function Header({context, index, onClick, onContextMenu, sort, ...props}) {
+	const directions = ["none", "asc", "desc"]
 	return <div
-		className={`min-h-12  items-center flex bg-primary-300/70 text-primary-950 dark:text-primary-50 dark:bg-secondary-900 dark:border-gray-700 hover:text-primary-50 hover:bg-primary-500/80 dark:hover:bg-gray-600 transition-all
+		className={`min-h-12 items-center flex ${directions[sort?.direction] === "asc" ? "flex-col" : "flex-col-reverse"} justify-center bg-primary-300/70 text-primary-950 dark:text-primary-50 dark:bg-secondary-900 dark:border-gray-700 hover:text-primary-50 hover:bg-primary-500/80 dark:hover:bg-gray-600 transition-all
 	 ease-linear cursor-pointer`}
-		onClick={onClick}
+		onClick={() => {
+			onClick && onClick({column: context, direction: (sort.direction + 1) % 3});
+		}}
 		onContextMenu={onContextMenu}
-	><Text  
+	><Text
+		selectable={false}
 		color={"inherit"}
 		size={"xs"}
-	       className={`font-bold uppercase pl-4 w-full ${!props.isFirst && "border-l"} ${!props.isLast && "border-r"} border-primary-400 dark:border-primary-300/30`}>{context.header}</Text>
-	
+		className={`font-bold uppercase ${props.resizable ? "pl-4" : "px-4"} w-full ${props.resizable && !props.isFirst && "border-l"} ${props.resizable && !props.isLast && "border-r"} border-primary-400 dark:border-primary-300/30`}>{context.header}</Text>
+		{sort?.column === context && directions[sort.direction] !== "none" &&
+			<Icon icon={directions[sort.direction] === "asc" ? "chevron-down" : "chevron-up"}
+			      size={"sm"}></Icon>}
 	</div>
 }
 
 function Cell({data, context, onClick, onContextMenu, ...props}) {
+	context.template && console.log(data, context)
 	return <div
 		className={`h-12 border-b text-primary-950 dark:text-primary-100 px-4 p-2 dark:border-secondary-800 [&.hover]:text-primary-50 [&.hover]:bg-primary-500 dark:[&.hover]:bg-primary-800/60 data-[row-hover]:bg-primary-400/50 dark:data-[row-hover]:bg-primary-800/40 transition-all
-	 ease-linear cursor-pointer overflow-clip`}
+	 ease-linear cursor-pointer overflow-clip items-center flex`}
 		onClick={onClick}
 		onMouseEnter={props.onHover}
 		onMouseLeave={props.onHover}
@@ -110,7 +133,7 @@ function Cell({data, context, onClick, onContextMenu, ...props}) {
 		context.template ? (<Template context={data[context.field]}>{context.template}</Template>) : (
 			<Text truncate={true}
 			      color={"inherit"}
-			      wrap={false}>{data[context.field]}</Text>
+			      wrap={false}>{flattenObject(data)[context.field]}</Text>
 		
 		)}
 	
@@ -125,27 +148,25 @@ function Table({
 	               pageLimit = 10,
 	               actions,
 	               pagination = true,
+	               resizable = true,
+	               sortable = true,
+	               toolbar = true,
 	               ...props
                }) {
 	const [allData, setAllData] = useState([]);
 	const [data, setData] = useState(null);
+	const [sortedData, setSortedData] = useState(null);
+	const [filteredData, setFilteredData] = useState(null);
+	const [sort, setSort] = useState({column: null, direction: 0});
 	const [fetchedColumns, setFetchedColumns] = useState(columns);
 	const [pageData, setPageData] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [selection, setSelection] = useState(false);
-	const [colFilter, selColFilter] = useState({
-		data: [],
-		display: "display",
-		value: "value",
-	});
-	const [fInput, setFInput] = useState("");
-	const [fSelect, SetFSelect] = useState({
-		display: "",
-		value: "",
-	});
+	const PanelGroupType = resizable ? ResizablePanelGroup : "div";
+	
 	useEffect(() => {
-
+		
 		if (!source || !columns) {
 			setData(null);
 			setFetchedColumns(null);
@@ -153,11 +174,16 @@ function Table({
 			setLoading(false);
 			return;
 		}
-		if (typeof source === "function") {
-			data().then((res) => {
-				setData(res);
-				setLoading(false);
-			});
+		if (type(source) === "function") {
+			let _data = source()
+			setData(_data)
+			setLoading(false)
+		}
+		if (type(source) === "asyncfunction") {
+			source().then((res) => {
+				setData(res)
+				setLoading(false)
+			})
 		}
 		if (typeof columns === "function") {
 			columns().then((res) => {
@@ -166,7 +192,7 @@ function Table({
 			});
 		}
 		if (Array.isArray(source)) {
-			source.length ? setData(data) : setData(null);
+			source.length ? setData(source) : setData(null);
 			setLoading(false);
 		}
 		if (typeof source === "string") {
@@ -183,103 +209,85 @@ function Table({
 					console.log(e);
 				});
 			
-			if (columns.length > 0) {
-				const cols = columns.map((item) => {
-					const tempObj = {
-						display: item.header,
-						value: item.field,
-					};
-					return tempObj;
-				});
-				const tempData = {...colFilter};
-				tempData.data = [...cols];
-				selColFilter(tempData);
-			}
+			// if (columns.length > 0) {
+			// 	const cols = columns.map((item) => {
+			// 		const tempObj = {
+			// 			display: item.header,
+			// 			value: item.field,
+			// 		};
+			// 		return tempObj;
+			// 	});
+			// 	const tempData = {...colFilter};
+			// 	tempData.data = [...cols];
+			// 	selColFilter(tempData);
+			// }
 		}
 	}, []);
 	
 	useEffect(() => {
-		if (Array.isArray(data) && data.length) {
+		const pageableData = filteredData || sortedData || data
+		if (Array.isArray(pageableData) && pageableData.length) {
 			let _data = [],
 				lowerLimit = (currentPage - 1) * pageLimit,
 				upperLimit = pagination ? Math.min(
-					data.length,
+					pageableData.length,
 					pageLimit + (currentPage - 1) * pageLimit
-				) : data.length;
+				) : pageableData.length;
 			for (let i = lowerLimit; i < upperLimit; i++) {
-				if (data[i]) {
-					_data.push(data[i]);
+				if (pageableData[i]) {
+					_data.push(pageableData[i]);
 				}
 			}
 			setPageData(_data);
 		}
 		
-	}, [data, currentPage]);
-	
+	}, [data, currentPage, sortedData, filteredData]);
 	
 	
 	const selectRow = (event) => {
 		setSelection(true);
 	};
-	const onSelect = (selectedVal) => {
-		SetFSelect(selectedVal);
-		handleFilter(fInput, selectedVal);
-		// console.log(selectedVal, "value on select");
-	};
-	const onChange = (inputVal) => {
-		setFInput(inputVal);
-		handleFilter(inputVal, fSelect);
-		// console.log(inputVal, "input from textField")
-	};
-	const handleFilter = (inputText, selectText) => {
-		if (!data || !data.length > 0) {
+	const handleFilter = (inputText, selected) => {
+		
+		if (!data || !data.length) {
 			return;
 		}
-		console.log(colFilter, " col data");
-		//console.log(allData, " all data", typeof allData)
 		const newFilteredData = [];
-		allData.forEach((allItem) => {
-			console.log(allItem, " my item");
-			if (selectText.value) {
+		data.forEach((item) => {
+			item = flattenObject(item);
+			inputText = inputText.toString();
+			if (selected) {
+				
 				if (
-					allItem[selectText.value]
+					item[selected.field]
 						.toLowerCase()
 						.includes(inputText.toString().toLowerCase())
 				) {
-					newFilteredData.push(allItem);
+					newFilteredData.push(item);
 				}
 			} else {
-				const tempData = [];
-				colFilter.data.forEach((item) => {
+				let found = false;
+				Object.keys(item).forEach((key) => {
 					if (
-						allItem[item.value]
+						item[key]
+							.toString()
 							.toLowerCase()
 							.includes(inputText.toString().toLowerCase())
 					) {
-						console.log(
-							allItem[item.value],
-							" inside item ",
-							inputText.toString().toLowerCase()
-						);
-						newFilteredData.push(allItem);
+						found = true;
 					}
-					//console.log(allItem[item.value], " fields" ,  inputText.toString().toLowerCase())
-					//return allItem[item.value].toLowerCase().includes(inputText.toString().toLowerCase())
 				});
-				//console.log(tempData, " dynamic filter");
-				//return tempData
+				if (found) {
+					newFilteredData.push(item);
+				}
 			}
+			
 		});
-		console.log(
-			inputText,
-			" input",
-			selectText,
-			" select",
-			newFilteredData,
-			" new f"
-		);
+		console.log(newFilteredData)
 		if (Array.isArray(newFilteredData)) {
-			setData(newFilteredData);
+			setFilteredData(newFilteredData);
+		} else {
+			setFilteredData(null);
 		}
 	};
 	
@@ -288,9 +296,9 @@ function Table({
 		const table = element.parentElement.parentElement
 		const elementIndex = element.dataset.index;
 		table.querySelectorAll("[data-panel]").forEach((panel) => {
-			Array.from(panel.children).forEach((child)=>{
+			Array.from(panel.children).forEach((child) => {
 				child.removeAttribute("data-row-hover")
-				if (elementIndex===child.dataset.index &&child!==element) siblings.push(child)
+				if (elementIndex === child.dataset.index && child !== element) siblings.push(child)
 			})
 		})
 		return siblings;
@@ -301,23 +309,42 @@ function Table({
 		switch (event.type) {
 			case "mouseleave":
 				event.currentTarget.classList.remove("hover");
-				getRowSiblings(event.currentTarget).forEach((sibling)=>{
+				getRowSiblings(event.currentTarget).forEach((sibling) => {
 					sibling.removeAttribute("data-row-hover")
 				})
 				break;
 			case "mouseenter":
 				event.currentTarget.classList.add("hover");
-				getRowSiblings(event.currentTarget).forEach((sibling)=>{
+				getRowSiblings(event.currentTarget).forEach((sibling) => {
 					sibling.dataset.rowHover = true
 				})
 				break;
 		}
 		
 	}
-	const handleContextMenu = (event) => {
-		console.log(event)
-		cmHandler.show(event)
-	}
+	
+	useEffect(() => {
+		if (sort?.column && data) {
+			if (sort.direction === 0) {
+				setSortedData(null)
+				return
+			}
+			const direction = sort.direction
+			const field = sort.column.field
+			let _sortedData = Array.from(data).sort((a, b) => {
+				const flata = flattenObject(a)
+				const flatb = flattenObject(b)
+				if (flata[field] < flatb[field]) {
+					return direction === 2 ? 1 : -1;
+				}
+				if (flata[field] > flatb[field]) {
+					return direction === 1 ? 1 : -1;
+				}
+				return 0;
+			});
+			setSortedData(_sortedData);
+		}
+	}, [sort]);
 	return (
 		<div
 			id={"table-wrapper"}
@@ -326,10 +353,15 @@ function Table({
 			}
 		>
 			
-			<div className="overflow-x-auto shadow-md ">
-				<Toolbar columns={columns}
-				         setSelection={setSelection}></Toolbar>
-			</div>
+			{
+				toolbar &&
+				<div className="overflow-x-auto shadow-md ">
+					<Toolbar columns={columns}
+					         setSelection={setSelection}
+					         onFilter={handleFilter}
+					></Toolbar>
+				</div>
+			}
 			<div className={""}>
 				{loading ? (
 					<div
@@ -341,43 +373,48 @@ function Table({
 					</div>
 				
 				) : pageData ? (
-						<ResizablePanelGroup direction={"horizontal"} className={"w-full"}>
+						<PanelGroupType direction={"horizontal"}
+						                className={`w-full ${!resizable && "flex overflow-x-scroll"}`}>
 							
 							
 							{columns.map((column, colIndex) => {
+								const PanelType = resizable ? ResizablePanel : "div";
 								return (
 									<>
-										<ResizablePanel minSize={8}
-										                onResize={(size) => {
-											                if (size <= 12) {
-												                console.log("small")
-											                }
-										                }}
-										                className={column.width && columnWidthMap[column.width]}
+										<PanelType minSize={8}
+										           onResize={(size) => {
+											           if (size <= 12) {
+												           console.log("small")
+											           }
+										           }}
+										           className={`w-full ${column.width && columnWidthMap[column.width]}`}
 										>
 											<Header context={column}
 											        index={colIndex}
+											        onClick={setSort}
+											        sort={sort}
+											        resizable={resizable}
 											        isFirst={colIndex === 0}
 											        isLast={colIndex === columns.length - 1} />
 											{pageData ? pageData.map((r, rIndex) => {
-												return <Cell data={flattenObject(r)}
-												             key={rIndex}
-												             context={column}
-												             onClick={selectRow}
-												             onContextMenu={handleContextMenu}
-												             onHover={handleRowHover}
-												             index={rIndex}
-												             {...props}></Cell>
+												return <ContextMenuTrigger options={actions}>
+													<Cell data={r}
+													      key={rIndex}
+													      context={column}
+													      onClick={selectRow}
+													      onHover={handleRowHover}
+													      index={rIndex}
+													      {...props}></Cell></ContextMenuTrigger>
 											}) : <Loader />}
 										
-										</ResizablePanel>
-										{colIndex !== columns.length - 1 &&
+										</PanelType>
+										{colIndex !== columns.length - 1 && resizable &&
 											<ResizableHandle className={"transition-all w-0 bg-transparent hover:bg-primary-300/20"} />}
 									</>
 								);
 							})}
 						
-						</ResizablePanelGroup>
+						</PanelGroupType>
 					)
 					: (
 						
@@ -396,7 +433,8 @@ function Table({
 						"w-full border-t border-primary-200/40 flex items-center justify-between p-4"
 					}
 				>
-					<Text size={"sm"} color={"primary"}> 
+					<Text size={"sm"}
+					      color={"primary"}>
 						Showing{" "}
 						<span className={"font-bold"}>
 							{pageLimit * (currentPage - 1)}
@@ -419,4 +457,47 @@ function Table({
 	);
 }
 
+Table.propTypes = {
+	/**
+	 * The source of the data. Can be a string (URL), an array, or a function.
+	 *
+	 */
+	source: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.func]),
+	
+	/**
+	 * The columns configuration for the table. Can be an array or a function.
+	 * @type {array|function}
+	 */
+	columns: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
+	
+	/**
+	 * The number of items to display per page.
+	 * @type {number}
+	 */
+	pageLimit: PropTypes.number,
+	
+	/**
+	 * The actions available for each row in the table.
+	 * @type {array}
+	 */
+	actions: PropTypes.array,
+	
+	/**
+	 * Whether to enable pagination.
+	 * @type {boolean}
+	 */
+	pagination: PropTypes.bool,
+	
+	/**
+	 * Whether the table columns are resizable.
+	 * @type {boolean}
+	 */
+	resizable: PropTypes.bool,
+	
+	/**
+	 * Whether the table columns are sortable.
+	 * @type {boolean}
+	 */
+	sortable: PropTypes.bool,
+};
 export default Table;

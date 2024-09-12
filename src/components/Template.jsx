@@ -8,6 +8,7 @@ function Template({context, children, ...props}) {
 			if (typeof child.props.children === "string") {
 				const regex = /_.*?_/;
 				const match = child.props.children.match(regex);
+				// console.log(match,match[0].slice(1, match[0].length - 1),context)
 				return cloneElement({
 					...child,
 					props: {

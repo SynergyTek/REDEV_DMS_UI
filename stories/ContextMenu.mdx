@@ -1,10 +1,11 @@
 import {Text, Toaster} from "~";import {Meta} from '@storybook/blocks';
 import {toast} from "sonner";
 import {ContextMenuTrigger} from '~/core/ContextMenu';
+import {Controls} from "@storybook/blocks"
 import Separator from "~/core/Separator";
 
 <Toaster richcolors />
-<Meta title="Core/Context Menu" />
+<Meta title="Core/Context Menu"/>
 <div className={"sb-unstyled"}>
 	
 	<Text size={"2xl"}
@@ -40,13 +41,26 @@ import Separator from "~/core/Separator";
 <div className={"sb-unstyled"}>
 	
 	
-	<Text size={"sm"}>Behaviour like this can be obtained easily by the cmHandler object</Text>
+	<Text size={"sm"}>Behaviour like this can be obtained easily by the wrapping existing object around the ContextMenuTrigger object</Text>
 </div>
 
-```
-import {cmHandler} from "~/core/ContextMenu";
-
-cmHandler.show();
-```
-
 ```jsx
+import {ContextMenuTrigger} from "~/core/ContextMenu"; 
+import {toast} from "sonner";
+
+const options = [
+	{label: "This is an option"},
+	{label: "This is another option"},
+	{label: "This is a toast", onClick: () => {toast("This is a toast")}},
+];
+
+<ContextMenuTrigger options={options}>
+
+	<div className={"h-32 w-56 outline-dotted rounded flex items-center justify-center"}>
+		<Text color={"secondary"}>Right click here</Text>
+	</div>
+
+</ContextMenuTrigger>
+```
+
+

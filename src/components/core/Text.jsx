@@ -10,7 +10,7 @@ const textVariants = cva(
 				primary: "text-primary-950 dark:text-primary-100",
 				secondary: "text-secondary-700 dark:text-secondary-400",
 				tertiary: "text-tertiary-950 dark:text-tertiary-100",
-				inherit:"text-inherit"
+				inherit: "text-inherit"
 			},
 			size: {
 				"sm": "text-sm",
@@ -31,6 +31,10 @@ const textVariants = cva(
 					start: "text-start",
 					end: "text-end",
 				},
+			selectable: {
+				true: "",
+				false: "select-none"
+			},
 			wrap: {
 				true: "text-wrap",
 				break: "text-wrap break-all",
@@ -42,7 +46,7 @@ const textVariants = cva(
 			size: "md",
 			align: "start",
 			wrap: false,
-			
+			selectable: true
 		},
 	}
 )
@@ -58,13 +62,13 @@ const variants = [
 	"h6"
 ]
 
-function Text({variant,color, size, type, truncate = true, className, wrap, align, ...props}) {
+function Text({variant, color, size, type, truncate = true, className, selectable, wrap, align, ...props}) {
 	if (props.skeleton) {
 		return <Skeleton className={cn(`h-4`, className)} />
 	}
 	const Comp = variants.includes(variant) ? variant : "p"
 	return <Comp title={props.children}
-	             className={cn(textVariants({align, color, className, wrap, size}))}>{props.children}</Comp>
+	             className={cn(textVariants({align, color, className, wrap, size, selectable}))}>{props.children}</Comp>
 }
 
 export default Text;
