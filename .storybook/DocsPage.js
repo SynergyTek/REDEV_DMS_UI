@@ -1,12 +1,11 @@
 import {Canvas, Stories, useOf} from "@storybook/blocks";
 import {Table, Text} from "~";
-import {useState} from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {Badge} from "~/ui/badge";
-import {Toaster} from "~/ui/toaster";
+import {Toaster} from "~";
 
 function DocsPage() {
-	
 	const resolvedOf = useOf('meta', ['meta']);
 	console.log(resolvedOf)
 	const component = resolvedOf.preparedMeta.component
@@ -46,7 +45,7 @@ function DocsPage() {
 			</Text>
 		}
 		<Stories />
-		<Toaster />
+		<Toaster richColors />
 	</div>;
 }
 
