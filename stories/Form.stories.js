@@ -14,8 +14,8 @@ import {
     FormMessage,
 } from "~/ui/form";
 import { Input } from "~/ui/input";
-import { toast } from "@/hooks/use-toast"
-import {TextArea} from "./Input.stories";
+import { toast } from "sonner"
+import {Textarea} from "~/ui/textarea";
 import {RadioGroup, RadioGroupItem} from "~/ui/radio-group";
 import {Checkbox} from "~/ui/checkbox";
 import DatePicker from "~/ui/date-picker";
@@ -53,8 +53,7 @@ export const ProfileFormStory = () => {
     });
 
     const onSubmit = (data) => {
-        toast({
-            title: "You submitted the following values:",
+        toast.info("You submitted the following values:", {
             description: (
                 <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
                   <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -86,7 +85,7 @@ export const ProfileFormStory = () => {
                         <FormItem>
                             <FormLabel>Message</FormLabel>
                             <FormControl>
-                                <TextArea placeholder="Enter you message here..." {...field} />
+                                <Textarea placeholder="Enter you message here..." {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

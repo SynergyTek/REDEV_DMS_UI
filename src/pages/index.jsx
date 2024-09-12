@@ -11,8 +11,10 @@ import {ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTool
 import DatePicker , {DatePickerWithRange} from "~/ui/date-picker";
 import FormLoader from "~/core/FormLoader";
 import formio from '~/core/formio.json'
+import {useRef} from "react";
 
 export default function Component() {
+    const dateref = useRef();
     const recentDocuments = [
         { name: 'Q2 Report.pdf', accessed: '2 hours ago' },
         { name: 'Meeting Notes.docx', accessed: 'Yesterday' },
@@ -219,9 +221,9 @@ export default function Component() {
                             <TrashIcon className="mr-2 h-4 w-4" /> Trash
                         </Button>
                     </div>
-                    {/*<FormLoader jsonSchema={formio} />*/}
-                    <DatePicker />
-                    <DatePickerWithRange />
+                    <FormLoader jsonSchema={formio} />
+                    <DatePicker ref={dateref} onChange={() => console.log(dateref.current?.getAttribute('value'))} />
+                    {/*<DatePickerWithRange />*/}
                 </CardContent>
             </Card>
         </div>
