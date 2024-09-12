@@ -5,5 +5,3 @@ storybook-static
 
 .env.local
 .env
- 
-package-lock.json
