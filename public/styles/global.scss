@@ -74,3 +74,32 @@ svg {
 .onMoblie {
   @apply block md:hidden
 }
+
+select {
+  -webkit-appearance: none; /* For Chrome */
+  -moz-appearance: none; /* For Firefox */
+  appearance: none; /* For other browsers */
+}
+
+.custom-scroll {
+  -webkit-appearance: none; /* For Chrome */
+  -moz-appearance: none; /* For Firefox */
+  appearance: none; /* For other browsers */
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #888 #e0e0e0; /* For Firefox */
+}
+
+/* For Webkit browsers (Chrome, Safari) */
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}

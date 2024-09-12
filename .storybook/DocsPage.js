@@ -8,34 +8,43 @@ import {Toaster} from "~/ui/toaster";
 function DocsPage() {
 	
 	const resolvedOf = useOf('meta', ['meta']);
-	const component = resolvedOf.preparedMeta.moduleExport.component
-	console.log(component)
-	const props = Object.entries(resolvedOf.preparedMeta.argTypes).map((type, index) => {
-		console.log(type[1])
+	console.log(resolvedOf)
+	const component = resolvedOf.preparedMeta.component
+
+	const props = component.__docgenInfo?.props? Object.entries(component.__docgenInfo.props).map((type, index) => {
+		if (!type[1].type?.name) type[1].type = {name: "unknown"}
 		return {
-			Name: type[0],
-			Type: type[1]
+			name: type[0],
+			type: type[1],
+			default: type[1].defaultValue?.value
 		}
-	})
-	return <div>
-		<Text variant={"h1"}>{resolvedOf.preparedMeta.title.split("/").pop()}</Text>
+	}):null
+	return <div className={"px-4 -mt-4"}>
+		<Text variant={"h1"}>{component.__docgenInfo?.displayName}</Text>
 		<h4>
-			{resolvedOf.preparedMeta.parameters?.docs?.description}
+			{component.__docgenInfo?.description}
 		</h4>
-		<Canvas />
+		<Canvas className={""} />
+		
+		{props ?
 		<div className={"sb-unstyled"}>
 			<Table data={props}
 			       columns={[
-				       {header: "Name", field: "Name"},
+				       {header: "Name", field: "name"},
 				       {
-					       header: "Description", field: "Type", template:
-						       <span className={"flex flex-col gap-2 justify-start align-start w-fit"}> 
-							       <Text variant={"span"}>_description_</Text>
+					       header: "Description", field: "type", template:
+						       <span className={"flex flex-col gap-1 justify-start align-start w-fit"}> 
+							       <Text truncate={10}  variant={"span"}>_description_</Text>
 							   <Badge variant={"secondary"}>_type.name_</Badge>
 							   </span>
-				       },]}
+				       },
+				       {header: "Default", field: "default"},
+			       ]}
 			       pagination={false} />
-		</div>
+		</div>:<Text className={"font-italic"}>
+				Could not find any properties
+			</Text>
+		}
 		<Stories />
 		<Toaster />
 	</div>;

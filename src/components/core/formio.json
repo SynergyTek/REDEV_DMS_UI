@@ -1,0 +1,114 @@
+{
+  "synergyTableMapId": "",
+  "components": [
+    {
+      "label": "Username",
+      "description": "This is your public display name.",
+      "showInBusinessLogic": false,
+      "tableView": true,
+      "dontCreateTableColumn": false,
+      "validate": {
+        "required": true,
+        "minLength": 2,
+        "maxLength": 20
+      },
+      "key": "Username",
+      "type": "textfield",
+      "enableLocalization": false,
+      "enableLanguageValidation": false,
+      "input": true,
+      "columnMetadataId": "6b17a3e7-1fe0-4214-8083-4872d7195652"
+    },
+    {
+      "label": "Email",
+      "showInBusinessLogic": false,
+      "tableView": true,
+      "dontCreateTableColumn": false,
+      "validate": {
+        "required": true
+      },
+      "key": "Email",
+      "type": "email",
+      "enableLocalization": false,
+      "enableLanguageValidation": false,
+      "input": true,
+      "columnMetadataId": "22048062-1fe8-4b00-ace7-17cfccec2dc6"
+    },
+    {
+      "label": "Age",
+      "showInBusinessLogic": false,
+      "mask": false,
+      "spellcheck": true,
+      "tableView": false,
+      "delimiter": false,
+      "requireDecimal": false,
+      "inputFormat": "plain",
+      "dontCreateTableColumn": false,
+      "validate": {
+        "min": 18,
+        "max": 60
+      },
+      "key": "Age",
+      "type": "number",
+      "enableLocalization": false,
+      "enableLanguageValidation": false,
+      "input": true,
+      "columnMetadataId": "9a92b14b-b657-48ce-b825-55c9feef93e1"
+    },
+    {
+      "label": "Gender",
+      "optionsLabelPosition": "right",
+      "inline": false,
+      "tableView": false,
+      "values": [
+        {
+          "label": "Male",
+          "value": "male",
+          "shortcut": ""
+        },
+        {
+          "label": "Female",
+          "value": "female",
+          "shortcut": ""
+        }
+      ],
+      "showInBusinessLogic": false,
+      "dontCreateTableColumn": false,
+      "validate": {
+        "onlyAvailableItems": false
+      },
+      "key": "gender",
+      "type": "radio",
+      "input": true,
+      "columnMetadataId": "48225bd3-0f86-48cc-997d-1f6c83c77c98"
+    },
+    {
+      "label": "Message",
+      "showInBusinessLogic": false,
+      "dontCreateTableColumn": false,
+      "autoExpand": false,
+      "tableView": true,
+      "key": "Message",
+      "type": "textarea",
+      "enableLocalization": false,
+      "enableLanguageValidation": false,
+      "input": true,
+      "columnMetadataId": "1edb348f-1615-4c23-acea-136e82bd5e5e"
+    },
+    {
+      "label": "Accept terms and conditions",
+      "description": "You agree to our Terms of Service and Privacy Policy.",
+      "tableView": false,
+      "defaultValue": false,
+      "showInBusinessLogic": false,
+      "dontCreateTableColumn": false,
+      "validate": {
+        "required": true
+      },
+      "key": "terms",
+      "type": "checkbox",
+      "input": true,
+      "columnMetadataId": "2cd4a472-df62-4553-8d93-8a6d5e94ad57"
+    }
+  ]
+}

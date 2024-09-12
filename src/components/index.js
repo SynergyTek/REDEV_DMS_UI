@@ -10,20 +10,21 @@ import Icon from './ui/icon';
 import Table from './core/Table';
 import Text from './core/Text';
 import Separator from "./core/Separator";
+import Dropdown from "./core/Dropdown";
 // Data Modules
-import FileExplorer from "./data/FileExplorer";
-import Pagination from "./data/Pagination";
-import Toolbar from "./data/Toolbar";
+import FileExplorer from "./core/FileExplorer";
+import Pagination from "./core/Pagination";
+import Toolbar from "./core/Toolbar";
 // Form Modules
-import CheckBox from './form/CheckBox';
-import InputField from './form/InputField';
-import RadioGroup from './form/RadioGroup';
-import Slider from './form/Slider'; 
+import CheckBox from './core/CheckBox';
+import InputField from './core/InputField';
+import RadioGroup from './core/RadioGroup';
+import Slider from './core/Slider'; 
 // Info Modules
-import Notification from './info/Notification';
-import Alert from './info/Alert';
+import Notification from './core/Notification';
+import Alert from './core/Alert';
 import Toaster from "~/ui/sonner";
-
+import NtsPreview from "~/core/NtsPreview";
 import Template from "~/Template";
 
 export {
@@ -48,5 +49,6 @@ export {
 	Slider,
 	Icon,
 	Toaster,
-	Template
+	Template,
+	Dropdown
 }
