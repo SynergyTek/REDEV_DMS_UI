@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/popover";
 import { forwardRef, useRef, useState, useEffect } from "react";
 
-const DatePicker = forwardRef(({ className, value, onChange }, ref) => {
+const DatePicker = forwardRef(({ className, value, onChange, dateFormat, text }, ref) => {
 	const [date, setDate] = useState(value);
 
 	const handleDateChange = (newDate) => {
@@ -35,11 +35,11 @@ const DatePicker = forwardRef(({ className, value, onChange }, ref) => {
 						"w-full justify-start text-left font-normal" + className,
 						!date && "text-muted-foreground"
 					)}
-					value={date}
+					value={date && (dateFormat ? format(date, dateFormat) : format(date, "PPP"))}
 					ref={ref}
 				>
 					<CalendarIcon className="mr-2 h-4 w-4" />
-					{date ? format(date, "PPP") : <span>Pick a date</span>}
+					{date ? format(date, "PPP") : (text ? text : <span>Pick a date</span>)}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-auto p-0">
