@@ -1,84 +1,167 @@
-import { InputField, Select, Button, Notification } from "~";
+// import { InputField, Select, Button as btn, Notification } from "~";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { toast } from "sonner";
+import { Button } from "~/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "~/ui/form";
+import { Input } from "~/ui/input";
 
-export default function ChangePassword() {
+
+const ChangePasswordForm = ({ id, name }) => {
     const router = useRouter();
-    const { id = null, name = null } = router.query;
     const [btnStatus, setBtnStatus] = useState(false);
-    const [showNotification, setShowNotification] = useState(false);
-    const [errorNotificaton, setErrorNotification] = useState(false);
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log("submit")
-        if (!e.target.checkValidity()) {
-            return
-        }
-        const formElements = e.target.elements;
-        if (!id) {
-            //alert("Invailid Id")
-            console.log("Id is missing");
-        }
+    const passwordSchema = z
+        .string()
+        .min(8, { message: "Password must be at least 8 characters." })
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}[\]:;\"'<>,.?/\\|`~]).{8,}$/, {
+            message:
+                "Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character.",
+        });
+
+    // Define the form validation schema with Zod
+    const formSchema = z
+        .object({
+            currentPassword: !name ? passwordSchema : passwordSchema.optional(),
+            newPassword: passwordSchema,
+            confirmPassword: passwordSchema,
+        })
+        .refine((data) => data.newPassword === data.confirmPassword, {
+            message: "Passwords do not match",
+            path: ["confirmPassword"], // Target field for the error message
+        });
+
+    // Initialize React Hook Form with Zod resolver
+    const form = useForm({
+        resolver: zodResolver(formSchema),
+
+    });
+
+    // Form submission handler
+    const onSubmit = async (data) => {
         const formValues = {
             userId: id,
-            currentPassword: name
+            currentPassword: name,
+            ...data
         };
-
-        for (let i = 0; i < formElements.length; i++) {
-            const element = formElements[i];
-            if (element.name) {
-                formValues[element.name] = element.value;
-            }
-        }
+        console.log(formValues, "data change pass");
 
         try {
             setBtnStatus(true);
             const response = await axios.post("/dmsapi/portalAdmin/User/ChangePasswordPage", formValues);
-            e.target.reset();
             setBtnStatus(false);
-        
-            if (response.data?.success) {
-                handleNotification(setShowNotification);
-            } else {
-              handleNotification(setErrorNotification);
-              console.log("Something went wrong!");
-            }
-          } catch (error) {
-            console.error('Error posting data:', error);
-            handleNotification(setErrorNotification);
-            setBtnStatus(false);
-          }
 
+            if (response.data?.success) {
+                toast.success("Successful !", {
+                    description: (
+                        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                            <code className="text-white">Your password has been changed!</code>
+                        </pre>
+                    ),
+                });
+                router.push("/admin/user/")
+            } else {
+                toast.error("Warning !", {
+                    description: (
+                        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                            <code className="text-white">Something went wrong!</code>
+                        </pre>
+                    ),
+                });
+                setBtnStatus(false);
+            }
+        } catch (error) {
+            toast.error("Warning !", {
+                description: (
+                    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                        <code className="text-white">Something went wrong!</code>
+                    </pre>
+                ),
+            });
+            setBtnStatus(false);
+            router.push("/admin/user/");
+        }
     };
-    const handleNotification = (setterFunction) => {
-        setterFunction(true);
-        setTimeout(() => {
-          setterFunction(false);
-          router.push("/admin/user/");
-        }, 1000);
-      };
+
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-4/5 max-w-lg flex flex-col space-y-2">
+                {!name && (
+                    <FormField
+                        name="currentPassword"
+                        control={form.control} // Provide control to form field
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Current Password</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Enter Current password" type="password" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                )}
+                <FormField
+                    name="newPassword"
+                    control={form.control}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>New Password</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Enter New password" type="password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    name="confirmPassword"
+                    control={form.control}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Confirm Password</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Enter Confirm Password" type="password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <div className="flex mt-3 gap-4 justify-start">
+                    <Button type="submit" variant={"primary"} disabled={btnStatus} >
+                        Submit
+                    </Button>
+                    <Button
+                        type="button"
+                        variant="danger"
+                        onClick={() => router.push("/admin/user/")}
+                    >
+                        Cancel
+                    </Button>
+                </div>
+            </form>
+        </Form>
+    );
+};
+
+export default function ChangePassword() {
+    const router = useRouter();
+    const { id = null, name = null } = router.query;
+
     return (
         <div className="w-full flex flex-col items-center">
-            {showNotification && (
-                <div className="absolute mt-20 top-4 right-4 z-50">
-                    <Notification
-                        heading={"Success"}
-                        text={"Your password changed successfully!"}
-                        type={"success"}
-                    />
-                </div>
-            )}
-            {errorNotificaton && (
-                <div className="absolute mt-20 top-4 right-4 z-50">
-                    <Notification
-                        heading={"Error"}
-                        text={"Somthing went wrong!"}
-                        type={"danger"}
-                    />
-                </div>
-            )}
             <Head>
                 <title>Change Password</title>
                 <link rel="icon" href="/favicon.ico" />
@@ -86,64 +169,7 @@ export default function ChangePassword() {
 
             <div className="text-white text-2xl mb-2 mt-6">Change Password</div>
 
-
-            <form onSubmit={handleSubmit} className="w-4/5 max-w-lg flex flex-col">
-
-                <div className="mx-auto my-auto w-96">
-                    <div>
-                        {!name &&
-                            <div className="mt-6">
-                                <InputField
-                                    id="currentPassword"
-                                    label="Current Password"
-                                    type="password"
-                                    onClick={() => { }}
-                                    primary
-                                    required
-                                    name="currentPassword"
-                                    pattern={"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}[\]:;\"'<>,.?/\\|`~]).{8,}$"
-                                    }
-                                />
-                            </div>
-                        }
-                        <div className="mt-6">
-                            <InputField
-                                id="newPassword"
-                                label="New Password"
-                                type="password"
-                                onClick={() => { }}
-                                primary
-                                required
-                                name="newPassword"
-                                pattern={"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}[\]:;\"'<>,.?/\\|`~]).{8,}$"
-                                }
-                            />
-                        </div>
-                        <div className="mt-6">
-                            <InputField
-                                id="confirmPassword"
-                                label="Confirm Password"
-                                type="password"
-                                onClick={() => { }}
-                                primary
-                                required
-                                name="confirmPassword"
-                            />
-                        </div>
-
-                    </div>
-                    <div className="flex mt-3 gap-4 justify-start">
-
-                        <Button type="submit" className="mb-3" primary text="Save" disabled={btnStatus} />
-                        <Button type="button" className="mb-3" text="Cancel" onClick={(e) => router.push(
-                            {
-                                pathname: "/admin/user/"
-                            },
-                            "/admin/user/"
-                        )} />
-                    </div>
-                </div>
-            </form>
+            <ChangePasswordForm id={id} name={name} />
         </div>
 
     );

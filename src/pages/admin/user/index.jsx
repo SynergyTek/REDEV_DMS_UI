@@ -10,6 +10,7 @@ import {
   faKey,
 } from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 import Modal from "~/core/AlertModal";
+import { toast } from "sonner";
 
 const initialState = {
   userId: null,
@@ -43,11 +44,24 @@ const User = () => {
       const response = await axios.get(`/dmsapi/PortalAdmin/User/DeleteUser?Id=${state.userId}`);
 
       response.data?.success ?
-        console.log("Done")
+        toast.success("Successful !", {
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">Your password has been changed!</code>
+            </pre>
+          ),
+        })
         :
         console.log("Something went wrong!")
     } catch (error) {
       console.error('Error posting data:', error);
+      toast.error("Warning !", {
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">Something went wrong!</code>
+          </pre>
+        ),
+      });
 
     }
 
@@ -122,7 +136,7 @@ const User = () => {
           },
           {
             label: "Delete",
-             icon: faTrash,
+            icon: faTrash,
             onClick: ({ id, name }) => {
               console.log(id, " context user")
               dispatch({ type: 'SET_USER_ID', payload: id });
