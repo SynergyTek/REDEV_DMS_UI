@@ -20,13 +20,35 @@ export const Default = {
 			{header: "DOB", field: "birthDate"},
 			{header: "Username", field: "login.username"},
 		],
+		actions: [
+			{
+				label: "View",
+				onClick: (option,row) => {
+					console.log(option,row)
+					toast(`Viewing ${row.firstname} ${row.lastname}`)
+				}
+			},
+			{
+				label: "Edit",
+				onClick: (row) => {
+					toast(`Editing ${row.firstname} ${row.lastname}`)
+				}
+			},
+			{
+				label: "Delete",
+				onClick: (row) => {
+					toast(`Deleting ${row.firstname} ${row.lastname}`)
+				}
+			},
+		
+		]
 	},
 };
 
 /** You can turn off pagination by setting the pagination prop to false
- * 
+ *
  * Also, if you see the code, we have given a function as the source!
- * 
+ *
  */
 
 export const WithoutPagination = {

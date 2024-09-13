@@ -16,10 +16,10 @@ cmHandler.hide = (event) => {
 	
 };
 
-const ContextMenuTrigger = ({options, ...props}) => {
+const ContextMenuTrigger = ({options, context, ...props}) => {
 	const handleContextMenu = (event) => {
 		event.preventDefault();
-		cmHandler.show(event, options)
+		cmHandler.show(event, options, context)
 		
 	};
 	return (
@@ -34,6 +34,7 @@ ContextMenuTrigger.propTypes = {
 const ContextMenu = ((props) => {
 		const [data, setData] = useState()
 		const [open, setOpen] = useState(false);
+		const [context, setContext] = useState()
 		const [x, setX] = useState(0);
 		const [y, setY] = useState(0);
 		
@@ -47,11 +48,12 @@ const ContextMenu = ((props) => {
 				document.removeEventListener("blur", cmHandler.hide);
 			};
 		}, []);
-		cmHandler.show = (event, eventOptions) => {
+		cmHandler.show = (event, eventOptions, context) => {
 			if (open) {
 				setOpen(false)
 				return
 			}
+			setContext(context)
 			setData(eventOptions)
 			
 			const offsetBox = event.currentTarget.offsetParent;
@@ -108,7 +110,10 @@ const ContextMenu = ((props) => {
 								{data.map((item, index) => {
 									const ref = createRef();
 									return <CommandItem key={index}
-									                    onSelect={item.onClick}
+									                    onSelect={(selected) => {
+										                    item.onClick(selected, context)
+										                    setOpen(false)
+									                    }}
 									                    className={"flex gap-2"}
 									                    ref={ref}>
 										{item.icon ? <Icon size={"sm"}

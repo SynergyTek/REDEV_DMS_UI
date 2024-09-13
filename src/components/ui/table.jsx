@@ -397,7 +397,7 @@ function Table({
 											        isFirst={colIndex === 0}
 											        isLast={colIndex === columns.length - 1} />
 											{pageData ? pageData.map((r, rIndex) => {
-												return <ContextMenuTrigger options={actions}>
+												return <ContextMenuTrigger options={actions} context={r}>
 													<Cell data={r}
 													      key={rIndex}
 													      context={column}
