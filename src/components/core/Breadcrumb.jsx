@@ -30,7 +30,7 @@ import {Icon} from "~";
 
 
 function Breadcrumb({path}) {
-const ITEMS_TO_DISPLAY = Math.min(3, path.length)
+const ITEMS_TO_DISPLAY = Math.min(2, path.length)
 	const [open, setOpen] = React.useState(false)
 	const isDesktop = useMediaQuery("(min-width: 768px)")
 	

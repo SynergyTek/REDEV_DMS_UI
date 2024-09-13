@@ -6,7 +6,7 @@ import {ResizablePanel, ResizablePanelGroup} from "~/ui/resizable";
 import {useMediaQuery} from "usehooks-ts";
 import {config} from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import {Toaster} from "~";
+import {ContextMenu, Toaster} from "~";
 
 config.autoAddCss = false
 export default function RootLayout({ children }) {
@@ -29,6 +29,7 @@ export default function RootLayout({ children }) {
                         <div className={'md:px-4'}>
                             {React.createElement(children.type, {theme})}
                             <Toaster richColors theme={theme}/>   
+                            <ContextMenu/>   
                         </div>
                     </div>
 

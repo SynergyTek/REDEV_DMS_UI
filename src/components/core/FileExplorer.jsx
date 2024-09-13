@@ -8,6 +8,7 @@ import {toast} from "sonner";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "~/ui/resizable";
 import Skeleton from "~/ui/skeleton";
 import NtsPreview from "~/core/NtsPreview";
+import {ContextMenuTrigger} from "~/core/ContextMenu";
 
 const getFileApi = "/dms/query/ViewFileHEG"
 const rootSource = "/dmsapi/dms/workspace/GetParentWorkspace?userId=45bba746-3309-49b7-9c03-b5793369d73c&portalName=DMS"
@@ -57,40 +58,48 @@ const widthScale = {
 }
 const Item = forwardRef(({scale, id, type, title, onClick, onDoubleClick, ...props}, ref) => {
 	ref = ref || useRef()
-	return <div role={"button"}
-	            onClick={onClick}
-	            onDoubleClick={onDoubleClick}
-	            title={title}
-	            ref={ref}
-	            className={`transition-all text-secondary-600 hover:text-primary-800 dark:text-secondary-300 dark:hover:text-primary-300  flex flex-col justify-center items-center hover:bg-primary-200 bg-opacity-80 dark:hover:bg-primary-950 dark:bg-opacity-80 p-4 rounded gap-2`}>
-		<Icon icon={props.skeleton ? "folder" : iconMap[props.extension] || iconMap[type] || "file-exclamation"}
-		      variant={"fal"}
-		      hover={
-			      {
-				      variant: "fad",
-				      container: ref
+	return <ContextMenuTrigger options={
+		[{
+			label: "Delete",
+			icon: "trash",
+			onClick: () => toast.promise(() => new Promise((resolve) => setTimeout(() => resolve({name: 'Sonner'}), 2000)), {loading: "Deleting"})
+		},]
+	}>
+		<div role={"button"}
+		     onClick={onClick}
+		     onDoubleClick={onDoubleClick}
+		     title={title}
+		     ref={ref}
+		     className={`transition-all text-secondary-600 hover:text-primary-800 dark:text-secondary-300 dark:hover:text-primary-300  flex flex-col justify-center items-center hover:bg-primary-200 bg-opacity-80 dark:hover:bg-primary-950 dark:bg-opacity-80 p-4 rounded gap-2`}>
+			<Icon icon={props.skeleton ? "folder" : iconMap[props.extension] || iconMap[type] || "file-exclamation"}
+			      variant={"fal"}
+			      hover={
+				      {
+					      variant: "fad",
+					      container: ref
+				      }
 			      }
-		      }
-		      size={`${scale == 1 ? "" : scale}xl`}
-		      skeleton={props.skeleton}
-		/>
-		{
-			props.rename ?
-				<input value={title}
-				       className={"border-1 radius text-center"}
-				       autoFocus={true} />
-				: <Text
-					wrap={"break"}
-					className={cn(textScale[scale], widthScale[scale])}
-					skeleton={props.skeleton}
+			      size={`${scale == 1 ? "" : scale}xl`}
+			      skeleton={props.skeleton}
+			/>
+			{
+				props.rename ?
+					<input value={title}
+					       className={"border-1 radius text-center"}
+					       autoFocus={true} />
+					: <Text
+						wrap={"break"}
+						className={cn(textScale[scale], widthScale[scale])}
+						skeleton={props.skeleton}
+					
+					>
+						{title}
+					</Text>
 				
-				>
-					{title}
-				</Text>
-			
-		}
-	
-	</div>
+			}
+		
+		</div>
+	</ContextMenuTrigger>
 	
 	
 })
@@ -105,7 +114,6 @@ function FileExplorer({filter, props}) {
 	const [structure, setStructure] = useState(null);
 	const [path, setPath] = useState([{href: "/", title: "Home", icon: "home"}]);
 	const [currentFile, setCurrentFile] = useState(null);
-	const [currentFileData, setCurrentFileData] = useState(null);
 	const [currentFolder, setCurrentFolder] = useState(null);
 	const [source, setSource] = useState(rootSource);
 	const {currentDirectory} = router.query
@@ -160,12 +168,8 @@ function FileExplorer({filter, props}) {
 			                rename={item["newlyCreated"]}
 			                onDoubleClick={(props) => {
 				                if (item["FileName"] || ["GENERAL_DOCUMENT", "file"].includes(item["TemplateCode"])) {
-								console.log(item, props)
-					                
 					                setCurrentFile(item)
-					                
 				                } else {
-					                
 					                router.push({
 						                pathname: "/files",
 						                query: {currentDirectory: item["id"] || item["key"] || item["Id"]},
@@ -184,12 +188,12 @@ function FileExplorer({filter, props}) {
 	useMemo(() => {
 		if (currentFile) {
 			setScale(2)
-			setCurrentFileData(null)
-			
-			axios.get(`dmsapi/nts/query/GetNoteDetails?templateCode=${currentFile.TemplateCode}&userId=45bba746-3309-49b7-9c03-b5793369d73c&noteId=${currentFile["id"] || currentFile["key"]||currentFile["Id"]}&dataAction=1`).then((res) => {
-				console.log(res.data)
-				setCurrentFileData(res.data)
-			})
+			// setCurrentFileData(null)
+			//
+			// axios.get(`dmsapi/nts/query/GetNoteDetails?templateCode=${currentFile.TemplateCode}&userId=45bba746-3309-49b7-9c03-b5793369d73c&noteId=${currentFile["id"] || currentFile["key"] || currentFile["Id"]}&dataAction=1`).then((res) => {
+			// 	console.log(res.data)
+			// 	setCurrentFileData(res.data)
+			// })
 			fileExplorerPanelRef.current?.setLayout([50, 50])
 		}
 	}, [currentFile]);
@@ -326,13 +330,20 @@ function FileExplorer({filter, props}) {
 				</ResizablePanel>
 				<ResizableHandle disabled={!currentFile}
 				                 className={"bg-primary-200 dark:bg-secondary-900"} />
-				<ResizablePanel id={"preview-panel"} defaultSize={0}>
-					<NtsPreview templateCode={currentFile?.TemplateCode} onClose={
-						()=>{
-							setCurrentFile(null)
-							fileExplorerPanelRef.current?.setLayout([100, 0])
-						}
-					}></NtsPreview>
+				<ResizablePanel id={"preview-panel"}
+				                defaultSize={0}>
+					<NtsPreview source={{
+						NtsType: "Note",
+						Id:  currentFile?.id||currentFile?.key||currentFile?.Id,
+						TemplateCode : currentFile?.TemplateCode
+					}}
+					            title={"NoteSubject"}
+					            onClose={
+						            () => {
+							            setCurrentFile(null)
+							            fileExplorerPanelRef.current?.setLayout([100, 0])
+						            }
+					            }></NtsPreview>
 				</ResizablePanel>
 			</ResizablePanelGroup>
 			<div className={"flex gap-2 bg-primary-200 dark:bg-secondary-900 border-primary-200 dark:border-secondary-900 border-2 p-4 items-center justify-between"}>

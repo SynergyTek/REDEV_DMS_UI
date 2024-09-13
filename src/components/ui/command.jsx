@@ -9,8 +9,8 @@ const Command = React.forwardRef(({ className, ...props }, ref) => (
   <CommandPrimitive
     ref={ref}
     className={cn(
-      "flex h-full w-full flex-col overflow-hidden rounded-md bg-white text-secondary-950 dark:bg-secondary-950 dark:text-secondary-50",
-      className
+      "flex rounded-md h-full shadow-md w-full min-w-32 flex-col overflow-hidden bg-secondary-200/50 dark:bg-secondary-800/50 backdrop-blur dark:text-secondary-50",
+      className 
     )}
     {...props} />
 ))
@@ -86,7 +86,7 @@ const CommandItem = React.forwardRef(({ className, ...props }, ref) => (
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "relative transition-all duration-300 flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-secondary-100 data-[selected=true]:text-secondary-900 data-[disabled=true]:opacity-50 dark:data-[selected='true']:bg-secondary-800 dark:data-[selected=true]:text-secondary-50",
+      "relative transition-all duration-300 flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-primary-200 data-[selected=true]:text-secondary-900 data-[disabled=true]:opacity-50 dark:data-[selected='true']:bg-primary-500/50 dark:data-[selected=true]:text-secondary-50",
       className
     )}
     {...props} />

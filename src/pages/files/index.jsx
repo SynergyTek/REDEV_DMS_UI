@@ -14,6 +14,7 @@ const Input = forwardRef((
 		placeholder={"Search for any file ..."}></input>
 })
 export default function Index() {
+	const filterRef = useRef();
 	const searchRef = useRef();
 	const fromRef = useRef();
 	const toRef = useRef();
@@ -39,6 +40,7 @@ export default function Index() {
 					variant={"outline"}
 					reset={false}
 					defaultValue={"all"}
+					ref={filterRef}
 				/>
 				
 				<Input type={"search"}
@@ -63,6 +65,7 @@ export default function Index() {
 				        variant={"secondary"} />
 				{<Button icon={"xmark"}
 				         onClick={() => {
+					         filterRef.current.clear()
 					         searchRef.current.value = ""
 					         fromRef.current.value = ""
 					         toRef.current.value = ""
@@ -70,6 +73,7 @@ export default function Index() {
 				         }}
 				         className={`${!filter && "hidden"}`}
 				         variant={"secondary"} />}
+			
 			</div>
 		
 		

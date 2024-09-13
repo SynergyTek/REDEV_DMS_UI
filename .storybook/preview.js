@@ -7,6 +7,7 @@ import {DARK_MODE_EVENT_NAME} from "storybook-dark-mode";
 import React from "react";
 import {DocsContainer, Title, ArgTypes, Canvas, Story, Description} from "@storybook/blocks";
 import DocsPage from "./DocsPage";
+import {ContextMenu} from "~";
 
 export default {
 	controls: {
@@ -39,6 +40,7 @@ export const parameters = {
 				<DocsContainer context={context} >
 					{children}
 				</DocsContainer>
+				<ContextMenu />
 			</div>
 		}
 	},

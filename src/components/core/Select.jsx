@@ -42,6 +42,7 @@ const Select = forwardRef(
 			search = true,
 			variant = "outline",
 			reset = true,
+			unselectedText = "Select",
 			...props
 		},
 		ref
@@ -149,7 +150,7 @@ const Select = forwardRef(
 					        ref={ref} size={size}>
 						<Text truncate={10}
 						      className={"opacity-80"}>
-							{selected?.[map.value] || "Select"}
+							{selected?.[map.value] || unselectedText}
 						</Text>
 						<Icon
 							icon="chevron-down"
@@ -191,7 +192,7 @@ const Select = forwardRef(
 					        ref={ref} size={size}>
 						<Text truncate={10}
 						      className={"opacity-80"}>
-							{selected?.[map.value] || "Select"}
+							{selected?.[map.value] || unselectedText}
 						</Text>
 						<Icon
 							icon="chevron-down"

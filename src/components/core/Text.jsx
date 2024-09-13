@@ -3,9 +3,15 @@ import {cva} from "class-variance-authority";
 import Skeleton from "~/ui/skeleton";
 
 const textVariants = cva(
-	"text-primary-950 dark:text-primary-100 overflow-hidden",
+	"overflow-hidden",
 	{
 		variants: {
+			color: {
+				primary: "text-primary-950 dark:text-primary-100",
+				secondary: "text-secondary-700 dark:text-secondary-400",
+				tertiary: "text-tertiary-950 dark:text-tertiary-100",
+				inherit: "text-inherit"
+			},
 			size: {
 				"sm": "text-sm",
 				"xs": "text-xs",
@@ -25,41 +31,44 @@ const textVariants = cva(
 					start: "text-start",
 					end: "text-end",
 				},
+			selectable: {
+				true: "",
+				false: "select-none"
+			},
 			wrap: {
 				true: "text-wrap",
 				break: "text-wrap break-all",
 				false: "text-ellipsis text-nowrap"
 			},
-			
 		},
 		defaultVariants: {
+			color: "primary",
 			size: "md",
-			width: "default",
 			align: "start",
 			wrap: false,
-			
+			selectable: true
 		},
 	}
 )
 
-const variantMap = {
-	p: "text-sm",
-	span: "text-xs",
-	h1: "text-4xl",
-	h2: "text-3xl",
-	h3: "text-2xl",
-	h4: "text-xl",
-	h5: "text-lg",
-	h6: "text-base",
-}
+const variants = [
+	"p",
+	"span",
+	"h1",
+	"h2",
+	"h3",
+	"h4",
+	"h5",
+	"h6"
+]
 
-function Text({variant, size, type, truncate = true, className, wrap, align, ...props}) {
+function Text({variant, color, size, type, truncate = true, className, selectable, wrap, align, ...props}) {
 	if (props.skeleton) {
 		return <Skeleton className={cn(`h-4`, className)} />
 	}
-	const Comp =  "p"
+	const Comp = variants.includes(variant) ? variant : "p"
 	return <Comp title={props.children}
-	             className={cn(textVariants({align, type, className, wrap, size}))}>{props.children}</Comp>
+	             className={cn(textVariants({align, color, className, wrap, size, selectable}))}>{props.children}</Comp>
 }
 
 export default Text;

@@ -59,6 +59,9 @@ const Icon = forwardRef((
 	const [hovered, setHovered] = useState(false)
 	const [renderedIcon, setRenderedIcon] = useState([variant, icon])
 	useEffect(() => {
+		setRenderedIcon([variant, icon])
+	}, [icon]);
+	useEffect(() => {
 		if (hover) {
 			if (hover.container?.current) {
 				hover.container.current.addEventListener("mouseenter", () => {

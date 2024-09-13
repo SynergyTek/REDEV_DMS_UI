@@ -20,7 +20,7 @@ export function flattenObject(obj, prefix = '') {
             result[newKey] = value;
         }
     }
-    
+
     return result;
 }
 export function toTitle(str){
