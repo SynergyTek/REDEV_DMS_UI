@@ -4,8 +4,16 @@ import {faChainBroken} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 
 import {Button, Icon} from "~";
 import {useRouter} from "next/router";
+import {useSidebar} from "@/layouts/SidebarContext";
+import {useEffect} from "react";
 
 export default function Custom404({sidebar = false}) {
+	const { setSidebar } = useSidebar();
+
+	useEffect(() => {
+		setSidebar(false);
+	}, [setSidebar]);
+
 	const router = useRouter();
 	return (
 		<div className={"w-full h-dvh flex items-center justify-center"}>

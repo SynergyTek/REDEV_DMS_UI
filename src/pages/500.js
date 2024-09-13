@@ -1,9 +1,22 @@
 import Link from "next/link";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChainBroken, faCircleExclamation} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
+import {useSidebar} from "@/layouts/SidebarContext";
+import {useEffect} from "react";
+import Head from "next/head";
 
 export default function Custom500() {
+	const { setSidebar } = useSidebar();
+
+	useEffect(() => {
+		setSidebar(false);
+	}, [setSidebar]);
+
 	return <div className={"w-full h-dvh flex items-center justify-center"}>
+		<Head>
+			<title>500</title>
+			<link rel={'icon'} href={'/public/favicon.ico'}/>
+		</Head>
 		<main className="grid place-items-center p-12 rounded-md shadow bg-blue-50 dark:bg-gray-900">
 			<div className="text-center">
 				<p className="font-semibold text-2xl -translate-x-3"><FontAwesomeIcon className={"size-6"} icon={faCircleExclamation}/> 500</p>
