@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,6 +19,7 @@ import {Textarea} from "~/ui/textarea";
 import {RadioGroup, RadioGroupItem} from "~/ui/radio-group";
 import {Checkbox} from "~/ui/checkbox";
 import DatePicker from "~/ui/date-picker";
+import {Select} from "~";
 
 export default {
     title: 'Form/Form',
@@ -26,6 +27,7 @@ export default {
 };
 
 export const ProfileFormStory = () => {
+    const selectRef = useRef();
     const formSchema = z.object({
         username: z.string().min(2, {
             message: "Username must be at least 2 characters.",
@@ -46,6 +48,7 @@ export const ProfileFormStory = () => {
         terms: z.boolean().refine((val) => val === true, {
             message: "You must accept the terms and conditions",
         }),
+        select: z.string(),
     });
 
     const form = useForm({
@@ -86,6 +89,24 @@ export const ProfileFormStory = () => {
                             <FormLabel>Message</FormLabel>
                             <FormControl>
                                 <Textarea placeholder="Enter you message here..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    name="select"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Select</FormLabel>
+                            <FormControl>
+                                <Select
+                                    defaultValue={field.value}
+                                    onSelect={(selected) => field.onChange(selected?.name)}
+                                    source="https://jsonplaceholder.typicode.com/users"
+                                    map={{key: "id", value: "name"}}
+                                    className={'w-full'}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
