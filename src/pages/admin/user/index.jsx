@@ -3,12 +3,9 @@ import { useReducer, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import axios from "axios";
-import { Table, Button, Notification } from "@/components/";
-import {
-  faPencil,
-  faTrash,
-  faKey,
-} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
+import { Button, Notification } from "@/components/";
+import Table from "@/components/ui/table";
+
 import Modal from "~/core/AlertModal";
 import { toast } from "sonner";
 
@@ -42,7 +39,7 @@ const User = () => {
       const url = `/dmsapi/PortalAdmin/User/DeleteUser?Id=${state.userId}`
       console.log(url, "delete api")
       const response = await axios.get(`/dmsapi/PortalAdmin/User/DeleteUser?Id=${state.userId}`);
-
+      console.log(response.data, " delete api user res")
       response.data?.success ?
         toast.success("Successful !", {
           description: (
@@ -130,23 +127,23 @@ const User = () => {
         actions={[
 
           {
-            icon: faPencil,
+            icon: "pencil",
             label: "Edit",
-            onClick: ({ id, name }) => edit(id, name),
+            onClick: (option, row) => edit(row.Id, row.Name),
           },
           {
             label: "Delete",
-            icon: faTrash,
-            onClick: ({ id, name }) => {
-              console.log(id, " context user")
-              dispatch({ type: 'SET_USER_ID', payload: id });
+            icon: "trash",
+            onClick: (option, row) => {
+              console.log(row.Id, " context user")
+              dispatch({ type: 'SET_USER_ID', payload: row.Id });
               dispatch({ type: 'OPEN_MODAL' });
             },
           },
           {
             label: "Change Password",
-            icon: faKey,
-            onClick: ({ id, name }) => ChangePassword(id, name),
+            icon: "key",
+            onClick: (option, row) => ChangePassword(row.Id, row.Password),
 
           },
         ]}
@@ -174,10 +171,7 @@ const User = () => {
           }
         ]}
 
-        data={{ source: "/dmsapi/portalAdmin/User/ReadData?portalName=DMS&userId=45bba746-3309-49b7-9c03-b5793369d73c" }}
-
-        primary
-        text="Button"
+        source="/dmsapi/portalAdmin/User/ReadData?portalName=DMS&userId=45bba746-3309-49b7-9c03-b5793369d73c"
       />
     </div>
   )
