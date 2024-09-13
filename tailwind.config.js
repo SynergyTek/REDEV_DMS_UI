@@ -12,5 +12,5 @@ module.exports = {
 	presets: [
 		require("./config")
 	],
-	plugins: [require("tailwindcss-animate")],
+	plugins: [require("tailwindcss-animate"),require("@tailwindcss/container-queries")],
 };
