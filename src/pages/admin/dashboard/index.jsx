@@ -3,8 +3,7 @@ import Head from "next/head";
 import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faFileAlt, faCalendarDay, faCalendarWeek, faCalendarAlt } from '@awesome.me/kit-9b926a9ec0/icons/classic/regular';
-
-import { Table} from "../../../components/";
+import Table from '@/components/ui/table';
 
 const Dashboard = () => {
 
@@ -98,10 +97,7 @@ const Dashboard = () => {
                     },
                 ]}
 
-                data={{ source: "/dmsapi/dms/query/ReadUserDocumentCountDMS?userId=" }}
-
-                primary
-                text="Button"
+                source= "/dmsapi/dms/query/ReadUserDocumentCountDMS?userId="
             />
         </main>
     )
