@@ -54,12 +54,12 @@ const Workspace = () => {
     };
 
     const onDelete = async (id) => {
-        const isConfirmed = window.confirm("Are you sure you want to delete this workspace?"+ id);
+        const isConfirmed = window.confirm("Are you sure you want to delete this workspace?" + id);
         if (isConfirmed) {
             try {
                 setLoading(true);
                 await axios.delete(`/dmsapi/dms/workspace/DeleteWorkspace?NoteId=${id}`);
-                setData(data.filter(item => item.Id !== id)); 
+                setData(data.filter(item => item.Id !== id));
             } catch (error) {
                 alert("Failed to delete workspace");
             } finally {
