@@ -170,7 +170,7 @@ export default function Component() {
                             {recentActivities.map((activity, index) => (
                                 <li key={index} className="flex items-center">
                                     <div className="mr-4">
-                                        <Badge variant="outline">{activity.action}</Badge>
+                                        <Badge variant="outline" size={'xs'}>{activity.action}</Badge>
                                     </div>
                                     <div>
                                         <p className="text-sm font-medium text-blue-500 dark:text-secondary-300">{activity.user} {activity.action} {activity.document}</p>
@@ -189,12 +189,12 @@ export default function Component() {
                     <CardContent>
                         <ul className="space-y-4">
                             {favoriteFolders.map((folder, index) => (
-                                <li key={index} className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-secondary-800 hover:cursor-pointer transition-colors duration-200">
+                                <li key={index} className="flex items-center justify-between p-1 rounded-md hover:bg-gray-100 dark:hover:bg-secondary-800 hover:cursor-pointer transition-colors duration-200">
                                     <div className="flex items-center">
                                         <FolderIcon className="h-4 w-4 mr-2 text-yellow-500" />
                                         <span className="text-sm font-medium">{folder.name}</span>
                                     </div>
-                                    <Badge variant="secondary">{folder.count} files</Badge>
+                                    <Badge variant="secondary" size={'xs'}>{folder.count} files</Badge>
                                 </li>
                             ))}
                         </ul>
