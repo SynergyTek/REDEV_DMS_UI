@@ -16,6 +16,7 @@ import Head from "next/head";
 export default function Component() {
     const [data, setData] = useState();
     const recentDocuments = [];
+    const chartData = []
     for (var i=0; i< data?.FilesList.length; i++) {
         recentDocuments.push({ name: data?.FilesList[i].FileName, accessed: data?.FilesList[i].CreatedDateDisplay })
     }
@@ -38,17 +39,18 @@ export default function Component() {
             label: "FilesCount",
         },
     }
-    const chartData = []
-    for (var i=1; i<=data?.Top5Extensions.length; i++) {
+    const totalExtensions = data?.Top5Extensions.length + 1;
+    for (var i=1; i<totalExtensions; i++) {
         chartData.push({ files: `${i}`, count: data?.Top5Extensions[i-1].Count, fill: `var(--color-${i})` });
         chartConfig[i] = {
             label: data?.Top5Extensions[i-1].Extension.toUpperCase(),
             color: `hsl(var(--chart-${i}))`,
         }
     }
-    chartConfig[data?.Top5Extensions.length] = {
+    chartData.push({files: `${totalExtensions}`, count: data?.Others, fill: `var(--color-${totalExtensions}`})
+    chartConfig[totalExtensions] = {
         label: "Others",
-        color: `hsl(var(--chart-${data?.Top5Extensions.length}))`,
+        color: `hsl(var(--chart-${totalExtensions}))`,
     }
 
     useEffect(() => {
@@ -56,6 +58,7 @@ export default function Component() {
             try {
                 const response = await axios.get('/dmsapi/dms/query/GetUserDocuments?userId=45bba746-3309-49b7-9c03-b5793369d73c');
                 setData(response.data);
+                console.log(response.data)
             } catch (error) {
                 console.log('Failed to fetch data');
                 console.error(error);

@@ -4,14 +4,15 @@ import React, {forwardRef, useEffect, useState} from "react";
 import axios from "axios";
 import {Badge} from "~/ui/badge";
 import {Popover, PopoverTrigger, PopoverContent} from "~/ui/popover";
-
-const NtsPreview = forwardRef(({source, onClick, title, ...props}, ref) => {
+import PropTypes from "prop-types";
+const NtsPreview = forwardRef(({source, onClose, title, ...props}, ref) => {
 	const {NtsType, Id, TemplateCode} = source
 	const [data, setData] = useState(null)
 	const [json, setJson] = useState(null)
 	const [dataJson, setDataJson] = useState(null)
 	const [loading, setLoading] = useState(true)
 	useEffect(() => {
+		if (!source || (!Id && !TemplateCode)) return
 		switch (NtsType) {
 			case "Note":
 				setLoading(true)
@@ -63,7 +64,7 @@ const NtsPreview = forwardRef(({source, onClick, title, ...props}, ref) => {
 		
 		</div> :
 		<div className={"min-h-[70vh] flex flex-col bg-secondary-50 bg-opacity-60 border-primary-200 border-b-0  dark:bg-secondary-900 dark:bg-opacity-20 border-2 dark:border-secondary-900 dark:shadow-xl"}>
-			<div className={"flex gap-2 bg-primary-100 dark:bg-secondary-900 p-2 items-center justify-between"}>
+			<div className={"@container flex gap-2 bg-primary-100 dark:bg-secondary-900 p-2 items-center justify-between"}>
 				{dataJson ?
 					
 					<>
@@ -78,7 +79,7 @@ const NtsPreview = forwardRef(({source, onClick, title, ...props}, ref) => {
 						</div>
 						<Separator vertical={true}
 						           className={"my-2"} />
-						<div className={"px-3 p-2 mx-auto w-full rounded bg-primary-50 dark:bg-secondary-800 shadow"}>
+						<div className={"px-3 p-2 mx-auto  w-12 @md:w-full rounded bg-primary-50 dark:bg-secondary-800 shadow"}>
 							<Text size={"xs"}
 							      align={"center"}>
 								{(title ? dataJson[title] : dataJson["NoteNo"])}
@@ -114,7 +115,7 @@ const NtsPreview = forwardRef(({source, onClick, title, ...props}, ref) => {
 							</PopoverContent>
 						
 						</Popover>
-						<span className={"flex gap-1 items-center"}>
+						<span className={"gap-1 items-center hidden @md:flex"}>
 							<Text size={"xs"}
 							      color={"secondary"}>v{dataJson.VersionNo}</Text>
 							<Badge size={"xs"}
@@ -126,7 +127,7 @@ const NtsPreview = forwardRef(({source, onClick, title, ...props}, ref) => {
 						<Button variant={"tertiary"}
 						        icon={"close"}
 						        onClick={() => {
-							        props.onClose && props.onClose()
+							        onClose && onClose()
 						        }}
 						></Button>
 					</>
@@ -176,7 +177,11 @@ const NtsPreview = forwardRef(({source, onClick, title, ...props}, ref) => {
 	
 })
 
+NtsPreview.propTypes = {
+	
+	source: PropTypes.object,
+	title: PropTypes.string,
+	onClose: PropTypes.func
+}
 export default NtsPreview
 
-export class cmHandler {
-}

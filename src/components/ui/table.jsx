@@ -253,12 +253,14 @@ function Table({
 			return;
 		}
 		const newFilteredData = [];
+		
 		data.forEach((item) => {
 			item = flattenObject(item);
 			inputText = inputText.toString();
 			if (selected) {
 				
 				if (
+					item[selected.field] &&
 					item[selected.field]
 						.toLowerCase()
 						.includes(inputText.toString().toLowerCase())
@@ -268,7 +270,8 @@ function Table({
 			} else {
 				let found = false;
 				Object.keys(item).forEach((key) => {
-					if (
+
+					if (item[key] &&
 						item[key]
 							.toString()
 							.toLowerCase()
@@ -397,7 +400,8 @@ function Table({
 											        isFirst={colIndex === 0}
 											        isLast={colIndex === columns.length - 1} />
 											{pageData ? pageData.map((r, rIndex) => {
-												return <ContextMenuTrigger options={actions} context={r}>
+												return <ContextMenuTrigger options={actions}
+												                           context={r}>
 													<Cell data={r}
 													      key={rIndex}
 													      context={column}

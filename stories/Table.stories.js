@@ -64,3 +64,38 @@ export const WithoutPagination = {
 		pagination: false,
 	},
 };
+
+export const ContextMenu = {
+    args: {
+        source: "/dmsapi/portalAdmin/User/ReadData?portalName=DMS&userId=45bba746-3309-49b7-9c03-b5793369d73c",
+        columns:[
+	        {
+		        field: 'Name',
+		        header: 'Name'
+	        },
+	        {
+		        field: 'Email',
+		        header: 'Email'
+	        },
+	        {
+		        field: 'JobTitle',
+		        header: 'Job Title'
+	        },
+	        {
+		        field: 'DepartmentName',
+		        header: 'Department Name'
+	        },
+	        {
+		        field: 'Status',
+		        header: 'Status'
+	        }
+        ],
+        actions:[{
+            "label": "View"
+        }, {
+            "label": "Edit"
+        }, {
+            "label": "Delete"
+        }]
+    }
+};

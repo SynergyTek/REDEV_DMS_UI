@@ -7,7 +7,7 @@ import {useRouter} from "next/router";
 import {useSidebar} from "@/layouts/SidebarContext";
 import {useEffect} from "react";
 
-export default function Custom404({sidebar = false}) {
+export default function Custom503({sidebar = false}) {
 	const { setSidebar } = useSidebar();
 
 	useEffect(() => {

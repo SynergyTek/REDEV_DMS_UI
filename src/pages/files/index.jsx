@@ -3,6 +3,7 @@ import {faFileSearch, faFilterList} from "@awesome.me/kit-9b926a9ec0/icons/class
 import {Button} from "~/ui/button";
 import {forwardRef, useRef, useState} from "react";
 import axios from "axios";
+import {Badge} from "~/ui/badge";
 
 const Input = forwardRef((
 	{type, ...props}, ref) => {
@@ -19,6 +20,7 @@ export default function Index() {
 	const fromRef = useRef();
 	const toRef = useRef();
 	const [filter, setFilter] = useState();
+	const [mode, setMode] = useState("default");
 	return <div className={"flex flex-col justify-center items-start  gap-4 p-4"}>
 		<div className={"flex flex-col md:flex-row gap-2 items-center w-full md:w-fit "}>
 			<div className={"flex flex-col lg:flex-row gap-2 w-full "}>
@@ -44,8 +46,7 @@ export default function Index() {
 				/>
 				
 				<Input type={"search"}
-				       ref={searchRef}
-				       value={"a"} />
+				       ref={searchRef} />
 			</div>
 			<div className={"flex flex-col lg:flex-row gap-2 w-full"}>
 				<Input type={"date"}
@@ -61,8 +62,8 @@ export default function Index() {
 					        setFilter(`dmsapi/dms/query/ReadGlobalSearchResult?userId=45bba746-3309-49b7-9c03-b5793369d73c&serachStr=${searchRef.current.value}&fromDate=${fromRef.current.value}&toDate=${toRef.current.value}`)
 					        
 				        }} />
-				<Button icon={"filter-list"}
-				        variant={"secondary"} />
+				{/*<Button icon={"filter-list"}*/}
+				{/*        variant={"secondary"} />*/}
 				{<Button icon={"xmark"}
 				         onClick={() => {
 					         filterRef.current.clear()
@@ -78,8 +79,34 @@ export default function Index() {
 		
 		
 		</div>
+		<div className={"flex gap-2"}>
+			<Button variant={"toggle"}
+			        size={"sm"}
+			        icon={"folder"}
+			        onClick={(e) => {
+						if (e.currentTarget.dataset.selected) {
+							setMode("archive")
+						}else{
+							setMode("default")
+						}
+			        }}
+			>Archive
+			</Button>
+			<Button variant={"toggle"}
+			        size={"sm"}
+			        icon={"trash"}
+			        onClick={(e) => {
+				        if (e.currentTarget.dataset.selected) {
+					        setMode("bin")
+				        }else{
+					        setMode("default")
+				        }
+					}}
+			>Bin
+			</Button>
+		</div>
 		<div className={"w-full"}>
-			<FileExplorer filter={filter} />
+			<FileExplorer filter={filter} mode={mode}/>
 		</div>
 	</div>
 }
