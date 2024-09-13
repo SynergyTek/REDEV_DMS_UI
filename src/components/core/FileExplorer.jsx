@@ -1,16 +1,19 @@
 import axios from "axios";
 import React, {useEffect, useRef, useState, useMemo, forwardRef} from "react";
-import {Breadcrumb, Dropdown, Icon, InputField, Loader, Select, Separator, Slider, Text} from "~";
+import {Breadcrumb, Dropdown, Icon, Separator, Slider, Text} from "~";
 import {useRouter} from "next/router";
 import {cn, toTitle} from "@/lib/utils";
 import {Button} from "~/ui/button";
 import {toast} from "sonner";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "~/ui/resizable";
-import Skeleton from "~/ui/skeleton";
 import NtsPreview from "~/core/NtsPreview";
 import {ContextMenuTrigger} from "~/core/ContextMenu";
 
-const getFileApi = "/dms/query/ViewFileHEG"
+const sourceMap = {
+	default: "/dmsapi/dms/workspace/GetParentWorkspace?userId=45bba746-3309-49b7-9c03-b5793369d73c&portalName=DMS",
+	archive: "/dmsapi/dms/query/GetArchivedDocumentData?userId=45bba746-3309-49b7-9c03-b5793369d73c",
+	bin: "/dmsapi/dms/query/GetBinDocumentData?userId=45bba746-3309-49b7-9c03-b5793369d73c"
+}
 const rootSource = "/dmsapi/dms/workspace/GetParentWorkspace?userId=45bba746-3309-49b7-9c03-b5793369d73c&portalName=DMS"
 const iconMap = {
 	"folder": "folder",
@@ -105,17 +108,17 @@ const Item = forwardRef(({scale, id, type, title, onClick, onDoubleClick, ...pro
 })
 
 
-function FileExplorer({filter, props}) {
+function FileExplorer({filter, mode = "default", props}) {
 	const router = useRouter()
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState(null);
 	const [level, setLevel] = useState(0);
 	const [scale, setScale] = useState(4);
 	const [structure, setStructure] = useState(null);
-	const [path, setPath] = useState([{href: "/", title: "Home", icon: "home"}]);
+	const [path, setPath] = useState([{href: "/files", title: "Home", icon: "home"}]);
 	const [currentFile, setCurrentFile] = useState(null);
 	const [currentFolder, setCurrentFolder] = useState(null);
-	const [source, setSource] = useState(rootSource);
+	const [source, setSource] = useState(sourceMap[mode]);
 	const {currentDirectory} = router.query
 	const fileExplorerPanelRef = useRef(null)
 	const handlePathClick = (props) => {
@@ -155,13 +158,22 @@ function FileExplorer({filter, props}) {
 	useEffect(() => {
 		setSource(filter || rootSource)
 	}, [filter]);
+	useEffect(() => {
+		if (!mode) return;
+		setSource(sourceMap[mode])
+	}, [mode]);
 	useMemo(() => {
 		if (!data) return;
 		let temp = []
-		data.sort((a, b) => (a.Name || a.title || a.FileName).localeCompare((b.Name || b.title || a.FileName)))
+		data.sort((a, b) => {
+			const aFileName = (a.Name || a.title || a.FileName || a.DocumentName) || "Untitled"
+			const bFileName = (b.Name || b.title || b.FileName || b.DocumentName) || "Untitled"
+			if (aFileName === bFileName) return 0
+			return aFileName.localeCompare(bFileName)
+		})
 		data.forEach((item, index) => {
 			if (level === 0) item["TemplateCode"] = "WORKSPACE_GENERAL"
-			temp.push(<Item title={item["Name"] || item['title'] || item["FileName"]}
+			temp.push(<Item title={item["Name"] || item['title'] || item["FileName"] || item["DocumentName"]}
 			                type={item["FileName"] ? "file" : item["TemplateCode"]}
 			                extension={item["FileExtension"]}
 			                scale={scale}
@@ -170,10 +182,16 @@ function FileExplorer({filter, props}) {
 				                if (item["FileName"] || ["GENERAL_DOCUMENT", "file"].includes(item["TemplateCode"])) {
 					                setCurrentFile(item)
 				                } else {
+					                
 					                router.push({
 						                pathname: "/files",
 						                query: {currentDirectory: item["id"] || item["key"] || item["Id"]},
 					                }).then(() => {
+						                setPath([...path, {
+							                href: item["id"] || item["key"] || item["Id"],
+							                title: item["Name"] || item["title"],
+							                icon: "folder"
+						                }])
 						                setLevel(level + 1)
 					                })
 				                }
@@ -190,10 +208,9 @@ function FileExplorer({filter, props}) {
 			setScale(2)
 			// setCurrentFileData(null)
 			//
-			// axios.get(`dmsapi/nts/query/GetNoteDetails?templateCode=${currentFile.TemplateCode}&userId=45bba746-3309-49b7-9c03-b5793369d73c&noteId=${currentFile["id"] || currentFile["key"] || currentFile["Id"]}&dataAction=1`).then((res) => {
-			// 	console.log(res.data)
-			// 	setCurrentFileData(res.data)
-			// })
+			// axios.get(`dmsapi/nts/query/GetNoteDetails?templateCode=${currentFile.TemplateCode}&userId=45bba746-3309-49b7-9c03-b5793369d73c&noteId=${currentFile["id"]
+			// || currentFile["key"] || currentFile["Id"]}&dataAction=1`).then((res) => { console.log(res.data)
+			// setCurrentFileData(res.data) })
 			fileExplorerPanelRef.current?.setLayout([50, 50])
 		}
 	}, [currentFile]);
@@ -219,6 +236,7 @@ function FileExplorer({filter, props}) {
 		setLoading(true)
 		if (typeof source === "string") {
 			axios.get(source).then((res) => {
+				console.log(res.data)
 				setData(res.data);
 			}).catch((e) => {
 				console.log(e);
@@ -249,42 +267,41 @@ function FileExplorer({filter, props}) {
 						
 						<div className={"min-h-[70vh] flex flex-col bg-secondary-50 bg-opacity-60 border-primary-200 border-b-0  dark:bg-secondary-900 dark:bg-opacity-20 border-2 dark:border-secondary-900 dark:shadow-xl"}>
 							<div className={"flex gap-2 bg-primary-100 dark:bg-secondary-900 p-2 items-center justify-between"}>
-								<div className={"flex"}>
-									<Button icon={"arrow-left"}
-									        variant={"tertiary"}
-									        size={"sm"}
-									        onClick={() => {
-										        console.log(router)
-										        if (level > 0) {
-											        router.back()
-										        }
-									        }}></Button>
-									<Button icon={"arrow-right"}
-									        variant={"tertiary"}
-									        size={"sm"}
-									        onClick={() => {
-										        router.forward()
-										        
-									        }}
-									></Button>
-									<Button icon={"arrows-rotate"}
-									        variant={"tertiary"}
-									        size={"sm"}></Button>
-								</div>
-								<Separator vertical={true} />
+								{/*<div className={"flex"}>*/}
+								{/*	<Button icon={"arrow-left"}*/}
+								{/*	        variant={"tertiary"}*/}
+								{/*	        size={"sm"}*/}
+								{/*	        {...level === 0 && {disabled: true}}*/}
+								{/*	        onClick={() => {*/}
+								{/*		        console.log(router)*/}
+								{/*		        if (level > 0) {*/}
+								{/*			        router.back()*/}
+								{/*		        }*/}
+								{/*	        }}></Button>*/}
+								{/*	<Button icon={"arrow-right"}*/}
+								{/*	        variant={"tertiary"}*/}
+								{/*	        size={"sm"}*/}
+								{/*	        onClick={() => {*/}
+								{/*		       window.history.forward()*/}
+								{/*		        */}
+								{/*	        }}*/}
+								{/*	></Button>*/}
+								{/*	<Button icon={"arrows-rotate"}*/}
+								{/*	        variant={"tertiary"}*/}
+								{/*	        size={"sm"}*/}
+								{/*	        onClick={() => {*/}
+								{/*		        router.reload()*/}
+								{/*	        }}*/}
+								{/*	></Button>*/}
+								{/*</div>*/}
+								{/*<Separator vertical={true} />*/}
 								<div className={"px-3 p-2 rounded bg-primary-50 dark:bg-secondary-800 shadow"}>
 									<Breadcrumb path={filter ?
 										[
 											{href: "#", icon: "magnifying-glass"},
 											{label: "Search Results"},
 										]
-										: [
-											{href: "#", label: "Home", icon: "home"},
-											{href: "#", label: "Workspace"},
-											{href: "#", label: "Folder 1"},
-											{href: "#", label: "Folder 2"},
-											{label: "Folder 3"},
-										]}
+										: path}
 									            onClick={handlePathClick} />
 								</div>
 								{/*<Separator vertical={true}*/}
@@ -334,8 +351,8 @@ function FileExplorer({filter, props}) {
 				                defaultSize={0}>
 					<NtsPreview source={{
 						NtsType: "Note",
-						Id:  currentFile?.id||currentFile?.key||currentFile?.Id,
-						TemplateCode : currentFile?.TemplateCode
+						Id: currentFile?.id || currentFile?.key || currentFile?.Id,
+						TemplateCode: currentFile?.TemplateCode
 					}}
 					            title={"NoteSubject"}
 					            onClose={
