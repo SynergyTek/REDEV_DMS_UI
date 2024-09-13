@@ -201,10 +201,10 @@ const Sidebar = () => {
 							<Link href={"/"}>
 								<MenubarItem>Document Custom Template</MenubarItem>
 							</Link>
-							<Link href={"/"}>
+							<Link href={"/admin/user"}>
 								<MenubarItem>User</MenubarItem>
 							</Link>
-							<Link href={"/"}>
+							<Link href={"/admin/userRole/"}>
 								<MenubarItem>User Role</MenubarItem>
 							</Link>
 							<Link href={"/"}>
