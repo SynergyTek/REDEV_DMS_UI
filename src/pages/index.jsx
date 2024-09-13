@@ -8,19 +8,18 @@ import {
     PieChart,
 } from "recharts"
 import {ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent} from "~/ui/chart";
-import DatePicker , {DatePickerWithRange} from "~/ui/date-picker";
-import FormLoader from "~/core/FormLoader";
-import formio from '~/core/formio.json'
-import {useRef} from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import {format} from "date-fns";
+import Head from "next/head";
 
 export default function Component() {
-    const dateref = useRef();
-    const recentDocuments = [
-        { name: 'Q2 Report.pdf', accessed: '2 hours ago' },
-        { name: 'Meeting Notes.docx', accessed: 'Yesterday' },
-        { name: 'Budget 2023.xlsx', accessed: '3 days ago' },
-        { name: 'Project Proposal.pptx', accessed: '1 week ago' },
-    ]
+    const [data, setData] = useState();
+    const recentDocuments = [];
+    const chartData = []
+    for (var i=0; i< data?.FilesList.length; i++) {
+        recentDocuments.push({ name: data?.FilesList[i].FileName, accessed: data?.FilesList[i].CreatedDateDisplay })
+    }
 
     const recentActivities = [
         { user: 'John Doe', action: 'uploaded', document: 'Q2 Report.pdf', time: '2 minutes ago' },
@@ -35,42 +34,46 @@ export default function Component() {
         { name: 'Personal', count: 12 },
         { name: 'Archive', count: 78 },
     ]
-
-    const chartData = [
-        { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-        { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-        { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-        { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-        { browser: "other", visitors: 90, fill: "var(--color-other)" },
-    ]
     const chartConfig = {
-        visitors: {
-            label: "Visitors",
-        },
-        chrome: {
-            label: "PDFs",
-            color: "hsl(var(--chart-1))",
-        },
-        safari: {
-            label: "DOCs",
-            color: "hsl(var(--chart-2))",
-        },
-        firefox: {
-            label: "XLSs",
-            color: "hsl(var(--chart-3))",
-        },
-        edge: {
-            label: "PNGs",
-            color: "hsl(var(--chart-4))",
-        },
-        other: {
-            label: "Other",
-            color: "hsl(var(--chart-5))",
+        count: {
+            label: "FilesCount",
         },
     }
+    const totalExtensions = data?.Top5Extensions.length + 1;
+    for (var i=1; i<totalExtensions; i++) {
+        chartData.push({ files: `${i}`, count: data?.Top5Extensions[i-1].Count, fill: `var(--color-${i})` });
+        chartConfig[i] = {
+            label: data?.Top5Extensions[i-1].Extension.toUpperCase(),
+            color: `hsl(var(--chart-${i}))`,
+        }
+    }
+    chartData.push({files: `${totalExtensions}`, count: data?.Others, fill: `var(--color-${totalExtensions}`})
+    chartConfig[totalExtensions] = {
+        label: "Others",
+        color: `hsl(var(--chart-${totalExtensions}))`,
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('/dmsapi/dms/query/GetUserDocuments?userId=45bba746-3309-49b7-9c03-b5793369d73c');
+                setData(response.data);
+                console.log(response.data)
+            } catch (error) {
+                console.log('Failed to fetch data');
+                console.error(error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <div className="min-h-screen p-3 md:p-8 space-y-8">
+            <Head>
+                <title>Document Management System</title>
+                <link rel={'icon'} href={'/public/favicon.ico'}/>
+            </Head>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -78,7 +81,7 @@ export default function Component() {
                         <FileIcon className="h-4 w-4 text-blue-500" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">100</div>
+                        <div className="text-2xl font-bold">{data?.filesCount}</div>
                         <p className="text-xs text-green-500">+5 new this week</p>
                     </CardContent>
                 </Card>
@@ -88,7 +91,7 @@ export default function Component() {
                         <FileIcon className="h-4 w-4 text-blue-500" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">4.2 GB</div>
+                        <div className="text-2xl font-bold">{data?.StorageUsed}</div>
                         <p className="text-xs text-blue-500">70% of your quota</p>
                         <Progress value={70} className="mt-2" />
                     </CardContent>
@@ -127,9 +130,9 @@ export default function Component() {
                         >
                             <PieChart>
                                 <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-                                <Pie data={chartData} dataKey="visitors" className={'bg-blue-700'} innerRadius={60} labelLine={false} label nameKey="browser" />
+                                <Pie data={chartData} dataKey="count" className={'bg-blue-700'} innerRadius={60} labelLine={false} label nameKey="files" />
                                 <ChartLegend
-                                    content={<ChartLegendContent nameKey="browser" />}
+                                    content={<ChartLegendContent nameKey="files" />}
                                     className="flex-wrap gap-4 [&>*]:justify-center"
                                 />
                             </PieChart>
@@ -208,22 +211,19 @@ export default function Component() {
                         <Button variant="tertiary" className="flex items-center">
                             <UploadIcon className="mr-2 h-4 w-4" /> Upload File
                         </Button>
-                        <Button variant="outline" className="flex items-center">
+                        <Button variant="outline" className="flex items-center border-gray-600">
                             <FolderIcon className="mr-2 h-4 w-4" /> New Folder
                         </Button>
-                        <Button variant="outline" className="flex items-center">
+                        <Button variant="outline" className="flex items-center border-gray-600">
                             <ShareIcon className="mr-2 h-4 w-4" /> Share
                         </Button>
-                        <Button variant="outline" className="flex items-center">
+                        <Button variant="outline" className="flex items-center border-gray-600">
                             <StarIcon className="mr-2 h-4 w-4" /> Add to Favorites
                         </Button>
-                        <Button variant="outline" className="flex items-center">
+                        <Button variant="outline" className="flex items-center border-gray-600">
                             <TrashIcon className="mr-2 h-4 w-4" /> Trash
                         </Button>
                     </div>
-                    <FormLoader jsonSchema={formio} />
-                    <DatePicker ref={dateref} onChange={() => console.log(dateref.current?.getAttribute('value'))} />
-                    {/*<DatePickerWithRange />*/}
                 </CardContent>
             </Card>
         </div>
