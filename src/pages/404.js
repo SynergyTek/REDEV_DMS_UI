@@ -3,8 +3,15 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChainBroken} from "@awesome.me/kit-9b926a9ec0/icons/classic/regular";
 
 import {Button} from "~";
+import {useSidebar} from "@/layouts/SidebarContext";
+import {useEffect} from "react";
 
-export default function Custom404({sidebar = false}) {
+export default function Custom404() {
+	const { setSidebar } = useSidebar();
+
+	useEffect(() => {
+		setSidebar(false);
+	}, [setSidebar]);
 	return (
 		<div className={"w-full h-dvh flex items-center justify-center"}>
 			<main className="grid place-items-center p-12 rounded-md shadow bg-blue-50 dark:bg-gray-900">
